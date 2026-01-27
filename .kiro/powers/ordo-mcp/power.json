@@ -1,0 +1,88 @@
+{
+  "name": "ordo-mcp",
+  "displayName": "Ordo MCP Integration",
+  "version": "1.0.0",
+  "description": "Model Context Protocol integration for privacy-first AI assistants with multi-surface data access (Gmail, Social, Wallet, DeFi, NFT, Trading)",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "langchain",
+    "ai-assistant",
+    "privacy",
+    "solana",
+    "defi",
+    "nft",
+    "trading",
+    "email",
+    "social-media",
+    "wallet",
+    "langgraph",
+    "fastmcp",
+    "tool-integration"
+  ],
+  "author": "Ordo Team",
+  "license": "MIT",
+  "mcpServers": {
+    "ordo-email": {
+      "displayName": "Ordo Email Server",
+      "description": "MCP server for Gmail integration with privacy filtering",
+      "command": "python",
+      "args": ["-m", "uvicorn", "ordo_backend.mcp_servers.email:app", "--port", "8001"],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/ordo-backend"
+      }
+    },
+    "ordo-social": {
+      "displayName": "Ordo Social Server",
+      "description": "MCP server for X/Twitter and Telegram integration",
+      "command": "python",
+      "args": ["-m", "uvicorn", "ordo_backend.mcp_servers.social:app", "--port", "8002"],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/ordo-backend"
+      }
+    },
+    "ordo-wallet": {
+      "displayName": "Ordo Wallet Server",
+      "description": "MCP server for Solana wallet integration via Helius",
+      "command": "python",
+      "args": ["-m", "uvicorn", "ordo_backend.mcp_servers.wallet:app", "--port", "8003"],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/ordo-backend",
+        "HELIUS_API_KEY": "${env:HELIUS_API_KEY}"
+      }
+    },
+    "ordo-defi": {
+      "displayName": "Ordo DeFi Server",
+      "description": "MCP server for DeFi operations (Jupiter, Lulo, Sanctum, deBridge)",
+      "command": "python",
+      "args": ["-m", "uvicorn", "ordo_backend.mcp_servers.defi:app", "--port", "8004"],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/ordo-backend"
+      }
+    },
+    "ordo-nft": {
+      "displayName": "Ordo NFT Server",
+      "description": "MCP server for NFT operations (Tensor, Metaplex)",
+      "command": "python",
+      "args": ["-m", "uvicorn", "ordo_backend.mcp_servers.nft:app", "--port", "8005"],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/ordo-backend"
+      }
+    },
+    "ordo-trading": {
+      "displayName": "Ordo Trading Server",
+      "description": "MCP server for advanced trading (Drift, Manifest, Raydium)",
+      "command": "python",
+      "args": ["-m", "uvicorn", "ordo_backend.mcp_servers.trading:app", "--port", "8006"],
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/ordo-backend"
+      }
+    }
+  },
+  "steeringFiles": [
+    "getting-started.md",
+    "privacy-security.md",
+    "mcp-development.md",
+    "testing-debugging.md"
+  ]
+}

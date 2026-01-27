@@ -1,0 +1,179 @@
+{
+  "expo": {
+    "name": "Ordo",
+    "slug": "ordo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "scheme": "ordo",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ordo.app",
+      "infoPlist": {
+        "NSMicrophoneUsageDescription": "Ordo needs microphone access for voice commands and AI assistant features",
+        "NSFaceIDUsageDescription": "Ordo uses Face ID to secure your wallet and confirm transactions",
+        "NSCameraUsageDescription": "Ordo needs camera access to scan QR codes for wallet addresses",
+        "NSCalendarsUsageDescription": "Ordo can help manage your calendar events and schedule reminders",
+        "NSContactsUsageDescription": "Ordo can help you find contact information for sending transactions",
+        "NSUserNotificationsUsageDescription": "Ordo sends notifications for transaction confirmations, price alerts, and important updates",
+        "NSLocationWhenInUseUsageDescription": "Ordo may use your location to find nearby Solana events and meetups",
+        "UIBackgroundModes": [
+          "fetch",
+          "remote-notification",
+          "processing"
+        ],
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": false
+        }
+      },
+      "associatedDomains": [
+        "applinks:ordo.app",
+        "applinks:*.ordo.app"
+      ]
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.ordo.app",
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE",
+        "POST_NOTIFICATIONS",
+        "VIBRATE",
+        "RECORD_AUDIO",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "FOREGROUND_SERVICE",
+        "WAKE_LOCK",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "CAMERA"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "ordo.app",
+              "pathPrefix": "/"
+            },
+            {
+              "scheme": "ordo"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        },
+        {
+          "action": "SEND",
+          "data": [
+            {
+              "mimeType": "text/plain"
+            }
+          ],
+          "category": [
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FFFFFF",
+          "dark": {
+            "backgroundColor": "#000000",
+            "image": "./assets/images/splash-icon.png"
+          },
+          "image": "./assets/images/splash-icon.png",
+          "imageWidth": 200,
+          "resizeMode": "contain"
+        }
+      ],
+      "expo-web-browser",
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./assets/sounds/notification.wav"
+          ]
+        }
+      ],
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Allow Ordo to use Face ID for secure authentication"
+        }
+      ],
+      "expo-secure-store",
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow Ordo to access your microphone for voice commands"
+        }
+      ],
+      "expo-speech",
+      "expo-background-fetch",
+      "expo-task-manager",
+      [
+        "@react-native-community/netinfo",
+        {
+          "shouldFetchWiFiSSID": false
+        }
+      ],
+      "expo-linking",
+      "expo-intent-launcher"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": "https://ordo.app"
+      },
+      "eas": {
+        "projectId": "your-project-id"
+      }
+    },
+    "notification": {
+      "icon": "./assets/images/notification-icon.png",
+      "color": "#ffffff",
+      "androidMode": "default",
+      "androidCollapsedTitle": "Ordo"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/your-project-id"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
