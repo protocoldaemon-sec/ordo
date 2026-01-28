@@ -111,7 +111,7 @@ describe('SeedVaultAdapter', () => {
       mockTransact.mockRejectedValue(new Error('User declined authorization'));
 
       await expect(adapter.authorize('mainnet-beta')).rejects.toThrow(
-        'Authorization failed: User declined authorization'
+        'Authorization cancelled by user'
       );
     });
 
