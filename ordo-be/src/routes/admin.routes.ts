@@ -5,6 +5,7 @@ import adminService from '../services/admin.service';
 import aiModelService from '../services/ai-model.service';
 import pluginAdminService from '../services/plugin-admin.service';
 import configService from '../services/config.service';
+import mcpServerAdminRoutes from './admin/mcp-server.routes';
 import logger from '../config/logger';
 import { AuthenticatedRequest } from '../types';
 
@@ -13,6 +14,9 @@ const router = Router();
 // All admin routes require authentication and admin role
 router.use(authenticate);
 router.use(requireAdmin);
+
+// MCP Server Management (sub-router)
+router.use('/mcp-servers', mcpServerAdminRoutes);
 
 // Dashboard metrics
 router.get('/dashboard', async (_req: AuthenticatedRequest, res: Response) => {

@@ -8,6 +8,7 @@ import walletRoutes from './routes/wallet.routes';
 import actionRoutes from './routes/action.routes';
 import transactionRoutes from './routes/transaction.routes';
 import chatRoutes from './routes/chat.routes';
+import mcpServerRoutes from './routes/mcp-server.routes';
 import adminRoutes from './routes/admin.routes';
 import healthRoutes from './routes/health.routes';
 import { sanitizeInput } from './middleware/sanitization.middleware';
@@ -61,6 +62,7 @@ app.use(`/api/${env.API_VERSION}/actions`, actionRoutes);
 app.use(`/api/${env.API_VERSION}/transactions`, transactionRoutes);
 app.use(`/api/${env.API_VERSION}/chat`, chatRoutes);
 app.use(`/api/${env.API_VERSION}/conversations`, chatRoutes);
+app.use(`/api/${env.API_VERSION}/mcp-servers`, mcpServerRoutes);
 app.use(`/api/${env.API_VERSION}/admin`, adminRateLimiter, adminRoutes);
 
 // 404 handler

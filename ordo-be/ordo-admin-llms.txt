@@ -5,11 +5,12 @@ Ordo adalah REST API backend untuk AI assistant yang dapat melakukan 60+ operasi
 
 **Base URL**: `http://localhost:3000/api/v1` (development)
 **Production URL**: `https://api.ordo-assistant.com/api/v1`
+**Production URL 2**: `https://ordo-production.up.railway.app/api/v1`
 
 ## Architecture
 
 ### Tech Stack
-- **Runtime**: Node.js 18+ dengan TypeScript
+- **Runtime**: Node.js 22+ dengan TypeScript
 - **Framework**: Express.js
 - **Database**: Supabase (PostgreSQL)
 - **LLM**: OpenRouter SDK (multi-model support)

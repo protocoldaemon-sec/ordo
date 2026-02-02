@@ -5,6 +5,7 @@ Ordo adalah REST API backend untuk AI assistant yang dapat melakukan 60+ operasi
 
 **Base URL**: `http://localhost:3000/api/v1` (development)
 **Production URL**: `https://api.ordo-assistant.com/api/v1`
+**Production URL 2**: `https://ordo-production.up.railway.app/api/v1`
 
 ## Core Features
 - JWT-based authentication dengan 24-hour token expiration
