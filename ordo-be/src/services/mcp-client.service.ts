@@ -319,19 +319,21 @@ export class MCPClientService {
 
                 // Check if this is session endpoint
                 if (data.startsWith('/message')) {
-                  sessionEndpoint = data;
-                  logger.info(`SSE session established: ${sessionEndpoint}`, {
-                    serverId: server.id,
-                  });
-                  
-                  // Resolve with session
-                  resolve({
-                    sessionEndpoint,
-                    stream,
-                    messageQueue,
-                    buffer,
-                  });
-                  return;
+                  if (!sessionEndpoint) {
+                    sessionEndpoint = data;
+                    logger.info(`SSE session established: ${sessionEndpoint}`, {
+                      serverId: server.id,
+                    });
+                    
+                    // Resolve with session but DON'T return - keep processing
+                    resolve({
+                      sessionEndpoint,
+                      stream,
+                      messageQueue,
+                      buffer,
+                    });
+                  }
+                  continue; // Continue processing other messages
                 }
 
                 // Try to parse as JSON response
@@ -343,6 +345,10 @@ export class MCPClientService {
                     const handler = messageQueue.get(parsed.id)!;
                     messageQueue.delete(parsed.id);
                     
+                    logger.debug(`SSE response received for request ${parsed.id}`, {
+                      serverId: server.id,
+                    });
+                    
                     if (parsed.error) {
                       handler.reject(new Error(parsed.error.message || 'SSE request failed'));
                     } else {
@@ -351,6 +357,9 @@ export class MCPClientService {
                   }
                 } catch (e) {
                   // Not JSON, ignore
+                  logger.debug(`SSE data not JSON: ${data.substring(0, 100)}`, {
+                    serverId: server.id,
+                  });
                 }
               }
             }
