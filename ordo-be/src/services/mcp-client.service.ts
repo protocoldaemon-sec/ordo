@@ -209,29 +209,46 @@ export class MCPClientService {
    * Supports session-based SSE (standard MCP pattern)
    */
   private async fetchToolsSSE(server: MCPServer): Promise<MCPTool[]> {
+    logger.info(`[SSE] Starting fetchToolsSSE for ${server.name}`, {
+      serverId: server.id,
+      url: server.server_url,
+    });
+
     // Check if we already have a session
     let session = this.sseSessions.get(server.id);
     
     if (!session) {
+      logger.info(`[SSE] No existing session, creating new one for ${server.name}`);
       // Create new session
       session = await this.createSSESession(server);
       this.sseSessions.set(server.id, session);
+      logger.info(`[SSE] Session created successfully for ${server.name}`);
+    } else {
+      logger.info(`[SSE] Using existing session for ${server.name}`);
     }
 
     // Send tools/list request via session
     try {
+      logger.info(`[SSE] Sending tools/list request for ${server.name}`);
       const response = await this.sendSSEMessage(server.id, 'tools/list', {});
+      logger.info(`[SSE] Received response for ${server.name}`, {
+        hasResult: !!response.result,
+        hasTools: !!response.tools,
+      });
       
       if (response.result?.tools) {
+        logger.info(`[SSE] Found ${response.result.tools.length} tools in result for ${server.name}`);
         return response.result.tools;
       } else if (response.tools) {
+        logger.info(`[SSE] Found ${response.tools.length} tools directly for ${server.name}`);
         return response.tools;
       }
       
+      logger.warn(`[SSE] No tools found in response for ${server.name}`);
       return [];
     } catch (error: any) {
       // If session failed, try to recreate
-      logger.warn(`SSE session failed, recreating...`, {
+      logger.warn(`[SSE] Session failed for ${server.name}, recreating...`, {
         serverId: server.id,
         error: error.message,
       });
