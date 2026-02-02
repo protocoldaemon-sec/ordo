@@ -297,17 +297,25 @@ export class MCPClientService {
       let buffer = '';
       let stream: any = null;
       const messageQueue = new Map<number, {resolve: Function, reject: Function}>();
+      let isResolved = false;
 
       axios.get(url, {
         headers,
         responseType: 'stream',
         timeout: 0, // No timeout for persistent connection
+        httpAgent: new (require('http').Agent)({ keepAlive: true }),
+        httpsAgent: new (require('https').Agent)({ keepAlive: true }),
       })
         .then(response => {
           stream = response.data;
 
-          stream.on('data', (chunk: Buffer) => {
-            buffer += chunk.toString();
+          // Prevent stream from pausing
+          stream.setEncoding('utf8');
+          stream.resume();
+
+          stream.on('data', (chunk: Buffer | string) => {
+            const chunkStr = typeof chunk === 'string' ? chunk : chunk.toString();
+            buffer += chunkStr;
             const lines = buffer.split('\n');
             buffer = lines.pop() || '';
 
@@ -336,12 +344,15 @@ export class MCPClientService {
                     });
                     
                     // Resolve with session - stream continues listening
-                    resolve({
-                      sessionEndpoint,
-                      stream,
-                      messageQueue,
-                      buffer,
-                    });
+                    if (!isResolved) {
+                      isResolved = true;
+                      resolve({
+                        sessionEndpoint,
+                        stream,
+                        messageQueue,
+                        buffer,
+                      });
+                    }
                   }
                   continue; // Continue processing other messages
                 }
@@ -383,11 +394,20 @@ export class MCPClientService {
                     });
                   }
                 } catch (e) {
-                  // Not JSON, ignore
-                  logger.debug(`[SSE] Data not JSON: ${data.substring(0, 100)}`, {
-                    serverId: server.id,
-                  });
+                  // Not JSON, might be ping or other message
+                  if (data.includes('ping')) {
+                    logger.debug(`[SSE] Ping received`, { serverId: server.id });
+                  } else {
+                    logger.debug(`[SSE] Data not JSON: ${data.substring(0, 100)}`, {
+                      serverId: server.id,
+                    });
+                  }
                 }
+              } else if (line.startsWith(': ')) {
+                // SSE comment (often used for keep-alive pings)
+                logger.debug(`[SSE] Comment/ping: ${line.substring(0, 50)}`, {
+                  serverId: server.id,
+                });
               }
             }
           });
@@ -399,11 +419,15 @@ export class MCPClientService {
             });
             // Reject all pending requests
             messageQueue.forEach((handler) => {
+              if ((handler as any).timeout) {
+                clearTimeout((handler as any).timeout);
+              }
               handler.reject(new Error(`SSE stream error: ${error.message}`));
             });
             messageQueue.clear();
             
-            if (!sessionEndpoint) {
+            if (!isResolved) {
+              isResolved = true;
               reject(new Error(`SSE stream error: ${error.message}`));
             }
           });
@@ -414,6 +438,9 @@ export class MCPClientService {
             });
             // Reject all pending requests
             messageQueue.forEach((handler) => {
+              if ((handler as any).timeout) {
+                clearTimeout((handler as any).timeout);
+              }
               handler.reject(new Error('SSE stream ended'));
             });
             messageQueue.clear();
@@ -427,8 +454,11 @@ export class MCPClientService {
 
           // Timeout for session establishment only
           setTimeout(() => {
-            if (!sessionEndpoint) {
-              stream.destroy();
+            if (!isResolved) {
+              isResolved = true;
+              if (stream) {
+                stream.destroy();
+              }
               reject(new Error('SSE session establishment timeout'));
             }
           }, timeout);
@@ -439,7 +469,10 @@ export class MCPClientService {
             error: error.message,
             url,
           });
-          reject(new Error(`SSE connection failed: ${error.message}`));
+          if (!isResolved) {
+            isResolved = true;
+            reject(new Error(`SSE connection failed: ${error.message}`));
+          }
         });
     });
   }
