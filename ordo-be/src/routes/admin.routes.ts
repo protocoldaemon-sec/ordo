@@ -6,6 +6,7 @@ import aiModelService from '../services/ai-model.service';
 import pluginAdminService from '../services/plugin-admin.service';
 import configService from '../services/config.service';
 import mcpServerAdminRoutes from './admin/mcp-server.routes';
+import mcpTestRoutes from './admin/mcp-test.routes';
 import logger from '../config/logger';
 import { AuthenticatedRequest } from '../types';
 
@@ -17,6 +18,9 @@ router.use(requireAdmin);
 
 // MCP Server Management (sub-router)
 router.use('/mcp-servers', mcpServerAdminRoutes);
+
+// MCP Testing (sub-router)
+router.use('/mcp-test', mcpTestRoutes);
 
 // Dashboard metrics
 router.get('/dashboard', async (_req: AuthenticatedRequest, res: Response) => {
