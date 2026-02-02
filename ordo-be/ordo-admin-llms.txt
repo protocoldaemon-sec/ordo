@@ -1284,3 +1284,257 @@ npx tsx scripts/update-user-role.ts user@example.com admin
 - Documentation: `/API.md`, `/DEPLOYMENT.md`, `/PERFORMANCE.md`
 - GitHub: [repository-url]
 - Issues: [issues-url]
+
+
+### MCP Server Management
+
+#### Get All MCP Servers
+**GET** `/admin/mcp-servers`
+
+**Headers**: `Authorization: Bearer <admin_token>`
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "mcp_uuid",
+      "name": "Solana Agent Kit MCP",
+      "description": "MCP server for Solana blockchain operations",
+      "transport_type": "http",
+      "server_url": "https://mcp.solana-agent-kit.com",
+      "api_key": "secret_api_key",
+      "headers": {
+        "X-Custom-Header": "value"
+      },
+      "is_enabled": true,
+      "config": {
+        "timeout": 30000,
+        "retries": 3
+      },
+      "metadata": {
+        "version": "2.0.0",
+        "capabilities": ["token", "nft", "defi", "bridge"]
+      },
+      "created_at": "2026-02-01T00:00:00Z",
+      "updated_at": "2026-02-01T00:00:00Z"
+    }
+  ],
+  "count": 3
+}
+```
+
+**Notes**:
+- Includes sensitive data (api_key, headers)
+- Shows all MCP servers (enabled and disabled)
+- Admin-only endpoint
+
+#### Get MCP Server by ID
+**GET** `/admin/mcp-servers/:id`
+
+**Headers**: `Authorization: Bearer <admin_token>`
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "mcp_uuid",
+    "name": "Solana Agent Kit MCP",
+    "description": "MCP server for Solana blockchain operations",
+    "transport_type": "http",
+    "server_url": "https://mcp.solana-agent-kit.com",
+    "api_key": "secret_api_key",
+    "headers": {},
+    "is_enabled": true,
+    "config": {},
+    "metadata": {},
+    "created_at": "2026-02-01T00:00:00Z",
+    "updated_at": "2026-02-01T00:00:00Z"
+  }
+}
+```
+
+#### Create MCP Server
+**POST** `/admin/mcp-servers`
+
+**Headers**: `Authorization: Bearer <admin_token>`
+
+**Request**:
+```json
+{
+  "name": "Custom MCP Server",
+  "description": "Custom MCP server for specific operations",
+  "transport_type": "http",
+  "server_url": "https://custom-mcp.example.com",
+  "api_key": "optional_api_key",
+  "headers": {
+    "Authorization": "Bearer token",
+    "X-Custom": "value"
+  },
+  "is_enabled": true,
+  "config": {
+    "timeout": 10000,
+    "retries": 2
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "capabilities": ["custom"]
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "new_mcp_uuid",
+    "name": "Custom MCP Server",
+    ...
+  },
+  "message": "MCP server created successfully"
+}
+```
+
+**Validation**:
+- `name`: Required, unique, 1-100 chars
+- `transport_type`: Required, must be 'http' or 'sse'
+- `server_url`: Required, valid URL, max 500 chars
+- `api_key`: Optional, max 255 chars
+- `headers`: Optional, JSON object
+- `config`: Optional, JSON object
+- `metadata`: Optional, JSON object
+
+**Transport Types**:
+- `http`: Standard HTTP request-response
+- `sse`: Server-Sent Events for streaming
+- **Note**: STDIO not supported (Railway deployment limitation)
+
+**Audit**: Logged in audit_logs with admin_id
+
+#### Update MCP Server
+**PUT** `/admin/mcp-servers/:id`
+
+**Headers**: `Authorization: Bearer <admin_token>`
+
+**Request**:
+```json
+{
+  "name": "Updated MCP Server Name",
+  "description": "Updated description",
+  "transport_type": "sse",
+  "server_url": "https://updated-url.com",
+  "api_key": "new_api_key",
+  "headers": {
+    "X-New-Header": "value"
+  },
+  "is_enabled": false,
+  "config": {
+    "timeout": 15000
+  },
+  "metadata": {
+    "version": "2.0.0"
+  }
+}
+```
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "mcp_uuid",
+    "name": "Updated MCP Server Name",
+    ...
+  },
+  "message": "MCP server updated successfully"
+}
+```
+
+**Notes**:
+- All fields optional (partial update)
+- Name must remain unique
+- Changes apply immediately
+- Audit logged
+
+#### Delete MCP Server
+**DELETE** `/admin/mcp-servers/:id`
+
+**Headers**: `Authorization: Bearer <admin_token>`
+
+**Response**:
+```json
+{
+  "success": true,
+  "message": "MCP server deleted successfully"
+}
+```
+
+**Effect**:
+- Permanently removes MCP server
+- Cannot be undone
+- Audit logged
+
+#### Enable MCP Server
+**PUT** `/admin/mcp-servers/:id/enable`
+
+**Headers**: `Authorization: Bearer <admin_token>`
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "mcp_uuid",
+    "is_enabled": true,
+    ...
+  },
+  "message": "MCP server enabled successfully"
+}
+```
+
+**Effect**: MCP server becomes available for use immediately
+
+#### Disable MCP Server
+**PUT** `/admin/mcp-servers/:id/disable`
+
+**Headers**: `Authorization: Bearer <admin_token>`
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": {
+    "id": "mcp_uuid",
+    "is_enabled": false,
+    ...
+  },
+  "message": "MCP server disabled successfully"
+}
+```
+
+**Effect**: MCP server becomes unavailable immediately
+
+**Use Cases for MCP Servers**:
+- Extend AI capabilities with external services
+- Integrate third-party APIs and tools
+- Add custom blockchain operations
+- Connect to specialized data sources
+- Enable real-time streaming features (SSE)
+
+**Security Considerations**:
+- API keys stored securely in database
+- Headers can include authentication tokens
+- Only admins can view sensitive data
+- All changes logged in audit trail
+- Transport validation prevents STDIO (not supported in cloud)
+
+---
+
+## Version Information
+
+- **API Version**: v1
+- **Backend Version**: 1.0.0
+- **Last Updated**: 2026-02-01

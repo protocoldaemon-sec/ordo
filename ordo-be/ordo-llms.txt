@@ -439,6 +439,50 @@ POST /actions/get_sol_price
 }
 ```
 
+## MCP Servers
+
+### Get MCP Servers
+**Endpoint**: `GET /mcp-servers`
+
+**Headers**: `Authorization: Bearer <token>`
+
+**Response**:
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": "mcp_uuid",
+      "name": "Solana Agent Kit MCP",
+      "description": "MCP server for Solana blockchain operations",
+      "transport_type": "http",
+      "server_url": "https://mcp.solana-agent-kit.com",
+      "is_enabled": true,
+      "config": {
+        "timeout": 30000,
+        "retries": 3
+      },
+      "metadata": {
+        "version": "2.0.0",
+        "capabilities": ["token", "nft", "defi", "bridge"]
+      },
+      "created_at": "2026-02-01T00:00:00Z",
+      "updated_at": "2026-02-01T00:00:00Z"
+    }
+  ],
+  "count": 3
+}
+```
+
+**Transport Types**:
+- `http` - Standard HTTP request-response
+- `sse` - Server-Sent Events for streaming
+
+**Notes**:
+- Only returns enabled MCP servers
+- Sensitive data (api_key, headers) not included in public endpoint
+- MCP servers provide additional AI capabilities and integrations
+
 ## Health Check
 
 ### Basic Health Check
