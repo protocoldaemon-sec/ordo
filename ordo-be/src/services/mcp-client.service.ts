@@ -310,12 +310,21 @@ export class MCPClientService {
             const lines = buffer.split('\n');
             buffer = lines.pop() || '';
 
+            logger.debug(`[SSE] Received ${lines.length} lines from stream`, {
+              serverId: server.id,
+            });
+
             for (const line of lines) {
               if (line.startsWith('event: ')) {
-                // Event type parsed, data will be in next line
+                const eventType = line.slice(7).trim();
+                logger.debug(`[SSE] Event type: ${eventType}`, { serverId: server.id });
               } else if (line.startsWith('data: ')) {
                 const data = line.slice(6).trim();
                 if (data === '' || data === '[DONE]') continue;
+
+                logger.debug(`[SSE] Data received: ${data.substring(0, 200)}`, {
+                  serverId: server.id,
+                });
 
                 // Check if this is session endpoint
                 if (data.startsWith('/message')) {
@@ -340,13 +349,19 @@ export class MCPClientService {
                 try {
                   const parsed = JSON.parse(data);
                   
+                  logger.debug(`[SSE] Parsed JSON, id: ${parsed.id}, has result: ${!!parsed.result}`, {
+                    serverId: server.id,
+                  });
+                  
                   // Check if this is a response to a request
                   if (parsed.id && messageQueue.has(parsed.id)) {
                     const handler = messageQueue.get(parsed.id)!;
                     messageQueue.delete(parsed.id);
                     
-                    logger.debug(`SSE response received for request ${parsed.id}`, {
+                    logger.info(`[SSE] Response received for request ${parsed.id}`, {
                       serverId: server.id,
+                      hasError: !!parsed.error,
+                      hasResult: !!parsed.result,
                     });
                     
                     if (parsed.error) {
@@ -354,10 +369,16 @@ export class MCPClientService {
                     } else {
                       handler.resolve(parsed);
                     }
+                  } else {
+                    logger.debug(`[SSE] JSON parsed but no matching request in queue`, {
+                      serverId: server.id,
+                      parsedId: parsed.id,
+                      queueSize: messageQueue.size,
+                    });
                   }
                 } catch (e) {
                   // Not JSON, ignore
-                  logger.debug(`SSE data not JSON: ${data.substring(0, 100)}`, {
+                  logger.debug(`[SSE] Data not JSON: ${data.substring(0, 100)}`, {
                     serverId: server.id,
                   });
                 }
