@@ -340,11 +340,28 @@ export class MCPClientService {
       };
 
       req = protocol.request(options, (res) => {
+        (res as any).startTime = Date.now();
+        
         logger.info(`SSE connection established, status: ${res.statusCode}`, {
           serverId: server.id,
         });
 
+        if (res.statusCode !== 200) {
+          logger.error(`SSE connection failed with status ${res.statusCode}`, {
+            serverId: server.id,
+          });
+          if (!isResolved) {
+            isResolved = true;
+            reject(new Error(`SSE connection failed with status ${res.statusCode}`));
+          }
+          return;
+        }
+
         res.setEncoding('utf8');
+        
+        // Prevent stream from auto-closing
+        res.pause();
+        res.resume();
 
         res.on('data', (chunk: string) => {
           buffer += chunk;
@@ -461,10 +478,12 @@ export class MCPClientService {
         });
 
         res.on('end', () => {
+          const endTime = Date.now();
           logger.warn(`SSE stream ended`, {
             serverId: server.id,
             pendingRequests: messageQueue.size,
             queueIds: Array.from(messageQueue.keys()),
+            streamDuration: endTime - (res as any).startTime,
           });
           
           // Only reject pending requests if there are any
@@ -518,6 +537,7 @@ export class MCPClientService {
 
   /**
    * Send message via SSE session and wait for response
+   * POST to session endpoint with JSON-RPC body
    */
   private async sendSSEMessage(
     serverId: string,
@@ -535,14 +555,16 @@ export class MCPClientService {
     }
 
     return new Promise((resolve, reject) => {
+      // POST to session endpoint (e.g. /messages?session_id=xxx)
       const url = `${server.server_url}${session.sessionEndpoint}`;
       const timeout = server.config?.timeout || 30000;
       const requestId = body.id || Date.now();
 
-      logger.info(`Sending SSE message to ${path}`, {
+      logger.info(`Sending SSE message to session endpoint`, {
         serverId,
         requestId,
         url,
+        targetPath: path,
         queueSize: session.messageQueue.size,
       });
 
@@ -564,22 +586,21 @@ export class MCPClientService {
         body: JSON.stringify(body),
       });
 
-      // Send POST request
+      // Send POST request to session endpoint
       axios.post(url, body, {
         headers,
-        timeout: 10000, // Short timeout for POST itself
+        timeout: 10000,
       })
         .then(response => {
-          logger.info(`[SSE] POST request completed, waiting for SSE response...`, {
+          logger.info(`[SSE] POST accepted, waiting for SSE response...`, {
             serverId,
             requestId,
             status: response.status,
-            statusText: response.statusText,
+            data: response.data,
             queueSize: session.messageQueue.size,
           });
           
           // Response will come via SSE stream
-          // Set timeout for response
           const responseTimeout = setTimeout(() => {
             if (session.messageQueue.has(requestId)) {
               session.messageQueue.delete(requestId);
@@ -592,19 +613,18 @@ export class MCPClientService {
             }
           }, timeout);
 
-          // Store timeout so we can clear it if response arrives
           (session.messageQueue.get(requestId) as any).timeout = responseTimeout;
         })
         .catch(error => {
           session.messageQueue.delete(requestId);
-          logger.error(`SSE message send failed`, {
+          logger.error(`SSE POST failed`, {
             serverId,
             requestId,
             error: error.message,
             status: error.response?.status,
             data: error.response?.data,
           });
-          reject(new Error(`SSE message send failed: ${error.message}`));
+          reject(new Error(`SSE POST failed: ${error.message}`));
         });
     });
   }
