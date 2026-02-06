@@ -468,7 +468,7 @@ class _CommandHistoryPanelState extends State<CommandHistoryPanel> {
   }
 
   String _formatDate(DateTime? date) {
-    if (date == null) return 'Unknown';
+    if (date == null) return '--';
     final now = DateTime.now();
     final diff = now.difference(date);
     

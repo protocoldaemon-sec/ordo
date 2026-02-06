@@ -60,8 +60,13 @@ class ApiClient {
       print('🔵 Response status: ${response.statusCode}');
       print('🔵 Response body: ${response.body}');
       
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201 || response.statusCode == 202) {
+        final data = jsonDecode(response.body);
+        // Handle 202 as approval_required response
+        if (response.statusCode == 202) {
+          data['approval_required'] = true;
+        }
+        return data;
       } else {
         throw Exception('API Error: ${response.statusCode}');
       }
@@ -662,15 +667,19 @@ class ApiClient {
     required String token,
     required double amount,
     required String toAddress,
+    String? destinationToken,
+    String protocol = 'wormhole',
     double? slippage,
   }) async {
     return await post('/bridge/execute', {
       'walletId': walletId,
-      'fromChain': fromChain,
-      'toChain': toChain,
-      'token': token,
+      'sourceChain': fromChain,
+      'destinationChain': toChain,
+      'sourceToken': token,
+      'destinationToken': destinationToken ?? token,
       'amount': amount,
-      'toAddress': toAddress,
+      'destinationAddress': toAddress,
+      'protocol': protocol,
       if (slippage != null) 'slippage': slippage,
     });
   }
@@ -821,8 +830,13 @@ class ApiClient {
       print('🔵 Response status: ${response.statusCode}');
       print('🔵 Response body: ${response.body}');
       
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201 || response.statusCode == 202) {
+        final data = jsonDecode(response.body);
+        // Handle 202 as approval_required response
+        if (response.statusCode == 202) {
+          data['approval_required'] = true;
+        }
+        return data;
       } else {
         throw Exception('API Error: ${response.statusCode}');
       }

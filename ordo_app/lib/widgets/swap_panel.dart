@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
+import '../services/api_client.dart';
+import '../services/auth_service.dart';
 
 class SwapPanel extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -20,6 +23,8 @@ class _SwapPanelState extends State<SwapPanel> {
   late String _fromToken;
   late String _toToken;
   bool _isLoading = false;
+  double? _usdValue;
+  double? _tokenPrice;
 
   @override
   void initState() {
@@ -29,12 +34,57 @@ class _SwapPanelState extends State<SwapPanel> {
     );
     _fromToken = widget.data['from']?.toString() ?? 'SOL';
     _toToken = widget.data['to']?.toString() ?? 'USDC';
+    
+    // Fetch price on init
+    _fetchPrice();
+    
+    // Listen to amount changes
+    _amountController.addListener(_updateUsdValue);
   }
 
   @override
   void dispose() {
+    _amountController.removeListener(_updateUsdValue);
     _amountController.dispose();
     super.dispose();
+  }
+  
+  Future<void> _fetchPrice() async {
+    try {
+      final authService = context.read<AuthService>();
+      final apiClient = ApiClient(authService: authService);
+      
+      // Get SOL price in USD
+      final response = await apiClient.getTokenPrice('So11111111111111111111111111111111111111112');
+      if (response['success'] == true && response['data'] != null) {
+        setState(() {
+          _tokenPrice = (response['data']['price'] as num?)?.toDouble();
+          _updateUsdValue();
+        });
+      }
+    } catch (e) {
+      // Silently fail, use fallback
+      setState(() {
+        _tokenPrice = 180.0; // Fallback SOL price
+        _updateUsdValue();
+      });
+    }
+  }
+  
+  void _updateUsdValue() {
+    final amount = double.tryParse(_amountController.text);
+    if (amount != null && _tokenPrice != null && _fromToken == 'SOL') {
+      setState(() {
+        _usdValue = amount * _tokenPrice!;
+      });
+    } else if (_fromToken == 'USDC' || _fromToken == 'USDT') {
+      final amount = double.tryParse(_amountController.text);
+      if (amount != null) {
+        setState(() {
+          _usdValue = amount;
+        });
+      }
+    }
   }
 
   @override
@@ -116,6 +166,7 @@ class _SwapPanelState extends State<SwapPanel> {
                   token: _fromToken,
                   controller: _amountController,
                   balance: widget.data['fromBalance']?.toString(),
+                  usdValue: _usdValue,
                 ),
 
                 const SizedBox(height: 16),
@@ -221,6 +272,7 @@ class _SwapPanelState extends State<SwapPanel> {
     required TextEditingController? controller,
     String? balance,
     String? estimatedAmount,
+    double? usdValue,
   }) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -292,34 +344,51 @@ class _SwapPanelState extends State<SwapPanel> {
               const SizedBox(width: 12),
               // Amount input
               Expanded(
-                child: controller != null
-                    ? TextField(
-                        controller: controller,
-                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Tomorrow',
-                        ),
-                        decoration: InputDecoration(
-                          hintText: '0.0',
-                          hintStyle: TextStyle(
-                            color: AppTheme.textTertiary,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    controller != null
+                        ? TextField(
+                            controller: controller,
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                            textAlign: TextAlign.right,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Tomorrow',
+                            ),
+                            decoration: InputDecoration(
+                              hintText: '0.0',
+                              hintStyle: TextStyle(
+                                color: AppTheme.textTertiary,
+                              ),
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                          )
+                        : Text(
+                            estimatedAmount ?? '0.0',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w600,
+                              fontFamily: 'Tomorrow',
+                            ),
                           ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.zero,
-                        ),
-                      )
-                    : Text(
-                        estimatedAmount ?? '0.0',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Tomorrow',
+                    if (usdValue != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 4),
+                        child: Text(
+                          '≈ \$${usdValue.toStringAsFixed(2)} USD',
+                          style: TextStyle(
+                            color: AppTheme.textSecondary,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
+                  ],
+                ),
               ),
             ],
           ),

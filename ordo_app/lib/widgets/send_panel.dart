@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../theme/app_theme.dart';
 
 class SendPanel extends StatefulWidget {
@@ -293,8 +294,11 @@ class _SendPanelState extends State<SendPanel> {
                         ),
                       ),
                       IconButton(
-                        onPressed: () {
-                          // TODO: Paste from clipboard
+                        onPressed: () async {
+                          final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
+                          if (clipboardData?.text != null) {
+                            _addressController.text = clipboardData!.text!;
+                          }
                         },
                         icon: Icon(
                           Icons.content_paste,

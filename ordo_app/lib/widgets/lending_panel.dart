@@ -644,11 +644,7 @@ class _LendingPanelState extends State<LendingPanel> {
           _errorMessage = null;
         });
         
-        // Dismiss after showing success
-        await Future.delayed(const Duration(seconds: 2));
-        if (mounted) {
-          widget.onDismiss();
-        }
+        // Don't auto-dismiss - let user see the result and close manually
       } else {
         throw Exception(response['error'] ?? 'Lending failed');
       }

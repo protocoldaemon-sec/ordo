@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../services/api_client.dart';
@@ -375,6 +376,19 @@ class _BridgePanelState extends State<BridgePanel> {
                         color: Colors.white.withOpacity(0.3),
                         fontSize: 14,
                       ),
+                      suffixIcon: IconButton(
+                        onPressed: () async {
+                          final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
+                          if (clipboardData?.text != null) {
+                            _toAddressController.text = clipboardData!.text!;
+                          }
+                        },
+                        icon: Icon(
+                          Icons.content_paste,
+                          color: Colors.white.withOpacity(0.5),
+                          size: 20,
+                        ),
+                      ),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.05),
                       border: OutlineInputBorder(
@@ -644,11 +658,7 @@ class _BridgePanelState extends State<BridgePanel> {
           _errorMessage = null;
         });
         
-        // Dismiss after showing success
-        await Future.delayed(const Duration(seconds: 2));
-        if (mounted) {
-          widget.onDismiss();
-        }
+        // Don't auto-dismiss - let user see the result and close manually
       } else {
         throw Exception(response['error'] ?? 'Bridge failed');
       }

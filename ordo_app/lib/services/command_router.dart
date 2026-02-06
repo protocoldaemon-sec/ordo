@@ -116,6 +116,36 @@ class CommandRouter {
       );
     }
     
+    // Mint NFT - show panel immediately
+    if (_isMintNftCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.mintNft,
+        params: {},
+        reason: 'Mint NFT interface - instant UI',
+      );
+    }
+    
+    // Send NFT - show panel immediately
+    if (_isSendNftCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.sendNft,
+        params: {},
+        reason: 'Send NFT interface - instant UI',
+      );
+    }
+    
+    // Burn NFT - use AI for confirmation (dangerous operation)
+    if (_isBurnNftCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.aiAgent,
+        action: ActionType.unknown,
+        params: {},
+        reason: 'Burn NFT requires AI confirmation',
+      );
+    }
+    
     // NFT view - show panel immediately (will fetch data in panel)
     if (_isNftCommand(lowerCommand)) {
       return CommandRoute(
@@ -146,6 +176,16 @@ class CommandRouter {
       );
     }
     
+    // Unstaking interface - show panel immediately
+    if (_isUnstakeCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.unstake,
+        params: {},
+        reason: 'Unstaking interface - instant UI',
+      );
+    }
+    
     // Lending interface - show panel immediately
     if (_isLendingCommand(lowerCommand)) {
       return CommandRoute(
@@ -173,6 +213,16 @@ class CommandRouter {
         action: ActionType.addLiquidity,
         params: {},
         reason: 'Liquidity interface - instant UI',
+      );
+    }
+    
+    // Remove Liquidity interface - show panel immediately
+    if (_isRemoveLiquidityCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.removeLiquidity,
+        params: {},
+        reason: 'Remove liquidity interface - instant UI',
       );
     }
     
@@ -357,6 +407,22 @@ class CommandRouter {
            (cmd.contains('show') || cmd.contains('my') || cmd.contains('view'));
   }
   
+  // Mint NFT patterns
+  static bool _isMintNftCommand(String cmd) {
+    return (cmd.contains('mint') && cmd.contains('nft')) ||
+           cmd.contains('create nft');
+  }
+  
+  // Send NFT patterns
+  static bool _isSendNftCommand(String cmd) {
+    return (cmd.contains('send') || cmd.contains('transfer')) && cmd.contains('nft');
+  }
+  
+  // Burn NFT patterns
+  static bool _isBurnNftCommand(String cmd) {
+    return cmd.contains('burn') && cmd.contains('nft');
+  }
+  
   // Settings patterns
   static bool _isSettingsCommand(String cmd) {
     return cmd.contains('settings') ||
@@ -368,6 +434,13 @@ class CommandRouter {
   static bool _isStakingCommand(String cmd) {
     return (cmd.contains('stake') || cmd.contains('staking')) &&
            !cmd.contains('unstake');
+  }
+  
+  // Unstaking patterns
+  static bool _isUnstakeCommand(String cmd) {
+    return cmd.contains('unstake') || 
+           cmd.contains('withdraw stake') ||
+           (cmd.contains('withdraw') && cmd.contains('staked'));
   }
   
   // Lending patterns
@@ -382,9 +455,17 @@ class CommandRouter {
   
   // Liquidity patterns
   static bool _isLiquidityCommand(String cmd) {
-    return cmd.contains('liquidity') || 
+    return (cmd.contains('liquidity') || 
            cmd.contains('add liquidity') ||
-           cmd.contains('pool');
+           cmd.contains('pool')) &&
+           !cmd.contains('remove');
+  }
+  
+  // Remove Liquidity patterns
+  static bool _isRemoveLiquidityCommand(String cmd) {
+    return cmd.contains('remove liquidity') || 
+           cmd.contains('withdraw liquidity') ||
+           (cmd.contains('remove') && cmd.contains('pool'));
   }
   
   // Bridge patterns

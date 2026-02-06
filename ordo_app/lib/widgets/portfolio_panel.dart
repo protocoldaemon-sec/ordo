@@ -65,14 +65,20 @@ class PortfolioPanel extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                const Expanded(
-                  child: Text(
-                    'Portfolio',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                    ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Portfolio',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      _buildNetworkBadge(context),
+                    ],
                   ),
                 ),
                 IconButton(
@@ -334,11 +340,58 @@ class PortfolioPanel extends StatelessWidget {
     return total;
   }
 
-  double _extractDouble(dynamic value) {
+double _extractDouble(dynamic value) {
     if (value == null) return 0.0;
     if (value is double) return value;
     if (value is int) return value.toDouble();
     if (value is String) return double.tryParse(value) ?? 0.0;
     return 0.0;
+  }
+
+  Widget _buildNetworkBadge(BuildContext context) {
+    // Get network from data (passed from API response) or default to devnet
+    final network = data['network']?.toString() ?? 
+                    data['mode']?.toString() ?? 
+                    'devnet';
+    
+    Color badgeColor;
+    String displayName;
+    
+    switch (network.toLowerCase()) {
+      case 'devnet':
+        badgeColor = Colors.orange;
+        displayName = 'Devnet';
+        break;
+      case 'testnet':
+        badgeColor = Colors.purple;
+        displayName = 'Testnet';
+        break;
+      case 'mainnet':
+      default:
+        badgeColor = AppTheme.success;
+        displayName = 'Mainnet';
+        break;
+    }
+    
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: badgeColor.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: badgeColor.withOpacity(0.4),
+          width: 1,
+        ),
+      ),
+      child: Text(
+        displayName,
+        style: TextStyle(
+          color: badgeColor,
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          letterSpacing: 0.5,
+        ),
+      ),
+    );
   }
 }
