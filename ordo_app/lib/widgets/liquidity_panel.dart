@@ -18,7 +18,22 @@ class LiquidityPanel extends StatefulWidget {
 class _LiquidityPanelState extends State<LiquidityPanel> {
   final TextEditingController _amount1Controller = TextEditingController();
   final TextEditingController _amount2Controller = TextEditingController();
+  late String _token1;
+  late String _token2;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _token1 = widget.data['token1']?.toString() ?? 
+              widget.data['tokenA']?.toString() ?? 
+              'SOL';
+    _token2 = widget.data['token2']?.toString() ?? 
+              widget.data['tokenB']?.toString() ?? 
+              'USDC';
+    _amount1Controller.text = widget.data['amount1']?.toString() ?? '';
+    _amount2Controller.text = widget.data['amount2']?.toString() ?? '';
+  }
 
   @override
   void dispose() {
@@ -130,7 +145,7 @@ class _LiquidityPanelState extends State<LiquidityPanel> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _buildTokenInput(_amount1Controller, 'SOL'),
+                  _buildTokenInput(_amount1Controller, _token1),
 
                   const SizedBox(height: 16),
 
@@ -162,7 +177,7 @@ class _LiquidityPanelState extends State<LiquidityPanel> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  _buildTokenInput(_amount2Controller, 'USDC'),
+                  _buildTokenInput(_amount2Controller, _token2),
 
                   const SizedBox(height: 20),
 
@@ -325,17 +340,27 @@ class _LiquidityPanelState extends State<LiquidityPanel> {
   }
 
   void _handleAddLiquidity() async {
+    if (_amount1Controller.text.isEmpty || _amount2Controller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter amounts for both tokens')),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
 
-    // TODO: Implement actual liquidity addition
-    await Future.delayed(const Duration(seconds: 2));
+    // TODO: Implement actual liquidity addition via API
+    await Future.delayed(const Duration(milliseconds: 500));
 
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Liquidity request sent. Please wait for confirmation.')),
+      );
       widget.onDismiss();
     }
   }

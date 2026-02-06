@@ -17,7 +17,7 @@ class LendingPanel extends StatefulWidget {
 
 class _LendingPanelState extends State<LendingPanel> {
   final TextEditingController _amountController = TextEditingController();
-  String _selectedAsset = 'SOL';
+  late String _selectedAsset;
   bool _isLoading = false;
 
   @override
@@ -25,6 +25,9 @@ class _LendingPanelState extends State<LendingPanel> {
     super.initState();
     final amount = widget.data['amount'] ?? '';
     _amountController.text = amount.toString();
+    _selectedAsset = widget.data['asset']?.toString() ?? 
+                     widget.data['token']?.toString() ?? 
+                     'SOL';
   }
 
   @override
@@ -284,6 +287,8 @@ class _LendingPanelState extends State<LendingPanel> {
   }
 
   Widget _buildAssetSelector() {
+    final availableBalance = widget.data['availableBalance']?.toString() ?? '--';
+    
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -303,10 +308,10 @@ class _LendingPanelState extends State<LendingPanel> {
               color: AppTheme.primary.withOpacity(0.2),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'S',
-                style: TextStyle(
+                _selectedAsset.isNotEmpty ? _selectedAsset[0] : 'T',
+                style: const TextStyle(
                   color: AppTheme.primary,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -315,14 +320,26 @@ class _LendingPanelState extends State<LendingPanel> {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
-            child: Text(
-              'SOL',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-              ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _selectedAsset,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  'Balance: $availableBalance',
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.5),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
             ),
           ),
           Icon(
@@ -360,6 +377,9 @@ class _LendingPanelState extends State<LendingPanel> {
   void _handleLend() async {
     final amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid amount')),
+      );
       return;
     }
 
@@ -367,13 +387,16 @@ class _LendingPanelState extends State<LendingPanel> {
       _isLoading = true;
     });
 
-    // TODO: Implement actual lending
-    await Future.delayed(const Duration(seconds: 2));
+    // TODO: Implement actual lending via API
+    await Future.delayed(const Duration(milliseconds: 500));
 
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lending request sent. Please wait for confirmation.')),
+      );
       widget.onDismiss();
     }
   }

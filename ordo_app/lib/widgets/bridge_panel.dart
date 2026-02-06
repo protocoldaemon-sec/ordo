@@ -17,9 +17,25 @@ class BridgePanel extends StatefulWidget {
 
 class _BridgePanelState extends State<BridgePanel> {
   final TextEditingController _amountController = TextEditingController();
-  String _fromChain = 'Solana';
-  String _toChain = 'Ethereum';
+  late String _fromChain;
+  late String _toChain;
+  late String _token;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _fromChain = widget.data['fromChain']?.toString() ?? 
+                 widget.data['sourceChain']?.toString() ?? 
+                 'Solana';
+    _toChain = widget.data['toChain']?.toString() ?? 
+               widget.data['destinationChain']?.toString() ?? 
+               'Ethereum';
+    _token = widget.data['token']?.toString() ?? 
+             widget.data['asset']?.toString() ?? 
+             'SOL';
+    _amountController.text = widget.data['amount']?.toString() ?? '';
+  }
 
   @override
   void dispose() {
@@ -189,7 +205,7 @@ class _BridgePanelState extends State<BridgePanel> {
                       hintStyle: TextStyle(
                         color: Colors.white.withOpacity(0.3),
                       ),
-                      suffixText: 'SOL',
+                      suffixText: _token,
                       suffixStyle: const TextStyle(
                         color: Colors.purple,
                         fontSize: 16,
@@ -386,17 +402,27 @@ class _BridgePanelState extends State<BridgePanel> {
   }
 
   void _handleBridge() async {
+    if (_amountController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter an amount')),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
 
-    // TODO: Implement actual bridging
-    await Future.delayed(const Duration(seconds: 2));
+    // TODO: Implement actual bridging via API
+    await Future.delayed(const Duration(milliseconds: 500));
 
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Bridge request sent. Please wait for confirmation.')),
+      );
       widget.onDismiss();
     }
   }

@@ -17,7 +17,7 @@ class BorrowingPanel extends StatefulWidget {
 
 class _BorrowingPanelState extends State<BorrowingPanel> {
   final TextEditingController _amountController = TextEditingController();
-  String _selectedAsset = 'USDC';
+  late String _selectedAsset;
   bool _isLoading = false;
 
   @override
@@ -25,6 +25,9 @@ class _BorrowingPanelState extends State<BorrowingPanel> {
     super.initState();
     final amount = widget.data['amount'] ?? '';
     _amountController.text = amount.toString();
+    _selectedAsset = widget.data['asset']?.toString() ?? 
+                     widget.data['token']?.toString() ?? 
+                     'USDC';
   }
 
   @override
@@ -327,10 +330,10 @@ class _BorrowingPanelState extends State<BorrowingPanel> {
               color: Colors.orange.withOpacity(0.2),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'U',
-                style: TextStyle(
+                _selectedAsset.isNotEmpty ? _selectedAsset[0] : 'T',
+                style: const TextStyle(
                   color: Colors.orange,
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -339,10 +342,10 @@ class _BorrowingPanelState extends State<BorrowingPanel> {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Text(
-              'USDC',
-              style: TextStyle(
+              _selectedAsset,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -384,6 +387,9 @@ class _BorrowingPanelState extends State<BorrowingPanel> {
   void _handleBorrow() async {
     final amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid amount')),
+      );
       return;
     }
 
@@ -391,13 +397,16 @@ class _BorrowingPanelState extends State<BorrowingPanel> {
       _isLoading = true;
     });
 
-    // TODO: Implement actual borrowing
-    await Future.delayed(const Duration(seconds: 2));
+    // TODO: Implement actual borrowing via API
+    await Future.delayed(const Duration(milliseconds: 500));
 
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Borrow request sent. Please wait for confirmation.')),
+      );
       widget.onDismiss();
     }
   }

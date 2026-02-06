@@ -222,7 +222,7 @@ class _SendPanelState extends State<SendPanel> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Balance: 10.5 $_selectedToken', // TODO: Get real balance
+                      'Balance: ${_getBalanceForToken(_selectedToken)} $_selectedToken',
                       style: TextStyle(
                         color: AppTheme.textTertiary,
                         fontSize: 11,
@@ -230,7 +230,7 @@ class _SendPanelState extends State<SendPanel> {
                     ),
                     TextButton(
                       onPressed: () {
-                        _amountController.text = '10.5'; // TODO: Use real balance
+                        _amountController.text = _getBalanceForToken(_selectedToken);
                       },
                       style: TextButton.styleFrom(
                         padding: EdgeInsets.zero,
@@ -331,9 +331,9 @@ class _SendPanelState extends State<SendPanel> {
                   ),
                   child: Column(
                     children: [
-                      _buildInfoRow('Network Fee', '~0.000005 SOL'),
+                      _buildInfoRow('Network Fee', _getNetworkFee()),
                       const SizedBox(height: 8),
-                      _buildInfoRow('Priority', 'Normal'),
+                      _buildInfoRow('Priority', _getPriority()),
                     ],
                   ),
                 ),
@@ -378,6 +378,36 @@ class _SendPanelState extends State<SendPanel> {
         ],
       ),
     );
+  }
+
+  String _getBalanceForToken(String token) {
+    // Get balances from widget data
+    final balances = widget.data['balances'] as Map<String, dynamic>?;
+    if (balances != null && balances.containsKey(token)) {
+      return balances[token].toString();
+    }
+    // Fallback to single balance if provided
+    final balance = widget.data['balance'];
+    if (balance != null) {
+      return balance.toString();
+    }
+    return '0.0';
+  }
+
+  String _getNetworkFee() {
+    final fee = widget.data['networkFee'] ?? widget.data['fee'];
+    if (fee != null) {
+      return fee.toString();
+    }
+    return '~0.000005 SOL';
+  }
+
+  String _getPriority() {
+    final priority = widget.data['priority'];
+    if (priority != null) {
+      return priority.toString();
+    }
+    return 'Normal';
   }
 
   Widget _buildInfoRow(String label, String value) {

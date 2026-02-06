@@ -17,7 +17,7 @@ class StakingPanel extends StatefulWidget {
 
 class _StakingPanelState extends State<StakingPanel> {
   final TextEditingController _amountController = TextEditingController();
-  String _selectedValidator = 'Marinade Finance';
+  late String _selectedValidator;
   bool _isLoading = false;
 
   @override
@@ -25,6 +25,9 @@ class _StakingPanelState extends State<StakingPanel> {
     super.initState();
     final amount = widget.data['amount'] ?? '';
     _amountController.text = amount.toString();
+    _selectedValidator = widget.data['validator']?.toString() ?? 
+                         widget.data['protocol']?.toString() ?? 
+                         'Select Validator';
   }
 
   @override
@@ -297,9 +300,9 @@ class _StakingPanelState extends State<StakingPanel> {
                       children: [
                         _buildSummaryRow('Estimated APY', '${estimatedApy.toStringAsFixed(1)}%'),
                         const SizedBox(height: 12),
-                        _buildSummaryRow('Lock Period', 'Flexible'),
+                        _buildSummaryRow('Lock Period', widget.data['lockPeriod']?.toString() ?? 'Flexible'),
                         const SizedBox(height: 12),
-                        _buildSummaryRow('Rewards', 'Daily'),
+                        _buildSummaryRow('Rewards', widget.data['rewardsFrequency']?.toString() ?? 'Per Epoch'),
                       ],
                     ),
                   ),
@@ -396,7 +399,9 @@ class _StakingPanelState extends State<StakingPanel> {
   void _handleStake() async {
     final amount = double.tryParse(_amountController.text);
     if (amount == null || amount <= 0) {
-      // Show error
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid amount')),
+      );
       return;
     }
 
@@ -404,13 +409,17 @@ class _StakingPanelState extends State<StakingPanel> {
       _isLoading = true;
     });
 
-    // TODO: Implement actual staking
-    await Future.delayed(const Duration(seconds: 2));
+    // TODO: Implement actual staking via API
+    // For now, show message that this needs backend integration
+    await Future.delayed(const Duration(milliseconds: 500));
 
     if (mounted) {
       setState(() {
         _isLoading = false;
       });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Staking request sent. Please wait for confirmation.')),
+      );
       widget.onDismiss();
     }
   }

@@ -37,56 +37,11 @@ class _ApprovalHistoryPanelState extends State<ApprovalHistoryPanel> {
 
   void _loadApprovals() {
     final approvals = widget.data['approvals'] as List?;
-    if (approvals != null) {
+    if (approvals != null && approvals.isNotEmpty) {
       _approvals = approvals.map((a) => Map<String, dynamic>.from(a)).toList();
     } else {
-      // Demo data
-      _approvals = [
-        {
-          'id': 'apr_1',
-          'requestType': 'large_transfer',
-          'status': 'approved',
-          'estimatedUsdValue': 1575.0,
-          'pendingTransaction': {
-            'action': 'transfer_sol',
-            'amount': 10.5,
-            'toAddress': 'ABC...XYZ',
-          },
-          'agentReasoning': 'Transfer amount (\$1,575) exceeds your approval threshold',
-          'approvedAt': '2026-02-04T10:05:00Z',
-          'createdAt': '2026-02-04T10:00:00Z',
-        },
-        {
-          'id': 'apr_2',
-          'requestType': 'high_risk_token',
-          'status': 'rejected',
-          'estimatedUsdValue': 750.0,
-          'pendingTransaction': {
-            'action': 'swap_tokens',
-            'inputMint': 'SOL',
-            'outputMint': 'RISKY',
-            'amount': 5.0,
-          },
-          'agentReasoning': 'Token has high risk score (85/100)',
-          'rejectionReason': 'Risk too high',
-          'rejectedAt': '2026-02-04T09:50:00Z',
-          'createdAt': '2026-02-04T09:45:00Z',
-        },
-        {
-          'id': 'apr_3',
-          'requestType': 'large_transfer',
-          'status': 'expired',
-          'estimatedUsdValue': 500.0,
-          'pendingTransaction': {
-            'action': 'transfer_sol',
-            'amount': 3.3,
-            'toAddress': 'DEF...UVW',
-          },
-          'agentReasoning': 'Transfer requires manual approval',
-          'expiredAt': '2026-02-03T15:15:00Z',
-          'createdAt': '2026-02-03T15:00:00Z',
-        },
-      ];
+      // No demo data - show empty state when no approvals from backend
+      _approvals = [];
     }
   }
 

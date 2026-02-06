@@ -158,15 +158,19 @@ class _SwapPanelState extends State<SwapPanel> {
                       width: 1,
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      _buildInfoRow('Rate', widget.data['rate']?.toString() ?? '--'),
-                      const SizedBox(height: 8),
-                      _buildInfoRow('Slippage', widget.data['slippage']?.toString() ?? '0.5%'),
-                      const SizedBox(height: 8),
-                      _buildInfoRow('Fee', widget.data['fee']?.toString() ?? '--'),
-                    ],
-                  ),
+                    child: Column(
+                      children: [
+                        _buildInfoRow('Rate', widget.data['rate']?.toString() ?? '--'),
+                        const SizedBox(height: 8),
+                        _buildInfoRow('Slippage', widget.data['slippage']?.toString() ?? '--'),
+                        const SizedBox(height: 8),
+                        _buildInfoRow('Fee', widget.data['fee']?.toString() ?? '--'),
+                        if (widget.data['priceImpact'] != null) ...[
+                          const SizedBox(height: 8),
+                          _buildInfoRow('Price Impact', widget.data['priceImpact'].toString()),
+                        ],
+                      ],
+                    ),
                 ),
 
                 const SizedBox(height: 24),
@@ -349,17 +353,26 @@ class _SwapPanelState extends State<SwapPanel> {
   }
 
   void _handleSwap() {
-    // TODO: Implement swap logic
+    if (_amountController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter an amount')),
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
 
-    // Simulate API call
-    Future.delayed(const Duration(seconds: 2), () {
+    // TODO: Implement actual swap via API
+    Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         setState(() {
           _isLoading = false;
         });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Swap request sent. Please wait for confirmation.')),
+        );
         widget.onDismiss();
       }
     });

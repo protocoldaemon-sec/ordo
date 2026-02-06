@@ -90,6 +90,7 @@ const TOOL_ACTION_MAP: Record<string, ActionType> = {
   'get_wallet_balance': 'check_balance',
   'check_balance': 'check_balance',
   'portfolio': 'show_portfolio',
+  'get_nft_portfolio_value': 'show_portfolio',
   
   // Token Operations
   'get_token_info': 'token_info',
@@ -98,12 +99,21 @@ const TOOL_ACTION_MAP: Record<string, ActionType> = {
   'token_price': 'token_price',
   'get_risk_score': 'token_risk',
   'risk_score': 'token_risk',
+  'get_token_risk': 'token_risk',
+  'analyze_token_risk': 'token_risk',
+  'get_high_risk_tokens': 'token_risk',
+  'get_sol_price': 'token_price',
+  'search_tokens': 'token_info',
+  'get_token_metadata': 'token_info',
+  'get_nft_metadata': 'token_info',
   
   // Transfers
   'send_sol': 'send_sol',
   'transfer_sol': 'send_sol',
   'send_token': 'send_token',
   'transfer_token': 'send_token',
+  'transfer_evm_native': 'send_token',
+  'transfer_evm_token': 'send_token',
   
   // Swaps
   'swap': 'swap_tokens',
@@ -111,20 +121,39 @@ const TOOL_ACTION_MAP: Record<string, ActionType> = {
   'get_swap_quote': 'get_swap_quote',
   'quote': 'get_swap_quote',
   
-  // DeFi
+  // DeFi - Staking
   'stake': 'stake',
   'stake_sol': 'stake',
   'unstake': 'unstake',
   'unstake_sol': 'unstake',
+  
+  // DeFi - Lending/Borrowing
   'lend': 'lend',
+  'lend_assets': 'lend',
   'borrow': 'borrow',
+  'borrow_assets': 'borrow',
+  'repay_loan': 'lend',
+  'get_lending_positions': 'lend',
+  'get_interest_rates': 'lend',
+  
+  // DeFi - Liquidity
   'add_liquidity': 'add_liquidity',
   'remove_liquidity': 'remove_liquidity',
+  'get_lp_positions': 'add_liquidity',
+  'get_position_value': 'add_liquidity',
+  'calculate_impermanent_loss': 'add_liquidity',
+  
+  // DeFi - Bridge
   'bridge': 'bridge',
+  'bridge_assets': 'bridge',
+  'get_bridge_quote': 'bridge',
+  'get_bridge_status': 'bridge',
+  'get_supported_chains': 'bridge',
   
   // NFT
   'get_nfts': 'show_nfts',
   'show_nfts': 'show_nfts',
+  'get_user_nfts': 'show_nfts',
   'mint_nft': 'mint_nft',
   'send_nft': 'send_nft',
   
@@ -132,14 +161,28 @@ const TOOL_ACTION_MAP: Record<string, ActionType> = {
   'create_wallet': 'create_wallet',
   'create_solana_wallet': 'create_wallet',
   'create_evm_wallet': 'manage_evm_wallets',
+  'get_evm_balance': 'check_balance',
+  'list_evm_wallets': 'manage_evm_wallets',
+  'estimate_evm_gas': 'manage_evm_wallets',
   'import_wallet': 'import_wallet',
   'switch_wallet': 'switch_wallet',
+  
+  // User Features
+  'get_user_preferences': 'show_preferences',
+  'update_user_preferences': 'show_preferences',
+  'get_pending_approvals': 'requires_approval',
+  'get_approval_history': 'show_approval_history',
+  
+  // Transactions
+  'get_enhanced_transactions': 'show_transactions',
   
   // Analytics (Pyth, Helius, etc.)
   'pyth__get_price': 'token_price',
   'pyth__get_prices': 'token_price',
   'helius__get_balance': 'check_balance',
   'helius__get_transactions': 'show_transactions',
+  'helius__get_token_metadata': 'token_info',
+  'helius__get_nfts': 'show_nfts',
 };
 
 /**
@@ -335,11 +378,146 @@ function extractDetails(toolResults: ToolResult[]): Record<string, any> {
       if (result.score !== undefined) {
         details.riskScore = result.score;
       }
+      if (result.riskScore !== undefined) {
+        details.riskScore = result.riskScore;
+      }
       if (result.level) {
         details.riskLevel = result.level;
       }
+      if (result.isHighRisk !== undefined) {
+        details.isHighRisk = result.isHighRisk;
+      }
       if (result.warnings) {
         details.warnings = result.warnings;
+      }
+      if (result.reasons) {
+        details.reasons = result.reasons;
+      }
+      if (result.recommendation) {
+        details.recommendation = result.recommendation;
+      }
+    }
+    
+    // Staking results
+    if (toolName.includes('stake')) {
+      if (result.apy !== undefined) {
+        details.apy = result.apy;
+      }
+      if (result.validator) {
+        details.validator = result.validator;
+      }
+      if (result.lockPeriod) {
+        details.lockPeriod = result.lockPeriod;
+      }
+      if (result.estimatedRewards) {
+        details.estimatedRewards = result.estimatedRewards;
+      }
+      if (result.availableBalance !== undefined) {
+        details.availableBalance = result.availableBalance;
+      }
+    }
+    
+    // Lending/Borrowing results
+    if (toolName.includes('lend') || toolName.includes('borrow')) {
+      if (result.supplyApy !== undefined) {
+        details.supplyApy = result.supplyApy;
+      }
+      if (result.borrowApy !== undefined) {
+        details.borrowApy = result.borrowApy;
+      }
+      if (result.protocol) {
+        details.protocol = result.protocol;
+      }
+      if (result.collateralFactor !== undefined) {
+        details.collateralFactor = result.collateralFactor;
+      }
+      if (result.healthFactor !== undefined) {
+        details.healthFactor = result.healthFactor;
+      }
+      if (result.liquidationThreshold !== undefined) {
+        details.liquidationThreshold = result.liquidationThreshold;
+      }
+      if (result.availableCollateral !== undefined) {
+        details.availableCollateral = result.availableCollateral;
+      }
+      if (result.borrowLimit !== undefined) {
+        details.borrowLimit = result.borrowLimit;
+      }
+      if (result.positions) {
+        details.positions = result.positions;
+      }
+    }
+    
+    // Liquidity results
+    if (toolName.includes('liquidity') || toolName.includes('lp')) {
+      if (result.pool) {
+        details.pool = result.pool;
+      }
+      if (result.feeTier !== undefined) {
+        details.feeTier = result.feeTier;
+      }
+      if (result.estimatedApr !== undefined) {
+        details.estimatedApr = result.estimatedApr;
+      }
+      if (result.yourShare !== undefined) {
+        details.yourShare = result.yourShare;
+      }
+      if (result.lpTokens !== undefined) {
+        details.lpTokens = result.lpTokens;
+      }
+      if (result.positions) {
+        details.positions = result.positions;
+      }
+    }
+    
+    // Bridge results
+    if (toolName.includes('bridge')) {
+      if (result.bridge) {
+        details.bridge = result.bridge;
+      }
+      if (result.estimatedTime) {
+        details.estimatedTime = result.estimatedTime;
+      }
+      if (result.bridgeFee !== undefined) {
+        details.bridgeFee = result.bridgeFee;
+      }
+      if (result.estimatedReceive !== undefined) {
+        details.estimatedReceive = result.estimatedReceive;
+      }
+      if (result.fromChain) {
+        details.fromChain = result.fromChain;
+      }
+      if (result.toChain) {
+        details.toChain = result.toChain;
+      }
+      if (result.status) {
+        details.bridgeStatus = result.status;
+      }
+      if (result.chains) {
+        details.supportedChains = result.chains;
+      }
+    }
+    
+    // NFT results
+    if (toolName.includes('nft')) {
+      if (result.nfts) {
+        details.nfts = result.nfts;
+      }
+      if (result.count !== undefined) {
+        details.nftCount = result.count;
+      }
+      if (result.metadata) {
+        details.nftMetadata = result.metadata;
+      }
+    }
+    
+    // Approval history results
+    if (toolName.includes('approval')) {
+      if (result.approvals) {
+        details.approvals = result.approvals;
+      }
+      if (result.total !== undefined) {
+        details.totalApprovals = result.total;
       }
     }
     
@@ -430,12 +608,112 @@ function generateSummary(
     }
     
     case 'token_risk': {
-      const riskResult = toolResults.find(t => t.result?.score !== undefined || t.result?.level);
+      const riskResult = toolResults.find(t => t.result?.score !== undefined || t.result?.level || t.result?.riskScore !== undefined);
       if (riskResult?.result) {
         const r = riskResult.result;
-        return `Risk: ${r.level || r.score}`;
+        const score = r.riskScore ?? r.score;
+        const level = r.level || (score > 70 ? 'High' : score > 40 ? 'Medium' : 'Low');
+        return `Risk: ${level}${score !== undefined ? ` (${score}/100)` : ''}`;
       }
       return 'Risk analysis complete';
+    }
+    
+    case 'stake': {
+      const stakeResult = toolResults.find(t => t.result?.signature || t.result?.success);
+      if (stakeResult?.result?.signature) {
+        return 'Staking successful';
+      }
+      if (stakeResult?.result?.apy) {
+        return `Stake available at ${stakeResult.result.apy}% APY`;
+      }
+      return 'Staking info retrieved';
+    }
+    
+    case 'unstake': {
+      const unstakeResult = toolResults.find(t => t.result?.signature || t.result?.success);
+      if (unstakeResult?.result?.signature) {
+        return 'Unstaking successful';
+      }
+      return 'Unstaking prepared';
+    }
+    
+    case 'lend': {
+      const lendResult = toolResults.find(t => t.result?.signature || t.result?.positions);
+      if (lendResult?.result?.signature) {
+        return 'Lending successful';
+      }
+      if (lendResult?.result?.supplyApy) {
+        return `Lending available at ${lendResult.result.supplyApy}% APY`;
+      }
+      return 'Lending info retrieved';
+    }
+    
+    case 'borrow': {
+      const borrowResult = toolResults.find(t => t.result?.signature || t.result?.healthFactor);
+      if (borrowResult?.result?.signature) {
+        return 'Borrowing successful';
+      }
+      if (borrowResult?.result?.borrowApy) {
+        return `Borrow rate: ${borrowResult.result.borrowApy}% APY`;
+      }
+      return 'Borrowing info retrieved';
+    }
+    
+    case 'add_liquidity': {
+      const lpResult = toolResults.find(t => t.result?.lpTokens || t.result?.positions);
+      if (lpResult?.result?.lpTokens) {
+        return 'Liquidity added successfully';
+      }
+      if (lpResult?.result?.estimatedApr) {
+        return `Pool APR: ${lpResult.result.estimatedApr}%`;
+      }
+      return 'Liquidity pool info retrieved';
+    }
+    
+    case 'remove_liquidity': {
+      const removeResult = toolResults.find(t => t.result?.amountA || t.result?.success);
+      if (removeResult?.result?.success) {
+        return 'Liquidity removed successfully';
+      }
+      return 'Liquidity removal prepared';
+    }
+    
+    case 'bridge': {
+      const bridgeResult = toolResults.find(t => t.result?.bridgeTxId || t.result?.estimatedReceive);
+      if (bridgeResult?.result?.bridgeTxId) {
+        return 'Bridge transaction initiated';
+      }
+      if (bridgeResult?.result?.estimatedReceive) {
+        return `Bridge quote: receive ${bridgeResult.result.estimatedReceive}`;
+      }
+      return 'Bridge info retrieved';
+    }
+    
+    case 'show_nfts': {
+      const nftResult = toolResults.find(t => t.result?.nfts || t.result?.count !== undefined);
+      if (nftResult?.result) {
+        const count = nftResult.result.count ?? nftResult.result.nfts?.length ?? 0;
+        return `Found ${count} NFT${count !== 1 ? 's' : ''}`;
+      }
+      return 'NFT collection loaded';
+    }
+    
+    case 'show_transactions': {
+      const txResult = toolResults.find(t => t.result?.transactions || t.result?.count !== undefined);
+      if (txResult?.result) {
+        const count = txResult.result.count ?? txResult.result.transactions?.length ?? 0;
+        return `Found ${count} transaction${count !== 1 ? 's' : ''}`;
+      }
+      return 'Transaction history loaded';
+    }
+    
+    case 'show_approval_history': {
+      const approvalResult = toolResults.find(t => t.result?.approvals);
+      if (approvalResult?.result) {
+        const count = approvalResult.result.total ?? approvalResult.result.approvals?.length ?? 0;
+        return `${count} approval${count !== 1 ? 's' : ''} in history`;
+      }
+      return 'Approval history loaded';
     }
     
     default: {
