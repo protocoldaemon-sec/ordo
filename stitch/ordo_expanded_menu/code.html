@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef4343",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#1A1A24", // Requested Ordo dark glass color
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.95);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .menu-item-active {
+            background: rgba(239, 67, 67, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-white">
+<!-- iOS Wrapper -->
+<div class="relative flex h-screen w-full flex-col overflow-hidden bg-black max-w-[430px] mx-auto">
+<!-- Expanded Menu Overlay -->
+<div class="glass-panel flex flex-col h-full w-full pt-12 pb-6 px-6 relative">
+<!-- Top Status Bar Mock -->
+<div class="absolute top-0 left-0 w-full h-12 flex justify-between items-center px-8 opacity-40">
+<span class="text-xs font-medium">9:41</span>
+<div class="flex gap-1.5">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[14px]">battery_full</span>
+</div>
+</div>
+<!-- Header Section -->
+<div class="flex items-center justify-between mt-4 mb-8">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-xl">keyboard_command_key</span>
+</div>
+<h2 class="font-tomorrow text-xl font-bold tracking-wider">ORDO</h2>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10">
+<span class="material-symbols-outlined text-white">close</span>
+</button>
+</div>
+<!-- Profile Card -->
+<div class="bg-white/5 border border-white/10 rounded-xl p-5 mb-8">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-orange-400 p-0.5">
+<div class="w-full h-full rounded-full bg-background-dark flex items-center justify-center overflow-hidden">
+<img class="w-10 h-10 opacity-90" data-alt="Abstract geometric wallet identicon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHjsWBG2AgNQaJf2SPJ4b--q04ysrqqJTgelH67vevMGN2YniQIZagJkfR0Xa9jTItYM7Kb9ndc3X8XqhmFTURByNCPmMWu11Sb_Y2vUmS_vlfa7OX49DQuhp2mGrM7VndXEYtyOFBOHydG-ifdrYfOyAiNIPmOUb7tUNO3Bc6UBDuU8_YLGdu935_6vkz0xcNKvO_8iz6osJJ8FqRnNQtHVGWCfQDWoyUoxDKlUn_hyaUpeVxNJOMQeT9_HOJIsdg5ySwcxGJt5Y"/>
+</div>
+</div>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-[#1A1A24] rounded-full"></div>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-white/60 text-xs font-medium uppercase tracking-widest font-tomorrow">Wallet</span>
+<span class="material-symbols-outlined text-[10px] text-white/40">verified</span>
+</div>
+<p class="text-white text-lg font-bold">Main Wallet</p>
+<div class="flex items-center gap-1 mt-0.5">
+<span class="text-primary font-bold">0.45</span>
+<span class="text-white/80 font-medium">SOL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Menu Navigation -->
+<div class="flex-1 overflow-y-auto space-y-8 scrollbar-hide">
+<!-- Account Section -->
+<section>
+<h3 class="font-tomorrow text-[11px] font-bold text-white/40 tracking-[0.2em] mb-4">ACCOUNT</h3>
+<div class="space-y-1">
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 cursor-pointer transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white/70">account_balance_wallet</span>
+</div>
+<span class="text-base font-medium">Wallets</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-xs text-white/30">3 Keys</span>
+<span class="material-symbols-outlined text-white/20 text-lg">chevron_right</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 cursor-pointer transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white/70">history</span>
+</div>
+<span class="text-base font-medium">Transaction History</span>
+</div>
+<span class="material-symbols-outlined text-white/20 text-lg">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Settings Section -->
+<section>
+<h3 class="font-tomorrow text-[11px] font-bold text-white/40 tracking-[0.2em] mb-4">SETTINGS</h3>
+<div class="space-y-1">
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 cursor-pointer transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white/70">tune</span>
+</div>
+<span class="text-base font-medium">Preferences</span>
+</div>
+<span class="material-symbols-outlined text-white/20 text-lg">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 cursor-pointer transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white/70">security</span>
+</div>
+<span class="text-base font-medium">Security</span>
+</div>
+<span class="material-symbols-outlined text-white/20 text-lg">chevron_right</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 cursor-pointer transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-white/70">info</span>
+</div>
+<span class="text-base font-medium">About Ordo</span>
+</div>
+<span class="material-symbols-outlined text-white/20 text-lg">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Action Section -->
+<section class="pt-2">
+<button class="w-full flex items-center gap-4 p-3 rounded-lg hover:bg-primary/10 cursor-pointer transition-colors text-primary/80 group">
+<div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20">
+<span class="material-symbols-outlined">logout</span>
+</div>
+<span class="text-base font-bold">Logout</span>
+</button>
+</section>
+</div>
+<!-- Footer -->
+<div class="mt-8 flex flex-col items-center">
+<div class="mb-4">
+<span class="material-symbols-outlined text-white/20 animate-bounce">expand_less</span>
+</div>
+<div class="flex flex-col items-center gap-1 opacity-30 text-[10px] tracking-widest font-tomorrow uppercase">
+<span>v1.0.0</span>
+<span>Made by Daemon BlockInt</span>
+</div>
+<!-- iOS Home Indicator Mock -->
+<div class="w-32 h-1.5 bg-white/10 rounded-full mt-6"></div>
+</div>
+</div>
+</div>
+</body></html>

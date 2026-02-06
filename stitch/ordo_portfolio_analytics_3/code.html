@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Portfolio Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0fb87d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0A0A0F",
+                        "surface": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .doughnut-ring {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 70;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-md mx-auto shadow-2xl border-x border-white/5">
+<!-- Header / Navigation -->
+<header class="flex items-center justify-between p-6 pb-2">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center size-10 rounded-full bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">Ordo</h2>
+</div>
+<div class="flex gap-2">
+<button class="size-10 flex items-center justify-center rounded-full glass-panel hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+<button class="size-10 flex items-center justify-center rounded-full glass-panel hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content (Scrollable) -->
+<main class="flex-1 overflow-y-auto px-6 pb-24 scrollbar-hide">
+<!-- Portfolio Overview Header -->
+<section class="py-8 text-center">
+<p class="text-white/50 text-sm font-medium uppercase tracking-widest mb-2">Total Net Worth</p>
+<h1 class="font-mono text-[42px] font-bold tracking-tight text-white mb-2">$15,234.56</h1>
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined text-[18px] text-primary">trending_up</span>
+<span class="text-primary font-bold">+8.82%</span>
+<span class="text-white/40 text-xs ml-1">7d</span>
+</div>
+</section>
+<!-- Asset Allocation Panel -->
+<section class="mb-8">
+<div class="glass-panel rounded-xl p-6 relative overflow-hidden">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-base font-bold">Allocation</h3>
+<span class="text-xs text-white/40">Aggregated across 3 chains</span>
+</div>
+<div class="flex items-center gap-8">
+<!-- Doughnut Chart (SVG) -->
+<div class="relative size-32">
+<svg class="size-full" viewbox="0 0 100 100">
+<!-- Background Circle -->
+<circle cx="50" cy="50" fill="transparent" r="45" stroke="rgba(255,255,255,0.05)" stroke-width="8"></circle>
+<!-- Segment 1: SOL (65%) -->
+<circle class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="45" stroke="#0fb87d" stroke-dasharray="282.7" stroke-dashoffset="98.9" stroke-linecap="round" stroke-width="10"></circle>
+<!-- Segment 2: USDC (25%) -->
+<circle class="transition-all duration-1000" cx="50" cy="50" fill="transparent" r="45" stroke="#2563eb" stroke-dasharray="282.7" stroke-dashoffset="212" stroke-linecap="round" stroke-width="10"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-xs text-white/40 font-bold uppercase">Assets</span>
+<span class="text-lg font-bold">3</span>
+</div>
+</div>
+<!-- Legend -->
+<div class="flex-1 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary"></div>
+<span class="text-sm font-medium text-white/70">SOL</span>
+</div>
+<span class="text-sm font-bold">65%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-blue-600"></div>
+<span class="text-sm font-medium text-white/70">USDC</span>
+</div>
+<span class="text-sm font-bold">25%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-purple-500"></div>
+<span class="text-sm font-medium text-white/70">NFTs</span>
+</div>
+<span class="text-sm font-bold">10%</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Assets List -->
+<section class="space-y-4">
+<div class="flex items-center justify-between mb-2">
+<h3 class="text-base font-bold px-1">Your Assets</h3>
+<button class="text-xs text-primary font-bold">View History</button>
+</div>
+<!-- Asset Card 1: Solana -->
+<div class="glass-panel rounded-lg p-4 flex items-center gap-4 hover:border-white/10 transition-colors">
+<div class="relative">
+<img alt="Solana Logo" class="size-12 rounded-full bg-black/40 p-2" data-alt="Solana token logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ4lVEoz34NykIsc66whgoLHGyFXtG-fdoMVEafizZF_wITJ37cALpGHZtT9DlcbMq46KRTKorsk1kbj1juOjTU5Nv70opIXVMaqjXe5YxeK5J2pdfk5x8nLfZgCcJC_MRjml1Q3ZfX8OP4Ln9-fYbtIiroMfqLzv30den19WBkOk32bWf3DG9_b_-KdMIUaDOvnsOodqbdr6wIF_4LHZ2fagEU0rK1YjEJZQLZxcO_2MBrzIws93MNRDvSwyEs0Kmdc069zL9JFo"/>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full border-2 border-surface bg-[#14F195] flex items-center justify-center">
+<img alt="Network" class="size-3" data-alt="Solana network indicator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJJax5N14RqdQU6yDspgmfk454FVLhVVE91o6NuMrftuHBDzERyHN4WuHCYIIgQyPEhYb2j2L6EhBf1hI3bnKWRh9x33nTWKEDNyELi0oQl9RaxfZ96dNr-zsSM3sf5d0CjYo6AZ0hHlQ90XsY_sJGpCRLvS2aaI8rjbVinU5_0h6KUABtJNEI_mB1vJSje-x28hWwUqx96eD0s6jDrf05PDeTYCbnTT6f2sCA709u6j9Mgr4JFFcuUFwyxx0YmuUE9oeYfs8MctI"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-base font-bold">Solana</span>
+<span class="font-mono font-bold">$1,578.75</span>
+</div>
+<div class="flex items-center justify-between text-xs font-medium text-white/40">
+<span>10.5 SOL</span>
+<span class="text-primary">+2.4%</span>
+</div>
+</div>
+</div>
+<!-- Asset Card 2: USDC -->
+<div class="glass-panel rounded-lg p-4 flex items-center gap-4 hover:border-white/10 transition-colors">
+<div class="relative">
+<img alt="USDC Logo" class="size-12 rounded-full bg-black/40 p-2" data-alt="USDC stablecoin logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgsBxOJog-6zYlOUuXAq0zYxar6BqP8cxYwllMYZ_75PIFoNQ2xOiLTSgIk0NO-Jr3GaC6sZ5MeQfIGuJHO-HLqHBYcYnhN_ZQxJkAUBpc36aIaPQz53vfzMsjpReguIbGudyuHxyCcH9Qd0lJlgVjwDtJY0eYak7epGaczuDUHp15NLbvHeg_8HwSO9ppvxX7IyG6s2i7yhpFTw52dNyJNsCy3GDd1t0-x71PakC2evqOBNBVRPVa-Cmu_UQ1LWKG2GAHm59vLVU"/>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full border-2 border-surface bg-[#14F195] flex items-center justify-center">
+<img alt="Network" class="size-3" data-alt="Solana network indicator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZRQ-TUsiWuPVNYK8GAHi__7_LrwkEWLve3Wo_zPcfOZ5QtAP_gWLaiixp0AZkUG5trsXgqtEhtIXUiL9BaEA7Fh3JE1PgNkAzrNtWs5SmLtRq1Bmy7Lo0IYtuJtH1RKQ5_CdJdbgjqkcpz2f_wCfhFvNchpuSP01uh6KO8Q3rupYywZgtAug6NVJHfwKqV7c2g9_3GRwZOBNP0xUQhyX0S4g3vLgZQlIlu41Dhns9wKp1dJNAy8r-c7QWdACI8Xn18u4puDMLMO0"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-base font-bold">USDC</span>
+<span class="font-mono font-bold">$5,000.00</span>
+</div>
+<div class="flex items-center justify-between text-xs font-medium text-white/40">
+<span>5,000.00 USDC</span>
+<span>$1.00</span>
+</div>
+</div>
+</div>
+<!-- Asset Card 3: Ethereum (Cross Chain) -->
+<div class="glass-panel rounded-lg p-4 flex items-center gap-4 hover:border-white/10 transition-colors">
+<div class="relative">
+<img alt="Ethereum Logo" class="size-12 rounded-full bg-black/40 p-2" data-alt="Ethereum token logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACRbw1jLL9TvZzock5wy6L85QJHu5sr0pZLBIPGk__aZyFq1kGf-1nS733hypBTqmOJNbFI7GwBq5QhYXu4YfdMgRdF6mi0mpw1Nu_LuugrazK0cuSBvEy2N9HQwFqnfJF4VxrcxswwMtDCse89BuEJTYOJAFZ_drKvJGGxoNWP0KNELgEwIcw7uceo_sxxJNdWG6k5XrXJGOERY6OFPUn_GCuSw3AA4Y0PvB9Q2k132q1IqgByZYHaxV5POa9HB6W6N5BksYtXXA"/>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full border-2 border-surface bg-[#627EEA] flex items-center justify-center">
+<img alt="Network" class="size-3" data-alt="Ethereum network indicator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLBbg2HDG6s71aOwJiod8rw4AzYfrLRl37MNYXK-RnJ9C2tthwOcZE4Fergh4CvtmclaoD5utXzCovWd686b7PUfS7tmAxsoVtyDbh1kZnEqaNmO6lyaAf8DcQKwrUiMV86nIrNJok15i_Rw2C2HckucqUBzieEQfcOpXfyMYnKOSw9r8zCKzYGoseYmv0EoQxXMRYV7cGl51c9x_bMx_Ph2kGEsUmexnIzTGuAW8gHMTZZIPSOkqWNMpUFoZjchPEtKgc6QV7lwk"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-base font-bold">Ethereum</span>
+<span class="font-mono font-bold">$7,230.10</span>
+</div>
+<div class="flex items-center justify-between text-xs font-medium text-white/40">
+<span>3.12 ETH</span>
+<span class="text-red-400">-0.8%</span>
+</div>
+</div>
+</div>
+<!-- Asset Card 4: NFTs -->
+<div class="glass-panel rounded-lg p-4 flex items-center gap-4 hover:border-white/10 transition-colors">
+<div class="size-12 rounded-lg bg-gradient-to-br from-purple-500 to-primary flex items-center justify-center" data-alt="Abstract NFT collection preview">
+<span class="material-symbols-outlined text-white">grid_view</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-base font-bold">Digital Assets (NFTs)</span>
+<span class="font-mono font-bold">$1,425.71</span>
+</div>
+<div class="flex items-center justify-between text-xs font-medium text-white/40">
+<span>14 Items</span>
+<span class="text-primary">+12.1%</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Command Driven Action Bar -->
+<footer class="absolute bottom-6 left-6 right-6">
+<div class="glass-panel rounded-full p-2 pl-5 flex items-center gap-3 border-primary/20 bg-background-dark/80 ring-1 ring-primary/30">
+<span class="material-symbols-outlined text-primary text-[20px]">keyboard_command_key</span>
+<input class="flex-1 bg-transparent border-none focus:ring-0 text-sm placeholder:text-white/30 font-medium" placeholder="Type a command (e.g. swap 5 sol to usdc)" type="text"/>
+<button class="bg-primary size-10 rounded-full flex items-center justify-center text-background-dark shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined font-bold">arrow_forward</span>
+</button>
+</div>
+</footer>
+<!-- iOS Home Indicator Simulation -->
+<div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full pointer-events-none"></div>
+</div>
+</body></html>

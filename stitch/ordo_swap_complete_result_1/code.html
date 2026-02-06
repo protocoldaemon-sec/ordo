@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Swap Complete Result</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b77f",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0A0A0F",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .success-glow {
+            box-shadow: 0 0 40px -10px rgba(16, 183, 127, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden selection:bg-primary/30">
+<div class="relative flex h-screen w-full max-w-[480px] mx-auto flex-col overflow-x-hidden shadow-2xl border-x border-white/5">
+<!-- Top Status Strip -->
+<div class="flex items-center bg-primary/10 px-4 py-2 justify-center gap-2 border-b border-primary/20">
+<span class="material-symbols-outlined text-primary text-[18px] font-bold">check_circle</span>
+<span class="text-primary text-xs font-bold uppercase tracking-widest">Complete</span>
+</div>
+<!-- Command Bar Area -->
+<div class="px-4 py-4 space-y-4">
+<div class="relative">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-white/40 text-sm">terminal</span>
+</div>
+<input class="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white/60 font-medium focus:outline-none focus:ring-0 cursor-default" readonly="" type="text" value="swap 1 sol to usdc"/>
+</div>
+</div>
+<!-- Context Area / Success Panel -->
+<div class="flex-1 px-4 flex flex-col items-center justify-center -mt-8">
+<div class="glass-panel success-glow w-full rounded-xl p-8 flex flex-col items-center text-center space-y-6">
+<div class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[40px] leading-none">check_circle</span>
+</div>
+<div class="space-y-1">
+<h2 class="text-white text-xl font-bold tracking-tight">Swap Complete</h2>
+<p class="text-white/40 text-sm">Transaction settled on Solana Mainnet</p>
+</div>
+<div class="w-full h-px bg-white/5"></div>
+<div class="space-y-2">
+<div class="font-tomorrow text-3xl font-bold tracking-tight">
+                        1 SOL <span class="text-primary/60 px-2">→</span> 150.25 USDC
+                    </div>
+</div>
+</div>
+<!-- Transaction Details Box -->
+<div class="w-full mt-4 glass-panel rounded-xl p-5 space-y-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-white/40 font-medium uppercase tracking-tighter text-[10px]">Fee</span>
+<span class="text-white/80 font-mono">0.000005 SOL</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-white/40 font-medium uppercase tracking-tighter text-[10px]">Status</span>
+<div class="flex items-center gap-1.5">
+<div class="size-1.5 rounded-full bg-primary animate-pulse"></div>
+<span class="text-primary font-bold">Confirmed</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-white/40 font-medium uppercase tracking-tighter text-[10px]">Network</span>
+<span class="text-white/80">Solana</span>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="p-6 pb-10 space-y-3 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent">
+<button class="w-full bg-primary hover:bg-primary/90 text-background-dark font-bold h-14 rounded-xl transition-all flex items-center justify-center gap-2">
+                Done
+            </button>
+<button class="w-full bg-white/5 hover:bg-white/10 text-white font-bold h-14 rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+                View Details
+            </button>
+</div>
+<!-- Subtle Background Glows -->
+<div class="absolute -top-24 -right-24 size-64 bg-primary/10 blur-[100px] rounded-full pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-24 size-64 bg-primary/5 blur-[100px] rounded-full pointer-events-none"></div>
+</div>
+</body></html>

@@ -62,8 +62,8 @@ export class AIAgentService {
       try {
         const currentModel = this.getCurrentModel();
         
-        // Get available tools from plugins and MCP servers
-        const tools = await this.getAllAvailableTools();
+        // Get available tools from plugins and MCP servers (filtered by user message)
+        const tools = await this.getAllAvailableTools(userMessage);
 
         // Build messages array
         const messages: Message[] = [
@@ -103,12 +103,12 @@ Always be helpful, concise, and accurate. When users ask to perform blockchain o
                 'HTTP-Referer': 'https://ordo.app',
                 'X-Title': 'Ordo AI Assistant',
               },
-              timeout: 30000, // 30 second timeout
+              timeout: 15000, // 15 second timeout (reduced from 30s)
             }
           ),
           {
-            maxRetries: 3,
-            initialDelay: 1000,
+            maxRetries: 2, // Reduced from 3 to 2
+            initialDelay: 500, // Reduced from 1000ms to 500ms
             onRetry: (error, retryAttempt) => {
               logger.warn('Retrying OpenRouter API call', {
                 model: currentModel,
@@ -158,12 +158,12 @@ Always be helpful, concise, and accurate. When users ask to perform blockchain o
                   'HTTP-Referer': 'https://ordo.app',
                   'X-Title': 'Ordo AI Assistant',
                 },
-                timeout: 30000,
+                timeout: 15000, // 15 second timeout (reduced from 30s)
               }
             ),
             {
-              maxRetries: 3,
-              initialDelay: 1000,
+              maxRetries: 2, // Reduced from 3 to 2
+              initialDelay: 500, // Reduced from 1000ms to 500ms
               onRetry: (error, retryAttempt) => {
                 logger.warn('Retrying OpenRouter final response', {
                   model: currentModel,
@@ -207,7 +207,7 @@ Always be helpful, concise, and accurate. When users ask to perform blockchain o
     throw new Error(`AI chat failed with all ${maxRetries} models: ${errorMessage}`);
   }
 
-  private async getAllAvailableTools(): Promise<any[]> {
+  private async getAllAvailableTools(userMessage?: string): Promise<any[]> {
     // Get local plugin tools
     const pluginTools = this.getToolsFromPlugins();
 
@@ -223,19 +223,114 @@ Always be helpful, concise, and accurate. When users ask to perform blockchain o
           parameters: tool.parameters,
         },
       }));
-
-      logger.info('Merged tools from plugins and MCP servers', {
-        pluginTools: pluginTools.length,
-        mcpTools: mcpTools.length,
-        total: pluginTools.length + mcpTools.length,
-      });
     } catch (error: any) {
       logger.error('Failed to fetch MCP tools, continuing with plugin tools only', {
         error: error.message,
       });
     }
 
-    return [...pluginTools, ...mcpTools];
+    const allTools = [...pluginTools, ...mcpTools];
+
+    // OPTIMIZATION: Filter tools based on user message to reduce token usage
+    if (userMessage) {
+      const relevantTools = this.filterRelevantTools(allTools, userMessage);
+      
+      logger.info('Filtered tools based on user query', {
+        total: allTools.length,
+        relevant: relevantTools.length,
+        reduction: `${((1 - relevantTools.length / allTools.length) * 100).toFixed(1)}%`,
+      });
+      
+      return relevantTools;
+    }
+
+    logger.info('Using all available tools (no filtering)', {
+      pluginTools: pluginTools.length,
+      mcpTools: mcpTools.length,
+      total: allTools.length,
+    });
+
+    return allTools;
+  }
+
+  private filterRelevantTools(tools: any[], userMessage: string): any[] {
+    const lowerMessage = userMessage.toLowerCase();
+    
+    // Define keyword mappings for tool categories
+    const categoryKeywords: Record<string, string[]> = {
+      balance: ['balance', 'wallet', 'how much', 'check', 'portfolio', 'holdings'],
+      swap: ['swap', 'exchange', 'trade', 'convert', 'buy', 'sell'],
+      transfer: ['send', 'transfer', 'pay', 'give'],
+      price: ['price', 'cost', 'worth', 'value', 'how much is'],
+      nft: ['nft', 'token', 'collectible', 'mint'],
+      stake: ['stake', 'staking', 'unstake', 'validator'],
+      lend: ['lend', 'lending', 'borrow', 'loan', 'supply'],
+      liquidity: ['liquidity', 'pool', 'lp', 'add liquidity', 'remove liquidity'],
+      bridge: ['bridge', 'cross-chain', 'transfer to'],
+      analytics: ['analyze', 'analysis', 'stats', 'statistics', 'report'],
+      risk: ['risk', 'safe', 'dangerous', 'security', 'audit'],
+      evm: ['ethereum', 'eth', 'polygon', 'matic', 'bsc', 'binance', 'arbitrum', 'optimism'],
+    };
+
+    // Detect relevant categories
+    const relevantCategories = new Set<string>();
+    for (const [category, keywords] of Object.entries(categoryKeywords)) {
+      if (keywords.some(keyword => lowerMessage.includes(keyword))) {
+        relevantCategories.add(category);
+      }
+    }
+
+    // If no specific category detected, include common tools
+    if (relevantCategories.size === 0) {
+      relevantCategories.add('balance');
+      relevantCategories.add('price');
+      relevantCategories.add('analytics');
+    }
+
+    // Filter tools based on relevant categories
+    const relevantTools = tools.filter(tool => {
+      const toolName = tool.function.name.toLowerCase();
+      const toolDesc = tool.function.description?.toLowerCase() || '';
+      
+      // Check if tool matches any relevant category
+      for (const category of relevantCategories) {
+        const keywords = categoryKeywords[category];
+        if (keywords.some(keyword => 
+          toolName.includes(keyword) || toolDesc.includes(keyword)
+        )) {
+          return true;
+        }
+      }
+      
+      return false;
+    });
+
+    // Always include essential tools (max 5)
+    const essentialToolNames = [
+      'get_balance',
+      'get_token_price',
+      'get_portfolio',
+      'analyze_token',
+      'get_wallet_info',
+    ];
+
+    const essentialTools = tools.filter(tool => 
+      essentialToolNames.some(name => tool.function.name.includes(name))
+    );
+
+    // Merge relevant and essential tools (remove duplicates)
+    const toolNames = new Set(relevantTools.map(t => t.function.name));
+    const finalTools = [...relevantTools];
+    
+    for (const tool of essentialTools) {
+      if (!toolNames.has(tool.function.name)) {
+        finalTools.push(tool);
+        toolNames.add(tool.function.name);
+      }
+    }
+
+    // Limit to max 20 tools to keep token usage reasonable
+    return finalTools.slice(0, 20);
   }
 
   private getToolsFromPlugins(): any[] {
@@ -311,7 +406,7 @@ Always be helpful, concise, and accurate. When users ask to perform blockchain o
   ): AsyncGenerator<any, void, unknown> {
     try {
       const currentModel = this.getCurrentModel();
-      const tools = await this.getAllAvailableTools();
+      const tools = await this.getAllAvailableTools(userMessage); // Pass userMessage for filtering
 
       const messages: Message[] = [
         {
@@ -349,7 +444,7 @@ Always be helpful, concise, and accurate.`,
             'HTTP-Referer': 'https://ordo.app',
             'X-Title': 'Ordo AI Assistant',
           },
-          timeout: 30000,
+          timeout: 15000, // Reduced from 30000
         }
       );
 

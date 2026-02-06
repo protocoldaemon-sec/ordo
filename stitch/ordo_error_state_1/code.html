@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Error State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef4343",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#0A0A0F",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-tomorrow {
+            font-family: 'Tomorrow', monospace;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex justify-center">
+<!-- Mobile Container -->
+<div class="relative flex h-[844px] w-full max-w-[390px] flex-col bg-background-light dark:bg-background-dark overflow-hidden border-x border-white/5 shadow-2xl">
+<!-- Top Status Strip -->
+<div class="flex items-center bg-white dark:bg-[#14141d] p-4 pb-3 border-b border-primary/20">
+<div class="text-primary flex shrink-0 items-center mr-2">
+<span class="material-symbols-outlined text-[20px]">error</span>
+</div>
+<h2 class="text-primary text-sm font-bold uppercase tracking-widest flex-1">Error</h2>
+<div class="text-slate-400">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span>
+</div>
+</div>
+<!-- Command Bar (Locked Input) -->
+<div class="px-4 py-4">
+<div class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-xl h-12 bg-slate-200/50 dark:bg-white/5 border border-white/10">
+<div class="text-slate-400 flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 h-full px-3 text-sm font-medium text-slate-500 dark:text-slate-400 font-display" disabled="" value="swap 1 sol to usdc"/>
+<div class="flex items-center justify-center pr-4">
+<span class="material-symbols-outlined text-slate-500 text-[18px]">lock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Error Context Area -->
+<div class="flex flex-col flex-1 px-4 justify-center">
+<div class="flex flex-col items-center gap-8 py-8 px-6 rounded-2xl bg-white dark:bg-[#12121a] border border-primary/30 shadow-[0_0_40px_-15px_rgba(239,67,67,0.3)]">
+<!-- Large Error Icon with Glow -->
+<div class="relative">
+<div class="absolute inset-0 bg-primary blur-2xl opacity-20 rounded-full"></div>
+<div class="relative flex items-center justify-center size-20 rounded-full bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined text-primary text-[48px] leading-none">warning</span>
+</div>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col items-center gap-3 w-full">
+<h3 class="text-slate-900 dark:text-white text-2xl font-bold tracking-tight text-center">
+                        Insufficient balance
+                    </h3>
+<p class="text-slate-600 dark:text-slate-400 text-base font-normal text-center max-w-[240px]">
+                        The transaction failed because you don't have enough gas for the swap.
+                    </p>
+</div>
+<!-- Data Display (Tomorrow Font) -->
+<div class="w-full space-y-3 bg-slate-100 dark:bg-white/5 p-4 rounded-xl border border-white/5">
+<div class="flex justify-between items-center">
+<span class="text-xs uppercase tracking-wider text-slate-500">Required</span>
+<span class="font-tomorrow text-primary font-bold text-lg">1.000005 SOL</span>
+</div>
+<div class="h-px bg-slate-200 dark:bg-white/10 w-full"></div>
+<div class="flex justify-between items-center">
+<span class="text-xs uppercase tracking-wider text-slate-500">Current</span>
+<span class="font-tomorrow text-slate-700 dark:text-slate-300 font-semibold text-lg">0.5 SOL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Footer -->
+<div class="mt-auto pb-10 px-4">
+<div class="flex flex-col gap-3">
+<button class="flex items-center justify-center rounded-xl h-14 bg-primary hover:bg-primary/90 transition-colors text-white text-base font-bold tracking-wide w-full shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined mr-2 text-[20px]">refresh</span>
+<span>Try Again</span>
+</button>
+<button class="flex items-center justify-center rounded-xl h-14 bg-transparent border border-slate-300 dark:border-white/10 text-slate-600 dark:text-slate-400 text-base font-bold hover:bg-white/5 transition-colors w-full">
+<span>Dismiss</span>
+</button>
+</div>
+</div>
+<!-- Decorative Bottom Bar -->
+<div class="h-1.5 w-32 bg-slate-300 dark:bg-white/20 rounded-full mx-auto mb-2 opacity-50"></div>
+</div>
+</body></html>

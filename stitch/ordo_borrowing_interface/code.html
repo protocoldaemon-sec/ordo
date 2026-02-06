@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5a5cf2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0A0A0B",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono-futuristic": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .tomorrow-font { font-family: 'Tomorrow', sans-serif; }
+        .glass-panel {
+            background: rgba(25, 26, 51, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-primary {
+            box-shadow: 0 0 15px rgba(90, 92, 242, 0.4);
+        }
+        .health-gauge-gradient {
+            background: conic-gradient(from 180deg at 50% 100%, #ef4444 0deg, #f59e0b 90deg, #10b981 180deg);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-[430px] mx-auto overflow-x-hidden border-x border-white/5 bg-background-dark">
+<!-- Top Status Strip -->
+<div class="flex items-center bg-background-dark/80 backdrop-blur-md sticky top-0 z-50 p-4 pb-2 justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary flex size-10 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined">hand_bones</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight uppercase tracking-widest">Borrow Assets</h2>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="text-[10px] text-emerald-500 font-mono-futuristic uppercase tracking-widest">Mainnet-Beta</span>
+</div>
+</div>
+<!-- Command Bar -->
+<div class="px-4 py-3">
+<label class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-xl h-14 bg-[#191a33] border border-primary/30 glow-primary transition-all">
+<div class="text-primary flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-xl text-white focus:outline-0 focus:ring-0 border-none bg-transparent placeholder:text-[#9293c9]/50 px-4 text-base font-normal leading-normal" readonly="" value="borrow 50 usdc with 0.5 sol collateral"/>
+<div class="flex items-center pr-4">
+<button class="text-[#9293c9] hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">cancel</span>
+</button>
+</div>
+</div>
+</label>
+</div>
+<!-- Transaction Context Area -->
+<div class="px-4 py-4 flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-[#9293c9] text-xs font-bold uppercase tracking-widest">Transaction Preview</h3>
+<div class="flex items-center gap-1.5 bg-primary/20 px-3 py-1 rounded-full border border-primary/30">
+<div class="w-4 h-4 rounded-full bg-cover" data-alt="MarginFi protocol logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDhsJ7x5gyNfsSFRjLHCTWGV4DybpUdFbOTT4p_xVOqMMlzU-riSDb6m1nRNUrLzHBJpfMbRbLPpt6hQfIqfe8b0macZS2_n0CUscv_axFVJpzJisK8zDNVlqiGvdGqc1aneIpBo6W53nswr1KQWHFyZngPl8g-nd1sI07BFyCrNAEVMUcE1Ex_UHYgjvZZLhoPDkB-cYwUt-aj4HTDVa9c7R7j9cUPiEoC8mxZAnScjUju5ypQGLxwS3-gjL37b6UKS0bnga_6V04');"></div>
+<span class="text-[10px] font-bold text-primary uppercase">MarginFi</span>
+</div>
+</div>
+<!-- Main Info Panel -->
+<div class="glass-panel rounded-xl p-5 flex flex-col gap-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-6xl">account_balance_wallet</span>
+</div>
+<div class="grid grid-cols-2 gap-4 relative z-10">
+<div class="flex flex-col gap-1">
+<p class="text-[#9293c9] text-[10px] font-bold uppercase tracking-tighter">Borrowing</p>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-mono-futuristic font-bold text-white">50</span>
+<span class="text-sm font-bold text-primary">USDC</span>
+</div>
+</div>
+<div class="flex flex-col gap-1 border-l border-white/10 pl-4">
+<p class="text-[#9293c9] text-[10px] font-bold uppercase tracking-tighter">Collateral</p>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-mono-futuristic font-bold text-white">0.5</span>
+<span class="text-sm font-bold text-emerald-400">SOL</span>
+</div>
+</div>
+</div>
+<!-- Health Factor Gauge -->
+<div class="flex flex-col items-center py-2">
+<div class="relative w-48 h-24 overflow-hidden flex items-end justify-center">
+<div class="absolute top-0 w-48 h-48 border-[12px] border-white/5 rounded-full"></div>
+<div class="absolute top-0 w-48 h-48 border-[12px] border-emerald-500 rounded-full clip-path-health" style="clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%); transform: rotate(45deg);"></div>
+<div class="flex flex-col items-center z-10">
+<span class="text-3xl font-mono-futuristic font-bold text-white">1.85</span>
+<span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest bg-emerald-400/10 px-2 py-0.5 rounded">Safe</span>
+</div>
+</div>
+<p class="text-[#9293c9] text-[10px] mt-2 font-medium uppercase tracking-widest">Health Factor</p>
+</div>
+</div>
+<!-- Metric Cards -->
+<div class="grid grid-cols-2 gap-3">
+<div class="glass-panel rounded-lg p-3 flex items-center justify-between border-l-2 border-l-primary">
+<div class="flex flex-col">
+<span class="text-[#9293c9] text-[10px] font-bold uppercase">Borrow APY</span>
+<span class="text-lg font-mono-futuristic font-medium text-white">8.5%</span>
+</div>
+<span class="material-symbols-outlined text-primary/40">trending_up</span>
+</div>
+<div class="glass-panel rounded-lg p-3 flex items-center justify-between border-l-2 border-l-emerald-500">
+<div class="flex flex-col">
+<span class="text-[#9293c9] text-[10px] font-bold uppercase">LTV Ratio</span>
+<span class="text-lg font-mono-futuristic font-medium text-white">42.1%</span>
+</div>
+<span class="material-symbols-outlined text-emerald-500/40">security</span>
+</div>
+</div>
+<!-- Detailed Breakdown -->
+<div class="flex flex-col gap-3 mt-2">
+<div class="flex justify-between items-center px-2">
+<span class="text-[#9293c9] text-xs">Liquidation Price</span>
+<span class="text-white font-mono-futuristic text-sm">$112.45 <span class="text-[10px] text-[#9293c9]">SOL</span></span>
+</div>
+<div class="flex justify-between items-center px-2">
+<span class="text-[#9293c9] text-xs">Estimated Fee</span>
+<span class="text-white font-mono-futuristic text-sm">0.005 <span class="text-[10px] text-[#9293c9]">SOL</span></span>
+</div>
+</div>
+</div>
+<!-- Spacer -->
+<div class="flex-grow"></div>
+<!-- Footer Action -->
+<div class="p-6 bg-background-dark/80 backdrop-blur-xl border-t border-white/5">
+<button class="w-full bg-primary hover:bg-primary/90 text-white h-16 rounded-xl flex items-center justify-center gap-3 glow-primary transition-all active:scale-[0.98]">
+<span class="text-lg font-bold uppercase tracking-widest">Borrow Now</span>
+<span class="material-symbols-outlined">arrow_forward_ios</span>
+</button>
+<p class="text-center text-[#9293c9] text-[10px] mt-4 uppercase tracking-[0.2em]">Secured by Solana Blockchain</p>
+</div>
+<!-- Bottom Tab Indicator (iOS Style) -->
+<div class="flex justify-center pb-2">
+<div class="w-32 h-1 bg-white/20 rounded-full"></div>
+</div>
+</div>
+<!-- Decorative Elements -->
+<div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="fixed bottom-[-5%] right-[-5%] w-[30%] h-[30%] bg-emerald-500/5 blur-[100px] rounded-full pointer-events-none"></div>
+</body></html>

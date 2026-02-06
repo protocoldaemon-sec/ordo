@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Command History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef4343",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221010",
+                        "ordo-glass": "rgba(26, 26, 36, 0.9)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .backdrop-blur-20 {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        /* Custom "Tomorrow" style for commands as requested */
+        .command-font {
+            font-family: 'Space Grotesk', monospace;
+            letter-spacing: -0.01em;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden h-screen w-screen flex flex-col justify-end">
+<!-- Status Strip (Simulated background context area) -->
+<div class="fixed inset-0 z-0 bg-gradient-to-br from-[#121212] to-[#221010]">
+<div class="p-6">
+<div class="flex justify-between items-center opacity-40">
+<span class="material-symbols-outlined text-3xl">menu</span>
+<div class="text-right">
+<div class="text-xs uppercase tracking-widest opacity-60">Balance</div>
+<div class="text-2xl font-bold">42.85 SOL</div>
+</div>
+</div>
+<div class="mt-20 space-y-4 opacity-20">
+<div class="h-32 w-full bg-white/5 rounded-xl border border-white/10"></div>
+<div class="h-32 w-full bg-white/5 rounded-xl border border-white/10"></div>
+<div class="h-32 w-full bg-white/5 rounded-xl border border-white/10"></div>
+</div>
+</div>
+</div>
+<!-- Bottom Sheet Container (The Overlay) -->
+<div class="relative z-50 flex flex-col w-full max-h-[85vh] bg-ordo-glass backdrop-blur-20 rounded-t-xl border-t border-white/10 shadow-2xl">
+<!-- BottomSheetHandle / Swipe Down Hint -->
+<div class="flex flex-col items-center pt-3 pb-2 cursor-pointer">
+<span class="material-symbols-outlined text-white/40 text-3xl leading-none">expand_more</span>
+</div>
+<!-- Content Area -->
+<div class="flex-1 overflow-y-auto px-6 pb-12">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-white text-xl font-bold tracking-tight">Recent Commands</h3>
+<span class="text-primary text-xs font-bold uppercase tracking-widest">Live</span>
+</div>
+<!-- Command List -->
+<div class="space-y-1">
+<!-- Command Item 1 -->
+<div class="flex items-center gap-4 py-4 group border-b border-white/5 active:bg-white/5 transition-colors">
+<div class="flex items-center justify-center rounded-lg bg-white/5 shrink-0 size-10 border border-white/10 text-white/60">
+<span class="material-symbols-outlined text-xl">terminal</span>
+</div>
+<p class="text-white text-lg font-medium command-font flex-1 truncate">
+<span class="text-primary mr-2">•</span>swap 1 sol to usdc
+                    </p>
+<span class="material-symbols-outlined text-white/20 group-hover:text-white/40">arrow_outward</span>
+</div>
+<!-- Command Item 2 -->
+<div class="flex items-center gap-4 py-4 group border-b border-white/5 active:bg-white/5 transition-colors">
+<div class="flex items-center justify-center rounded-lg bg-white/5 shrink-0 size-10 border border-white/10 text-white/60">
+<span class="material-symbols-outlined text-xl">terminal</span>
+</div>
+<p class="text-white text-lg font-medium command-font flex-1 truncate">
+<span class="text-primary mr-2">•</span>what's my balance?
+                    </p>
+<span class="material-symbols-outlined text-white/20 group-hover:text-white/40">arrow_outward</span>
+</div>
+<!-- Command Item 3 -->
+<div class="flex items-center gap-4 py-4 group border-b border-white/5 active:bg-white/5 transition-colors">
+<div class="flex items-center justify-center rounded-lg bg-white/5 shrink-0 size-10 border border-white/10 text-white/60">
+<span class="material-symbols-outlined text-xl">terminal</span>
+</div>
+<p class="text-white text-lg font-medium command-font flex-1 truncate">
+<span class="text-primary mr-2">•</span>stake 5 sol
+                    </p>
+<span class="material-symbols-outlined text-white/20 group-hover:text-white/40">arrow_outward</span>
+</div>
+<!-- Command Item 4 -->
+<div class="flex items-center gap-4 py-4 group border-b border-white/5 active:bg-white/5 transition-colors">
+<div class="flex items-center justify-center rounded-lg bg-white/5 shrink-0 size-10 border border-white/10 text-white/60">
+<span class="material-symbols-outlined text-xl">terminal</span>
+</div>
+<p class="text-white text-lg font-medium command-font flex-1 truncate">
+<span class="text-primary mr-2">•</span>show my nfts
+                    </p>
+<span class="material-symbols-outlined text-white/20 group-hover:text-white/40">arrow_outward</span>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="mt-8 flex justify-center">
+<button class="px-6 py-2 rounded-full border border-white/10 bg-white/5 text-white/40 text-sm font-medium hover:text-white/60 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">delete_sweep</span>
+                    Clear History
+                </button>
+</div>
+</div>
+<!-- Safe Area Inset for iOS -->
+<div class="h-8 bg-transparent"></div>
+</div>
+<!-- Static Bottom Navigation Bar (Visual Only) -->
+<div class="fixed bottom-0 left-0 right-0 h-16 bg-[#1A1A24] border-t border-white/5 flex justify-around items-center px-6 z-[60]">
+<span class="material-symbols-outlined text-white">home</span>
+<div class="size-12 rounded-full bg-primary flex items-center justify-center -mt-8 border-4 border-[#1A1A24] shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-2xl">add</span>
+</div>
+<span class="material-symbols-outlined text-white/40">wallet</span>
+</div>
+</body></html>

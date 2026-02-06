@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Add Liquidity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6467f2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101122",
+                        "glass-dark": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tech": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-effect {
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .cursor-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            from, to { border-color: transparent; }
+            50% { border-color: #6467f2; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen flex justify-center">
+<!-- iOS Phone Container -->
+<div class="relative w-full max-w-[430px] min-h-screen bg-background-light dark:bg-background-dark flex flex-col overflow-hidden shadow-2xl">
+<!-- Top Status Strip -->
+<div class="flex items-center gap-2 px-6 pt-12 pb-4 bg-background-light dark:bg-background-dark">
+<span class="material-symbols-outlined text-primary text-[24px]">water_drop</span>
+<h1 class="text-sm font-bold tracking-widest uppercase opacity-80">Add Liquidity</h1>
+</div>
+<!-- Command Bar Area -->
+<div class="px-4 py-2">
+<div class="relative flex items-center bg-slate-200/50 dark:bg-glass-dark rounded-xl p-4 border border-slate-300 dark:border-white/5">
+<span class="material-symbols-outlined text-primary mr-3">terminal</span>
+<div class="flex items-center flex-1">
+<span class="text-slate-700 dark:text-slate-300 font-display">add liquidity to </span>
+<span class="text-white font-bold ml-1">SOL-USDC pool</span>
+<div class="w-2 h-5 bg-primary ml-1 cursor-blink border-l-2"></div>
+</div>
+<button class="text-slate-400">
+<span class="material-symbols-outlined">cancel</span>
+</button>
+</div>
+</div>
+<!-- Context Area -->
+<div class="flex-1 px-4 py-6 flex flex-col gap-6">
+<!-- Protocol Badge -->
+<div class="flex justify-center">
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+<div class="w-4 h-4 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-500" data-alt="Raydium Protocol Logo Gradient"></div>
+<span class="text-xs font-bold text-primary tracking-wide">Via Raydium</span>
+</div>
+</div>
+<!-- Main Input Panel (Glass-morphism) -->
+<div class="glass-effect rounded-xl p-5 flex flex-col gap-6">
+<!-- SOL Row -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center text-xs text-slate-400 font-tech">
+<span>ASSET 1</span>
+<span>BALANCE: 12.5 SOL</span>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-black flex items-center justify-center border border-white/10" data-alt="Solana token logo">
+<img alt="SOL" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAB8rqjYBG1Oqk8Xo2cfPRlbAPKv861LdsVrH_I1x_mB-06GkQ6i0FVOJbxNIXgOa2s-LcKfJIXwrrNTeMMonvpgJkYULZq3D8KOHyKrJw3Megmc-aMOuSGoSJyemRHQySK05Oa4Nd_4r3RgwLH7eqAwa1qowy86Ad9ZOavW7WZy4-EW5XL2GvN8rPgen2OAmCaqylDuxStvV6fW0Zxxt5qORt5A5BQKJa9OVhaqvhnHyApoRBlYiTt8FKAO-eUKgtoQjfnR5tKB04"/>
+</div>
+<span class="text-xl font-bold font-tech tracking-tight">SOL</span>
+</div>
+<div class="flex flex-col items-end">
+<input class="bg-transparent border-none text-right text-2xl font-tech focus:ring-0 p-0 w-32" readonly="" type="text" value="6.25"/>
+<span class="text-[10px] text-slate-500 font-tech">≈ $912.50</span>
+</div>
+</div>
+</div>
+<!-- Divider Icon -->
+<div class="relative flex justify-center h-2">
+<div class="absolute -top-4 bg-glass-dark p-1 rounded-full border border-white/10">
+<span class="material-symbols-outlined text-slate-500 text-sm">add</span>
+</div>
+</div>
+<!-- USDC Row -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center text-xs text-slate-400 font-tech">
+<span>ASSET 2</span>
+<span>BALANCE: 1,250.00 USDC</span>
+</div>
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[#2775ca] flex items-center justify-center border border-white/10" data-alt="USDC token logo">
+<img alt="USDC" class="w-6 h-6" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCovVXPO3POFvQ49eQ1DuSJn2blJCh2X6KfVZP_OQoUmKFHNbE0nPIkbEphSESrXBzo0488hViHmJWYIE7VW3EV1t8q-mczeCkIn842b5lUq05zT6xplCmKokcPyWaA3hcF4-vmV5m5mKsGh4I_2B5_awqHz-Yvu_Svg9bo4W7cFAOfWAR8ht8mo0YybIUi5PF9uyo9gr72fegogffHA9XwJT4oTb6mhP2CzggZamA15lxBJFPF7rJ2FJb1adYoq-a_LvNQzz9s5cI"/>
+</div>
+<span class="text-xl font-bold font-tech tracking-tight">USDC</span>
+</div>
+<div class="flex flex-col items-end">
+<input class="bg-transparent border-none text-right text-2xl font-tech focus:ring-0 p-0 w-32" readonly="" type="text" value="912.50"/>
+<span class="text-[10px] text-slate-500 font-tech">≈ $912.50</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Yield Stats Grid -->
+<div class="grid grid-cols-2 gap-3 px-1">
+<div class="glass-effect rounded-lg p-3 flex flex-col gap-1">
+<span class="text-[10px] text-slate-400 uppercase tracking-widest">Est. Pool Share</span>
+<span class="text-lg font-tech text-white">0.05%</span>
+</div>
+<div class="glass-effect rounded-lg p-3 flex flex-col gap-1 border-primary/30">
+<span class="text-[10px] text-primary uppercase tracking-widest font-bold">APY</span>
+<span class="text-lg font-tech text-primary">~12.5%</span>
+</div>
+</div>
+<!-- Transaction Details -->
+<div class="px-2 space-y-2">
+<div class="flex justify-between text-xs text-slate-500">
+<span>Network Fee</span>
+<span class="font-tech">0.000005 SOL</span>
+</div>
+<div class="flex justify-between text-xs text-slate-500">
+<span>Liquidity Provider Fee</span>
+<span class="font-tech">0.25%</span>
+</div>
+</div>
+</div>
+<!-- Sticky Bottom Button -->
+<div class="p-6 bg-gradient-to-t from-background-dark to-transparent">
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">layers</span>
+<span>Add Liquidity</span>
+</button>
+<div class="mt-4 flex justify-center">
+<div class="w-32 h-1 bg-slate-800 rounded-full"></div>
+</div>
+</div>
+</div>
+</body></html>

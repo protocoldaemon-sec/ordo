@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Lending Interface</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6467f2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101122",
+                        "glass": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tech": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(100, 103, 242, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white selection:bg-primary/30">
+<div class="relative flex h-screen w-full max-w-[430px] mx-auto flex-col overflow-hidden border-x border-white/5 bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Top Status Strip -->
+<div class="flex items-center bg-white/5 dark:bg-background-dark/50 backdrop-blur-md p-4 pt-12 pb-4 justify-between sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-size: 24px;">hand_bones</span>
+<h2 class="text-white text-sm font-bold leading-tight tracking-wide uppercase font-tech">Lend Assets</h2>
+</div>
+<div class="flex gap-2">
+<div class="size-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="text-[10px] text-white/40 font-tech uppercase">Solana Mainnet</span>
+</div>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto px-4 pt-4 pb-32 space-y-6">
+<!-- Command Bar Section -->
+<div class="w-full">
+<label class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-xl h-14 glass-panel border border-primary/30 ring-1 ring-primary/20">
+<div class="text-primary flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 text-white placeholder:text-white/20 px-4 text-base font-medium leading-normal font-tech" readonly="" value="lend 100 usdc on kamino"/>
+<div class="flex items-center pr-4">
+<span class="material-symbols-outlined text-white/20 text-sm">pan_zoom</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Context Area: Transaction Card -->
+<div class="glass-panel rounded-xl p-6 space-y-6 relative overflow-hidden">
+<!-- Abstract background glow -->
+<div class="absolute -top-24 -right-24 size-48 bg-primary/20 rounded-full blur-[60px]"></div>
+<div class="flex items-start justify-between relative z-10">
+<div>
+<p class="text-white/50 text-xs font-tech uppercase tracking-widest mb-1">Active Command</p>
+<p class="text-white text-2xl font-bold leading-tight tracking-tight">Lending: 100 USDC</p>
+</div>
+<div class="size-12 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+<img class="size-8" data-alt="USDC cryptocurrency token logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5hzI4f1XoJcE0ToVbm5_dYaU5cUvVuycO6usNIgkcC_Ue5l6YEZPtJqJ94AWO2YSMx-OVYE5HicsZBpG7byCVOOMC-tXWUTo6vsB5pLLgifLdHW17ddKMRPFzP6eL4KPigoIs-fARNMq726DgY3rA2OCJpIVFyMUHqQlel4Zr5WSmlxLkT-AJ-D1mL8UaGAD_BMDEhE9O1GvbaZZcA0lx3LcRmXQVAKr7wj1XVMA0UjTEroU-15_XbgBE5eN73AYN0gRj1TrntBE"/>
+</div>
+</div>
+<div class="space-y-4 relative z-10">
+<div class="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5">
+<div class="flex items-center gap-3">
+<img class="size-6 rounded" data-alt="Kamino Finance protocol logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8FK0EK7JGZaqsNGhJGi1HpRnuZNSBaeBzucF6-iy2Y22xPsGhfFm7O779I0HDIZjZw0qUGYHJbcoIWEoyX8w6kvoyWCJFHHjeAw5APew7O9n2kWEehEtHAeh3BSgDuKMegkMr_bubi2st4jwzWX0ZMdQXqup4bQ1HP_HjN2LztehRMdIl6Dluv7kmlZuAJbTQt0h6blSNDpZlXez9fQoO7g8hVHFlzpVmbuP5L13cgqaeFaYVA1qEWxr_z4PN7F7yWtXKsLC_wBw"/>
+<span class="text-white/80 font-medium">Protocol</span>
+</div>
+<span class="text-white font-tech">Kamino Finance</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-green-400">trending_up</span>
+<span class="text-white/80 font-medium">Supply APY</span>
+</div>
+<span class="text-green-400 font-tech font-bold text-lg">5.2%</span>
+</div>
+</div>
+</div>
+<!-- Risk Metric: Utilization -->
+<div class="glass-panel rounded-xl p-6">
+<div class="flex items-end justify-between mb-4">
+<div>
+<p class="text-white/50 text-xs font-tech uppercase tracking-widest mb-1">Protocol Health</p>
+<h3 class="text-white text-lg font-bold">Utilization Rate</h3>
+</div>
+<p class="text-primary font-tech text-2xl font-bold">75%</p>
+</div>
+<div class="relative h-3 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="absolute top-0 left-0 h-full bg-primary rounded-full neon-glow" style="width: 75%;"></div>
+</div>
+<div class="mt-4 flex justify-between text-[10px] font-tech text-white/30 uppercase tracking-tighter">
+<span>Low Risk</span>
+<span>Optimal</span>
+<span class="text-primary">Current</span>
+<span>Max</span>
+</div>
+</div>
+<!-- Additional Stats Grid -->
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel rounded-xl p-4">
+<p class="text-white/40 text-[10px] font-tech uppercase mb-1">Net Value</p>
+<p class="text-white font-tech font-bold">$100.00</p>
+</div>
+<div class="glass-panel rounded-xl p-4">
+<p class="text-white/40 text-[10px] font-tech uppercase mb-1">LTV Ratio</p>
+<p class="text-white font-tech font-bold">0.00%</p>
+</div>
+</div>
+</div>
+<!-- Sticky Footer with Action Button -->
+<div class="absolute bottom-0 left-0 w-full p-6 pb-10 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent pt-10">
+<button class="w-full bg-primary hover:bg-primary/90 text-white h-16 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all active:scale-[0.98] neon-glow">
+<span class="material-symbols-outlined">bolt</span>
+<span>Lend Now</span>
+</button>
+<p class="text-center mt-4 text-[10px] text-white/30 font-tech uppercase tracking-[0.2em]">
+                Confirm transaction in wallet
+            </p>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Security &amp; Limits Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .font-tomorrow { font-family: 'Tomorrow', sans-serif; }
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .custom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4346ef;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 10px rgba(67, 70, 239, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4346ef",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0A0A0F",
+                        "ordo-card": "#1A1A24",
+                        "indigo-accent": "#6366F1",
+                        "success-green": "#10B981"
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen flex justify-center">
+<!-- Mobile Screen Wrapper -->
+<div class="relative w-full max-w-[430px] h-screen bg-background-dark overflow-y-auto scrollbar-hide border-x border-white/5">
+<!-- Navigation Bar -->
+<div class="sticky top-0 z-50 flex items-center justify-between p-4 bg-background-dark/80 backdrop-blur-md">
+<button class="text-white hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined text-2xl">arrow_back_ios</span>
+</button>
+<h1 class="text-white text-lg font-bold tracking-tight">Security &amp; Limits</h1>
+<button class="text-indigo-accent font-bold text-base hover:text-white transition-colors">Done</button>
+</div>
+<!-- Content Area -->
+<div class="p-4 space-y-6 pb-12">
+<!-- Contextual Header -->
+<div class="space-y-1 px-1">
+<p class="text-slate-400 text-sm">ORDO AI CONFIGURATION</p>
+<h2 class="text-2xl font-bold text-white">Safety Thresholds</h2>
+</div>
+<!-- Transfer Limits Section -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="px-4 py-3 border-b border-white/5">
+<h3 class="font-tomorrow text-xs font-bold tracking-[0.1em] text-slate-500 uppercase">Transfer Limits</h3>
+</div>
+<div class="p-4 space-y-8">
+<!-- Max Single Transfer -->
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<label class="text-slate-200 text-sm font-medium">Max Single Transfer</label>
+<div class="flex items-baseline gap-1 bg-white/5 px-3 py-1 rounded-lg border border-white/10">
+<span class="text-white font-bold text-lg">5.0</span>
+<span class="text-primary text-xs font-bold uppercase">SOL</span>
+</div>
+</div>
+<div class="relative h-6 flex items-center">
+<div class="absolute w-full h-1.5 bg-white/10 rounded-full"></div>
+<div class="absolute w-1/2 h-1.5 bg-primary rounded-full"></div>
+<input class="absolute w-full appearance-none bg-transparent custom-slider outline-none" max="10" min="0" step="0.1" type="range" value="5"/>
+</div>
+</div>
+<!-- Daily Volume Limit -->
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<label class="text-slate-200 text-sm font-medium">Daily Volume Limit</label>
+<div class="flex items-baseline gap-1 bg-white/5 px-3 py-1 rounded-lg border border-white/10">
+<span class="text-white font-bold text-lg">1,500</span>
+<span class="text-primary text-xs font-bold uppercase">USDC</span>
+</div>
+</div>
+<div class="relative h-6 flex items-center">
+<div class="absolute w-full h-1.5 bg-white/10 rounded-full"></div>
+<div class="absolute w-[35%] h-1.5 bg-primary rounded-full"></div>
+<input class="absolute w-full appearance-none bg-transparent custom-slider outline-none" max="5000" min="0" step="100" type="range" value="1500"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Approval Triggers Section -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="px-4 py-3 border-b border-white/5">
+<h3 class="font-tomorrow text-xs font-bold tracking-[0.1em] text-slate-500 uppercase">Approval Triggers</h3>
+</div>
+<div class="divide-y divide-white/5">
+<!-- Toggle 1 -->
+<div class="flex items-center justify-between p-4">
+<div class="space-y-0.5">
+<p class="text-slate-200 text-sm font-medium">Require Approval Above Threshold</p>
+<p class="text-slate-500 text-xs">Always prompt for manual sign-off</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-green"></div>
+</label>
+</div>
+<!-- Toggle 2 -->
+<div class="flex items-center justify-between p-4">
+<div class="space-y-0.5">
+<p class="text-slate-200 text-sm font-medium">Auto-approve Whitelisted</p>
+<p class="text-slate-500 text-xs">Skip validation for trusted vaults</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-success-green"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Assistant Autonomy Section -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="px-4 py-3 border-b border-white/5">
+<h3 class="font-tomorrow text-xs font-bold tracking-[0.1em] text-slate-500 uppercase">Assistant Autonomy</h3>
+</div>
+<div class="p-4 space-y-4">
+<p class="text-slate-400 text-xs leading-relaxed">Define how much control the Ordo AI has over strategy execution and portfolio rebalancing.</p>
+<div class="grid grid-cols-3 gap-1 bg-white/5 p-1 rounded-lg border border-white/10">
+<button class="py-2 text-xs font-bold rounded-md bg-transparent text-slate-400 transition-all">
+                            Restricted
+                        </button>
+<button class="py-2 text-xs font-bold rounded-md bg-indigo-accent/20 text-indigo-accent border border-indigo-accent/30 transition-all">
+                            Balanced
+                        </button>
+<button class="py-2 text-xs font-bold rounded-md bg-transparent text-slate-400 transition-all">
+                            Autonomous
+                        </button>
+</div>
+<div class="flex items-start gap-3 p-3 bg-indigo-accent/5 rounded-lg border border-indigo-accent/10">
+<span class="material-symbols-outlined text-indigo-accent text-lg">info</span>
+<p class="text-[11px] text-slate-400 leading-tight">
+<span class="text-indigo-accent font-bold">BALANCED MODE:</span> Ordo will execute strategies within your preset limits and auto-compound rewards, but will require approval for new protocol interactions.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Security Stats Banner -->
+<div class="relative overflow-hidden rounded-xl h-24 flex items-center px-6">
+<div class="absolute inset-0 bg-gradient-to-r from-primary/30 to-indigo-accent/30 z-0"></div>
+<div class="absolute inset-0 backdrop-blur-sm z-0"></div>
+<div class="relative z-10 flex w-full justify-between items-center">
+<div>
+<p class="text-[10px] font-tomorrow text-indigo-accent font-bold uppercase tracking-wider">Security Score</p>
+<p class="text-2xl font-bold text-white">94/100</p>
+</div>
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-background-dark bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-success-green">verified_user</span>
+</div>
+<div class="size-8 rounded-full border-2 border-background-dark bg-slate-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs text-primary">shield</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Tab Bar Placeholder (iOS Style) -->
+<div class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] h-20 bg-background-dark/90 backdrop-blur-xl border-t border-white/5 flex justify-around items-center px-6 pb-4">
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-2xl">terminal</span>
+<span class="text-[10px] font-medium">Command</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-2xl">account_balance_wallet</span>
+<span class="text-[10px] font-medium">Assets</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1">settings</span>
+<span class="text-[10px] font-medium">Security</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined text-2xl">history</span>
+<span class="text-[10px] font-medium">History</span>
+</div>
+</div>
+</div>
+</body></html>

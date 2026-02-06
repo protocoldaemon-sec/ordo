@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Approval Required Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Tomorrow:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6467f2",
+                        "warning": "#F59E0B",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101122",
+                        "glass-panel": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .tomorrow-font {
+            font-family: 'Tomorrow', sans-serif;
+        }
+        .glass-effect {
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center p-4">
+<!-- Mobile Screen Wrapper (iOS Style) -->
+<div class="relative w-full max-w-[390px] h-[844px] bg-[#0A0A0F] rounded-[3rem] border-[8px] border-neutral-800 overflow-hidden flex flex-col shadow-2xl">
+<!-- Top Status Strip (Amber Warning) -->
+<div class="bg-warning/15 border-b border-warning/30 px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-warning text-[20px] font-bold">lock</span>
+<span class="text-warning text-sm font-bold tracking-wide uppercase">Approval Required</span>
+</div>
+<button class="text-white/40 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+<!-- Scrollable Content Area -->
+<div class="flex-1 overflow-y-auto pb-8">
+<!-- Command Echo Bar -->
+<div class="px-6 py-6">
+<div class="bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]">terminal</span>
+<div class="flex flex-col">
+<p class="text-white/50 text-[10px] uppercase font-bold tracking-widest">Active Command</p>
+<p class="text-white text-base font-medium tomorrow-font">send 5 sol to GxW2...3f4e</p>
+</div>
+</div>
+</div>
+<!-- Central Glass-morphism Card -->
+<div class="px-4">
+<div class="glass-effect rounded-3xl p-6 flex flex-col items-center text-center shadow-xl">
+<div class="w-16 h-16 bg-warning/20 rounded-full flex items-center justify-center mb-6 ring-4 ring-warning/10">
+<span class="material-symbols-outlined text-warning text-[32px] font-bold">shield_with_heart</span>
+</div>
+<h1 class="text-white text-2xl font-bold tomorrow-font leading-tight mb-4 tracking-tight">
+                        Transaction Exceeds Limit
+                    </h1>
+<div class="bg-black/40 rounded-2xl p-5 w-full mb-6 border border-white/5">
+<p class="text-white/70 text-sm leading-relaxed mb-2">
+                            This transfer of <span class="text-white font-bold tomorrow-font">5 SOL ($750)</span>
+</p>
+<div class="flex items-center justify-center gap-2 text-warning font-semibold">
+<span class="material-symbols-outlined text-sm">error</span>
+<span>exceeds your 1 SOL limit.</span>
+</div>
+</div>
+<!-- AI Reasoning Box -->
+<div class="bg-primary/5 border border-primary/20 rounded-xl p-4 w-full text-left">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[18px]">memory</span>
+<span class="text-primary text-xs font-bold uppercase tracking-widest">Agent Reasoning</span>
+</div>
+<p class="text-white/80 text-sm font-normal italic">
+                            "High value movement to an unverified address. Safety threshold triggered for account protection."
+                        </p>
+</div>
+</div>
+</div>
+<!-- Context Image Placeholder -->
+<div class="mt-6 px-4">
+<div class="w-full h-32 rounded-2xl bg-gradient-to-br from-primary/20 to-indigo-900/40 border border-white/10 overflow-hidden relative">
+<img alt="Security analysis visualization" class="w-full h-full object-cover opacity-50" data-alt="High tech abstract data visualization grid" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh_rO14NvmUU4TycUc3kk57qXk-K2uJBMbFgboDjAKlPmyWhEbwsyK7HFd_QG_X5zlTkN-DkK0MTx07oau2Z0EeXYdiByN7mE4XCaJa27AMo1akfHAnMuOQBF2ZgO75fUZY0qSl5DO9eXPlfqZjOL2t2Pj43k3U184H0hEbCaq8EYd7swF-dtLTLQmXFcyFQXgMzyQQYjfSN7k_TZJqPyyBSVzv26LVnvbsOaXR42kR5XEPy49LdK83e8VY8dvKgrnrNUFRR01zTs"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-black/60 px-3 py-1.5 rounded-full border border-white/10 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px] text-primary">analytics</span>
+<span class="text-white/70 text-[10px] font-bold uppercase">Security Analysis Active</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Panel -->
+<div class="p-6 bg-[#0A0A0F] border-t border-white/5 space-y-3">
+<button class="w-full bg-primary hover:bg-[#7a7df4] text-white py-4 rounded-xl font-bold tomorrow-font transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">bolt</span>
+                Approve &amp; Execute
+            </button>
+<button class="w-full bg-white/5 hover:bg-white/10 text-white/60 py-4 rounded-xl font-bold tomorrow-font transition-all border border-white/10">
+                Reject / Cancel
+            </button>
+<!-- iOS Home Indicator -->
+<div class="w-32 h-1.5 bg-white/20 rounded-full mx-auto mt-4"></div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Send Confirmation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6467f2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101122",
+                        "panel-dark": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .tomorrow-font {
+            font-family: 'Tomorrow', monospace;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col items-center justify-center p-4">
+<!-- iOS Phone Container -->
+<div class="relative w-full max-w-[390px] h-[844px] bg-background-light dark:bg-background-dark shadow-2xl rounded-[3rem] overflow-hidden border-[8px] border-slate-800 dark:border-slate-900 flex flex-col">
+<!-- Status Bar Spacer -->
+<div class="h-12 w-full flex items-center justify-between px-8 pt-4">
+<span class="text-xs font-bold">9:41</span>
+<div class="flex gap-1.5">
+<span class="material-symbols-outlined text-[14px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[14px]">wifi</span>
+<span class="material-symbols-outlined text-[14px]">battery_full</span>
+</div>
+</div>
+<!-- Top AppBar Component -->
+<div class="flex items-center bg-transparent px-6 py-4 justify-between">
+<div class="text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">lock</span>
+<h2 class="text-white text-sm font-bold leading-tight tracking-wider uppercase opacity-80">Confirmation Required</h2>
+</div>
+<div class="text-slate-400">
+<span class="material-symbols-outlined cursor-pointer hover:text-white">close</span>
+</div>
+</div>
+<!-- Command Bar -->
+<div class="px-6 py-2">
+<label class="flex flex-col w-full">
+<div class="flex w-full items-stretch rounded-xl h-14 bg-panel-dark border border-slate-800 shadow-lg">
+<div class="text-primary flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">terminal</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent text-white focus:outline-0 focus:ring-0 h-full placeholder:text-slate-500 px-4 text-sm font-medium leading-normal tomorrow-font" readonly="" value="send 0.5 sol to GxW2...4rj9"/>
+<div class="flex items-center pr-4">
+<div class="size-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(100,103,242,0.6)]"></div>
+</div>
+</div>
+</label>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 px-6 pt-6 flex flex-col gap-6 overflow-y-auto">
+<!-- Transfer Details Card -->
+<div class="p-6 flex flex-col gap-6 rounded-xl bg-panel-dark border border-slate-800/50 shadow-xl relative overflow-hidden">
+<!-- Abstract Background Pattern -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-3xl"></div>
+<!-- Sending Section -->
+<div class="flex flex-col gap-1">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest">Sending</p>
+<div class="flex items-baseline gap-2">
+<span class="text-white text-3xl font-bold tomorrow-font">0.5 SOL</span>
+<span class="text-slate-400 text-lg tomorrow-font opacity-60">($75.25)</span>
+</div>
+</div>
+<!-- Recipient Section -->
+<div class="flex flex-col gap-2">
+<p class="text-slate-400 text-xs font-bold uppercase tracking-widest">To Recipient</p>
+<div class="flex items-center gap-3 bg-background-dark/50 p-3 rounded-lg border border-slate-800">
+<div class="size-10 rounded-full bg-gradient-to-br from-primary to-indigo-900 flex items-center justify-center text-white" data-alt="Abstract gradient avatar">
+<span class="material-symbols-outlined text-xl">wallet</span>
+</div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-medium tomorrow-font">GxW2...4rj9</p>
+<p class="text-slate-500 text-[10px] uppercase font-bold tracking-tighter">Verified Solana Address</p>
+</div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-slate-800"></div>
+<!-- Fee Section -->
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-1.5 text-slate-400">
+<span class="material-symbols-outlined text-sm">speed</span>
+<span class="text-xs font-medium">Network Fee</span>
+</div>
+<p class="text-white text-xs font-medium tomorrow-font">0.000005 SOL</p>
+</div>
+</div>
+<!-- Security Notice -->
+<div class="flex items-start gap-3 px-2 py-2">
+<span class="material-symbols-outlined text-primary text-lg">info</span>
+<p class="text-slate-400 text-xs leading-relaxed">
+                    Transactions on Solana are final. Please ensure the recipient address and amount are correct before proceeding.
+                </p>
+</div>
+</div>
+<!-- Bottom Action Bar -->
+<div class="p-6 flex flex-col gap-3 bg-background-dark/80 backdrop-blur-md">
+<button class="w-full h-16 bg-primary hover:bg-primary/90 text-white rounded-xl font-bold text-lg flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all active:scale-[0.98]">
+<span>Confirm &amp; Send</span>
+<span class="material-symbols-outlined">send</span>
+</button>
+<button class="w-full h-12 bg-transparent text-slate-400 hover:text-white rounded-xl font-medium text-sm transition-colors">
+                Cancel
+            </button>
+</div>
+<!-- iOS Home Indicator -->
+<div class="h-8 w-full flex justify-center items-end pb-2">
+<div class="w-32 h-1.5 bg-slate-800 rounded-full"></div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Token Risk Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tomorrow:wght@400;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#1A1A24",
+                        "glass": "rgba(26, 26, 36, 0.8)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                        "warning-red": "#EF4444",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .font-tomorrow { font-family: 'Tomorrow', sans-serif; }
+        .glass-card {
+            background: rgba(45, 45, 58, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .gauge-gradient {
+            background: conic-gradient(from 180deg at 50% 50%, #f59f0a 0deg, #f59f0a 234deg, #2D2D3A 234deg);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark/50 backdrop-blur-md sticky top-0 z-50 p-4 justify-between border-b border-white/5">
+<div class="text-primary flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined">arrow_back_ios_new</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-xs font-tomorrow uppercase tracking-widest opacity-60">Analysis Engine</h2>
+<h1 class="text-white text-lg font-bold leading-tight font-display">BONK / SOL</h1>
+</div>
+<div class="flex w-10 items-center justify-end">
+<button class="text-primary hover:rotate-180 transition-transform duration-500">
+<span class="material-symbols-outlined">sync</span>
+</button>
+</div>
+</div>
+<main class="flex-1 px-4 pb-32">
+<!-- Risk Gauge Section -->
+<div class="flex flex-col items-center pt-8 pb-6">
+<div class="relative flex items-center justify-center size-64">
+<!-- Circular Gauge Visual -->
+<div class="absolute inset-0 rounded-full border-[12px] border-white/5"></div>
+<div class="absolute inset-0 rounded-full border-[12px] border-primary border-r-transparent border-b-transparent -rotate-45 opacity-20"></div>
+<!-- Glow effect -->
+<div class="absolute size-48 rounded-full bg-primary/10 blur-3xl"></div>
+<div class="flex flex-col items-center z-10">
+<span class="text-primary text-xs font-tomorrow font-bold tracking-[0.2em] mb-1">RISK SCORE</span>
+<h1 class="text-white text-7xl font-tomorrow font-bold leading-none">65</h1>
+<div class="mt-4 px-4 py-1 bg-primary/20 border border-primary/30 rounded-full">
+<p class="text-primary text-sm font-bold font-tomorrow uppercase tracking-widest">Caution</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Core Metrics Grid -->
+<div class="grid grid-cols-3 gap-3 mb-8">
+<div class="glass-card rounded-xl p-4 flex flex-col items-center text-center">
+<p class="text-white/60 text-[10px] font-tomorrow uppercase mb-2">Market</p>
+<p class="text-white text-2xl font-bold font-tomorrow">45</p>
+<div class="w-full h-1 bg-white/10 rounded-full mt-3 overflow-hidden">
+<div class="h-full bg-primary w-[45%]"></div>
+</div>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center text-center">
+<p class="text-white/60 text-[10px] font-tomorrow uppercase mb-2">Liquidity</p>
+<p class="text-white text-2xl font-bold font-tomorrow">30</p>
+<div class="w-full h-1 bg-white/10 rounded-full mt-3 overflow-hidden">
+<div class="h-full bg-warning-red w-[30%]"></div>
+</div>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center text-center">
+<p class="text-white/60 text-[10px] font-tomorrow uppercase mb-2">Holder</p>
+<p class="text-white text-2xl font-bold font-tomorrow">72</p>
+<div class="w-full h-1 bg-white/10 rounded-full mt-3 overflow-hidden">
+<div class="h-full bg-green-500 w-[72%]"></div>
+</div>
+</div>
+</div>
+<!-- Limiting Factors -->
+<div class="space-y-3 mb-8">
+<h3 class="text-white/60 text-xs font-tomorrow uppercase tracking-widest px-1">Limiting Factors</h3>
+<div class="glass-card rounded-xl p-4 space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-warning-red text-xl">warning</span>
+<div>
+<p class="text-white font-semibold text-sm">High Volatility</p>
+<p class="text-white/50 text-xs mt-0.5 leading-relaxed">Price fluctuates more than 15% within 4-hour windows. Extreme slippage risk.</p>
+</div>
+</div>
+<div class="h-px bg-white/5"></div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-warning-red text-xl">water_drop</span>
+<div>
+<p class="text-white font-semibold text-sm">Low Liquidity Density</p>
+<p class="text-white/50 text-xs mt-0.5 leading-relaxed">Pool depth is insufficient for trades exceeding 50 SOL without &gt;2% impact.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Market Data Insight -->
+<div class="glass-card rounded-xl p-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div>
+<p class="text-white text-sm font-bold">Holder Distribution</p>
+<p class="text-white/40 text-xs">Top 10 wallets hold 12.4%</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-white/20">chevron_right</span>
+</div>
+</main>
+<!-- Fixed Footer Recommendation -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-background-dark via-background-dark/95 to-transparent pb-8">
+<div class="glass-card rounded-2xl p-4 border-primary/20 bg-[#1e1e2d]/90 backdrop-blur-xl shadow-2xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm">info</span>
+<p class="text-primary text-[10px] font-tomorrow font-bold uppercase tracking-wider">ORDO Recommendation</p>
+</div>
+<p class="text-white text-sm font-medium leading-relaxed">
+                    Exercise caution, avoid large positions. Current liquidity depth does not support high-frequency institutional trading.
+                </p>
+<button class="w-full mt-4 bg-primary hover:bg-primary/90 text-background-dark font-bold py-3 rounded-xl transition-all font-tomorrow uppercase tracking-tighter text-sm">
+                    Generate Detailed Report
+                </button>
+</div>
+</div>
+</div>
+</body></html>

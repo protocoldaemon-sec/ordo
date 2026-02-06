@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Remove Liquidity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2b2eee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101122",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased font-display">
+<!-- Mobile Container (Phone Form Factor Simulation) -->
+<div class="relative mx-auto flex h-auto min-h-screen max-w-[430px] flex-col bg-background-light dark:bg-background-dark overflow-x-hidden shadow-2xl border-x border-slate-200 dark:border-slate-800">
+<!-- Top Status Strip -->
+<header class="flex items-center px-6 pt-8 pb-2 justify-between">
+<div class="flex items-center gap-3">
+<div class="text-primary flex items-center justify-center p-2 rounded-lg bg-primary/10">
+<span class="material-symbols-outlined text-[24px]">water_drop</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">Remove Liquidity</h2>
+</div>
+<button class="text-slate-500 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</header>
+<!-- Command Bar -->
+<div class="px-6 py-4">
+<div class="flex flex-col w-full h-14">
+<div class="flex w-full flex-1 items-stretch rounded-xl h-full shadow-inner bg-slate-100 dark:bg-[#191a33] border border-slate-200 dark:border-slate-700/50">
+<div class="text-slate-400 dark:text-[#9293c9] flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-[20px]">terminal</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:outline-0 focus:ring-0 text-slate-900 dark:text-white px-3 text-base font-medium font-mono" readonly="" value="remove liquidity from SOL-USDC"/>
+<div class="flex items-center justify-center pr-4">
+<div class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Position Context Panel -->
+<main class="flex-1 px-6 space-y-6">
+<div class="p-5 rounded-xl bg-white dark:bg-[#191a33] border border-slate-200 dark:border-slate-700/50 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1">
+<p class="text-slate-500 dark:text-[#9293c9] text-xs font-semibold uppercase tracking-wider">Current Position</p>
+<h3 class="text-lg font-bold">Raydium SOL-USDC LP</h3>
+</div>
+<div class="flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-white dark:border-[#191a33] bg-white" data-alt="Solana token logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRplvErA6oel_92x_-_3IxjEdYe32hCfcmKjAn6GniuMccQQ9UvEnjgEPoBAI9GeVyG96K2bnrQ821e2UIq0QdMPYm_0sh_Tw72aYEY-11saWmrBZOYhryImBEwTCgy1XW8HHazCjcqaEqNXza9OEcGH1YiZL6vvBTATTbfh9ACbWrMCR3XQixqUbiUo5OYskQ2wp2nJVNmOLN1hmdEdD6Z6q2tq_VL_t_YOgr1qVK5-ZldPED4qJtTXKRTnxAdYlBuQNwW0XStjQ"/>
+<img class="w-8 h-8 rounded-full border-2 border-white dark:border-[#191a33] bg-white" data-alt="USDC token logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-rU4Cb8DNQ3KLOWlhumTrN0WwT9CdNctmPJRxF7TiaIF5cF1m1yDF0rRO1oNVE0U3a_DOWBUACgQCZ19sJmVPoeIhqSE0r3JS4DBd9T4j-6bJHtzdJxBVRqkUbrpbhECn2j_vu0pXhCPwsTeuoh2lo4wKHH1FhwxbIRCHN5rTOM8faLgBDmklLsNZybTDWwZI_s_LCHvSl94QQXgAdTCrufKa4PZHbzE5MAkliZltPIfkwHZmvW6VlqcbfG0dmFy7zDLLKcUXXh4"/>
+</div>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="text-3xl font-extrabold tracking-tight">$315.00</p>
+<p class="text-emerald-500 text-sm font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                            +2.4% Est. APY
+                        </p>
+</div>
+<div class="w-20 h-12 bg-primary/5 rounded-lg border border-primary/20 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-gradient-to-t from-primary/20 to-transparent flex items-end">
+<div class="w-full flex items-end justify-around h-full px-2 pb-1">
+<div class="w-2 h-4 bg-primary rounded-t-sm"></div>
+<div class="w-2 h-6 bg-primary rounded-t-sm"></div>
+<div class="w-2 h-5 bg-primary rounded-t-sm"></div>
+<div class="w-2 h-8 bg-primary rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Percentage Control -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<p class="text-sm font-semibold text-slate-600 dark:text-slate-300">Percentage to remove</p>
+<p class="text-xl font-bold text-primary">50%</p>
+</div>
+<div class="relative py-4">
+<div class="h-2 w-full bg-slate-200 dark:bg-slate-700/50 rounded-full">
+<div class="h-full w-1/2 bg-primary rounded-full relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 size-6 rounded-full bg-white dark:bg-white shadow-lg border-2 border-primary cursor-pointer"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4">
+<button class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all">25%</button>
+<button class="px-3 py-1.5 rounded-lg bg-primary/10 text-xs font-bold text-primary border border-primary/20">50%</button>
+<button class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all">75%</button>
+<button class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all">MAX</button>
+</div>
+</div>
+</div>
+<!-- Est. Return Card -->
+<div class="p-5 rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-transparent">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-slate-400 text-lg">info</span>
+<p class="text-slate-500 dark:text-[#9293c9] text-sm font-medium">Estimated Return</p>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center p-1">
+<img class="w-full" data-alt="Solana logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK-7rHcryW-cWNh526lmFIGSnW8mKuw_cy3GEZD0dNgB-tJswasUTgD4oxC-A6h-8H1pGMuROEjFiMkAT7ZbtekOk-dIekikIDVe3p2f0uePn4S2s4A-_oEsMxygCcKnJrXk51D2EpzSCQjAz9ysakN6eYHN4JeBnBZIGH_U5Xbbx5tc41r7eq5IoZclHAP5JCqaf3h2mpgIFsAT8VN-HBKPBzfhKvJErXEAW7rA79nfMvUdAffa5PW2qujZRfisiI0IqoXX9PPo4"/>
+</div>
+<span class="font-bold">0.5 SOL</span>
+</div>
+<span class="text-slate-500 text-sm">≈ $82.50</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-slate-800 flex items-center justify-center p-1">
+<img class="w-full" data-alt="USDC logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCikaFU0cW6QiaAgP9vE6ad4Gtq1Z5WB8TQ1RYkIffLtjnM7ujnKaHxHkSgUjIsBVEl7yPfT8DkHJ8PVyDvncTpxtF3TmvZlaxL-1g46wITJrHVv6Xv5R2UCKnb7FhIYHbU6Su4_07SGaXQXDeCmcoxJSWo4behXSnPAVgwAF-KGUBFWO8hi32ZOXPwXzswP6vsCDfFJRKBh6CIjrLPhqkGfkdqieF96Cs7yHwJOu352wWs-UwHkSZEpaytLseUOMsMnNs6q9_ftPc"/>
+</div>
+<span class="font-bold">75.00 USDC</span>
+</div>
+<span class="text-slate-500 text-sm">≈ $75.00</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-between items-center">
+<p class="text-slate-500 text-xs italic">Slippage Tolerance: 0.5%</p>
+<a class="text-xs font-bold text-primary flex items-center gap-1 group" href="#">
+                        Details
+                        <span class="material-symbols-outlined text-[16px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+</div>
+</div>
+</main>
+<!-- Footer Action -->
+<div class="p-6 mt-auto">
+<button class="w-full h-16 rounded-xl bg-primary/40 dark:bg-primary/30 text-white font-bold text-lg flex items-center justify-center gap-3 border border-primary/40 hover:bg-primary/50 transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined">logout</span>
+                Remove Liquidity
+            </button>
+<p class="text-center text-slate-500 dark:text-slate-400 text-xs mt-4 px-4 font-medium opacity-60">
+                Solana network fees are minimal. Transactions are finalized in &lt; 2s.
+            </p>
+</div>
+<!-- Navigation Bar (iOS Style) -->
+<nav class="flex justify-around items-center h-20 bg-white dark:bg-[#111122] border-t border-slate-200 dark:border-slate-800 px-6 pb-4">
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-[10px] font-bold">CHAT</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined">swap_calls</span>
+<span class="text-[10px] font-bold">DEFI</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="text-[10px] font-bold">WALLET</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-bold">CONFIG</span>
+</div>
+</nav>
+<!-- iOS Home Indicator -->
+<div class="flex justify-center pb-2 bg-white dark:bg-[#111122]">
+<div class="w-32 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700"></div>
+</div>
+</div>
+</body></html>

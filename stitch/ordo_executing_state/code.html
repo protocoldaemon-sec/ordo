@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Executing State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f59f0a",
+                        "background-light": "#f8f7f5",
+                        "background-dark": "#12100a",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .pulse-amber {
+            animation: pulse-shadow 2s infinite ease-in-out;
+        }
+        @keyframes pulse-shadow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245, 159, 10, 0.4); }
+            50% { box-shadow: 0 0 15px 5px rgba(245, 159, 10, 0.2); }
+        }
+        .loading-line-animation {
+            width: 30%;
+            height: 2px;
+            background: #f59f0a;
+            position: relative;
+            animation: move-line 2s infinite ease-in-out;
+        }
+        @keyframes move-line {
+            0% { left: -30%; }
+            100% { left: 100%; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-white font-display antialiased">
+<div class="relative flex h-screen max-w-[430px] mx-auto flex-col overflow-hidden bg-background-light dark:bg-background-dark border-x border-white/5 shadow-2xl">
+<!-- Top Status Strip -->
+<div class="flex items-center bg-transparent px-6 py-4 justify-between mt-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">settings</span>
+<h2 class="text-white text-sm font-bold tracking-[0.2em] uppercase opacity-80">Executing</h2>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-primary text-[10px] font-bold tracking-widest uppercase">Live</span>
+</div>
+</div>
+<!-- Main Command Surface -->
+<div class="px-6 py-2">
+<div class="relative group">
+<div class="flex w-full items-center rounded-xl bg-[#2a2418] border border-primary/20 p-4 shadow-inner">
+<span class="material-symbols-outlined text-primary/60 mr-3">terminal</span>
+<input class="bg-transparent border-none p-0 focus:ring-0 text-white text-lg font-medium w-full placeholder:text-white/20" readonly="" type="text" value="swap 1 sol to usdc"/>
+<span class="material-symbols-outlined text-primary text-xl">check_circle</span>
+</div>
+<!-- Bouncing Loading Line -->
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-white/5 overflow-hidden rounded-b-xl">
+<div class="loading-line-animation"></div>
+</div>
+</div>
+</div>
+<!-- Execution Panel Context Area -->
+<div class="flex-1 px-6 py-8 overflow-y-auto space-y-6">
+<!-- Context Header -->
+<div class="flex flex-col gap-1">
+<p class="text-white/40 text-[10px] uppercase tracking-widest font-bold">Transaction Context</p>
+<h3 class="text-white text-xl font-bold">Processing Order</h3>
+</div>
+<!-- Execution Panel -->
+<div class="bg-[#1c1810] border border-white/5 rounded-xl p-6 relative overflow-hidden">
+<!-- Glowing background effect -->
+<div class="absolute top-0 right-0 -mr-16 -mt-16 w-48 h-48 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="flex items-start justify-between mb-8">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-primary font-bold text-lg">Executing</span>
+<span class="material-symbols-outlined text-primary text-lg pulse-amber rounded-full">sync</span>
+</div>
+<p class="text-white/60 text-sm font-normal">Via Jupiter • Raydium</p>
+</div>
+<div class="flex flex-wrap gap-2 justify-end">
+<span class="px-2 py-1 rounded bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-wider uppercase">Jup</span>
+<span class="px-2 py-1 rounded bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold tracking-wider uppercase">Ray</span>
+</div>
+</div>
+<!-- Progress Section -->
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<p class="text-white/40 text-[10px] uppercase font-bold tracking-tighter">Status</p>
+<p class="text-white text-sm">Finalizing on Solana...</p>
+</div>
+<p class="text-primary text-2xl font-bold tabular-nums">80%</p>
+</div>
+<div class="h-3 w-full bg-white/5 rounded-full overflow-hidden p-[2px]">
+<div class="h-full bg-primary rounded-full relative shadow-[0_0_10px_rgba(245,159,10,0.5)]" style="width: 80%;">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent to-white/30 animate-pulse"></div>
+</div>
+</div>
+</div>
+<!-- Visual representation of the route -->
+<div class="mt-8 pt-6 border-t border-white/5">
+<div class="flex items-center justify-between px-2">
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-[#2a2418] border border-white/10 flex items-center justify-center">
+<img class="w-6 h-6 rounded-full" data-alt="Solana token logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArSvU6-o3_GYB27sKwNmgi4pLcvORpwHAmZVfZgbbWfetNPENtZh-srUPZsZ1ukT-MqqC8N6iRcWyCcy-ROvdVgQctpXo03PIZjEUQ-uOqMroPDpv7Y56BVwNsYMRdOpd-nnEi1qUC91tdprfEuApudC0wLbAPssmmsdkuVsbN_hlD7uLigZADyszAGJPoP2kqJdj9_HXoI8qx0-3anx_fsIgG0GVIn2DpooN-VTupKuVXcZnGpst5Q5JmEsqOpxBl-7GQm0RdSzA"/>
+</div>
+<span class="text-[10px] text-white/40 font-bold uppercase">SOL</span>
+</div>
+<div class="flex-1 h-px bg-dashed bg-white/10 mx-4 border-t border-dashed border-white/20 relative">
+<span class="material-symbols-outlined text-primary text-sm absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#1c1810] px-1">chevron_right</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-10 h-10 rounded-full bg-[#2a2418] border border-white/10 flex items-center justify-center">
+<img class="w-6 h-6 rounded-full" data-alt="USDC token logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMRYme69s77vKRMtGU_gcJoR225gAshbAlxs5bzcrFc--LQR-Wcc_6Y19XJqJ5nJ4l_v4Fp3urdSWLEpaYyw7p1Azd9zUGfwN1ptTu0icCA2x4wG2reEl_ZVh33MzwxxrpV0KD-mQjJ5SFuKLlZQm9wZFrz70jxMbo_4km0cEez9aVmiVgAYyQNQ8sP_YGbNT4GY9-qfajJI-mBW2t1NHkB1SwcJ4a5YPGxCPQ8YzA5ZXUUqwvOFY2u384k_H5jlTEmWmuyo89mCo"/>
+</div>
+<span class="text-[10px] text-white/40 font-bold uppercase">USDC</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Steps -->
+<div class="space-y-4 px-2">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<p class="text-white/80 text-sm">Route optimization found</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-sm">check_circle</span>
+<p class="text-white/80 text-sm">Transaction simulated</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-sm animate-spin">refresh</span>
+<p class="text-white text-sm font-medium">Confirming on chain...</p>
+</div>
+<div class="flex items-center gap-4 opacity-30">
+<span class="material-symbols-outlined text-white text-sm">radio_button_unchecked</span>
+<p class="text-white text-sm">Transaction complete</p>
+</div>
+</div>
+</div>
+<!-- iOS Bottom Indicator -->
+<div class="h-8 flex justify-center items-end pb-2">
+<div class="w-32 h-1 bg-white/20 rounded-full"></div>
+</div>
+<!-- Glass Overlay for tech feel -->
+<div class="absolute inset-0 pointer-events-none border-[12px] border-black/5 opacity-50"></div>
+</div>
+</body></html>

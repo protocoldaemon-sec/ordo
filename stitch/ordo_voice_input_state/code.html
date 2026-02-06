@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Voice Input State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b77f",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0A0A0F",
+                        "ordo-deep": "#0A0A0F",
+                        "ordo-surface": "#16161E",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .glass-panel {
+            background: rgba(22, 22, 30, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 183, 127, 0.1);
+        }
+        .mic-glow {
+            box-shadow: 0 0 20px rgba(16, 183, 127, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-white font-display">
+<!-- iOS Status Bar Mockup -->
+<div class="flex justify-between items-center px-8 pt-4 pb-2 w-full">
+<span class="text-sm font-semibold">9:41</span>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-sm">wifi</span>
+<span class="material-symbols-outlined text-sm">battery_full</span>
+</div>
+</div>
+<!-- Main Container -->
+<div class="relative flex flex-col h-[calc(100vh-64px)] w-full max-w-[430px] mx-auto overflow-hidden">
+<!-- Blurred Background Content (DeFi Dashboard Context) -->
+<div class="absolute inset-0 opacity-20 pointer-events-none filter blur-xl scale-110">
+<div class="p-6 space-y-6">
+<div class="h-40 w-full bg-primary/20 rounded-xl"></div>
+<div class="h-24 w-full bg-white/10 rounded-xl"></div>
+<div class="h-24 w-full bg-white/10 rounded-xl"></div>
+<div class="h-24 w-full bg-white/10 rounded-xl"></div>
+</div>
+</div>
+<!-- Top Listening Pill -->
+<div class="flex justify-center mt-4 z-10">
+<div class="flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-primary text-[18px] fill-1">mic</span>
+<span class="text-primary text-sm font-bold tracking-wider uppercase">Listening</span>
+</div>
+</div>
+<!-- Spacer to push command bar to lower-middle -->
+<div class="flex-1"></div>
+<!-- Voice Interaction Area -->
+<div class="px-5 pb-12 z-20">
+<!-- Transcription Bar -->
+<div class="glass-panel rounded-2xl overflow-hidden shadow-2xl relative">
+<div class="p-6 flex items-center justify-between min-h-[100px]">
+<!-- Live Text -->
+<div class="flex-1">
+<h2 class="text-white/40 text-2xl font-medium leading-tight">
+<span class="text-white">swap 1 sol to</span>...
+                        </h2>
+</div>
+<!-- Pulsing Mic Visualizer -->
+<div class="relative flex items-center justify-center ml-4">
+<!-- Wave Rings -->
+<div class="absolute w-16 h-16 border border-primary/40 rounded-full scale-125 opacity-20"></div>
+<div class="absolute w-12 h-12 border border-primary/60 rounded-full scale-110 opacity-40"></div>
+<!-- Main Mic Button -->
+<div class="relative z-10 bg-primary w-14 h-14 rounded-full flex items-center justify-center mic-glow">
+<span class="material-symbols-outlined text-ordo-deep text-3xl font-bold">mic</span>
+</div>
+</div>
+</div>
+<!-- Bouncing Progress Line -->
+<div class="absolute bottom-0 left-0 w-full h-[2px] bg-primary/20">
+<div class="h-full bg-primary shadow-[0_0_8px_#10b77f]" style="width: 40%; margin-left: 30%;"></div>
+</div>
+</div>
+<!-- Context/Hint Text -->
+<div class="mt-6 text-center">
+<p class="text-white/30 text-xs font-medium tracking-[0.2em] uppercase">Tap anywhere to stop</p>
+</div>
+</div>
+<!-- Navigation Placeholder (iOS Home Indicator) -->
+<div class="flex justify-center pb-2">
+<div class="w-32 h-1 bg-white/20 rounded-full"></div>
+</div>
+</div>
+<!-- UI Background Elements (Abstract Gradients) -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 bg-ordo-deep overflow-hidden">
+<div class="absolute top-[-10%] right-[-10%] w-[300px] h-[300px] bg-primary/5 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-5%] left-[-10%] w-[400px] h-[400px] bg-primary/5 rounded-full blur-[150px]"></div>
+</div>
+</body></html>

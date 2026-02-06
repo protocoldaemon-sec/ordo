@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b77f",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0A0A0F",
+                        "surface": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass {
+            background: rgba(26, 26, 36, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .chart-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+        .donut-ring {
+            stroke-dasharray: 100 100;
+            stroke-linecap: round;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased h-screen overflow-hidden flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between px-6 py-4 pt-12">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-2xl">terminal</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">Portfolio</h2>
+</div>
+<div class="flex gap-2">
+<button class="size-10 rounded-full glass flex items-center justify-center">
+<span class="material-symbols-outlined text-xl text-slate-400">notifications</span>
+</button>
+<button class="size-10 rounded-full glass flex items-center justify-center">
+<span class="material-symbols-outlined text-xl text-slate-400">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area (Scrollable) -->
+<main class="flex-1 overflow-y-auto px-6 pb-24">
+<!-- Hero Total Value -->
+<section class="py-8 flex flex-col items-center">
+<p class="text-slate-400 text-sm font-medium mb-1">Total Assets</p>
+<h1 class="text-5xl font-bold tracking-tighter mb-3">$15,234.56</h1>
+<div class="flex items-center gap-2 bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-primary text-sm font-bold">trending_up</span>
+<span class="text-primary font-bold text-sm">+8.82%</span>
+<span class="text-slate-500 text-xs ml-1">7d</span>
+</div>
+</section>
+<!-- Allocation Chart Panel -->
+<section class="glass rounded-xl p-6 mb-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Allocation</h3>
+<span class="material-symbols-outlined text-slate-500 cursor-pointer">info</span>
+</div>
+<div class="flex items-center justify-between gap-8">
+<div class="chart-container">
+<!-- Simple SVG Donut Chart -->
+<svg class="size-full -rotate-90" viewbox="0 0 36 36">
+<circle cx="18" cy="18" fill="transparent" r="16" stroke="rgba(255,255,255,0.05)" stroke-width="3"></circle>
+<circle class="donut-ring" cx="18" cy="18" fill="transparent" r="16" stroke="#10b77f" stroke-dasharray="65 100" stroke-width="3"></circle>
+<circle class="donut-ring opacity-60" cx="18" cy="18" fill="transparent" r="16" stroke="#10b77f" stroke-dasharray="25 100" stroke-dashoffset="-65" stroke-width="3"></circle>
+<circle class="donut-ring opacity-30" cx="18" cy="18" fill="transparent" r="16" stroke="#10b77f" stroke-dasharray="10 100" stroke-dashoffset="-90" stroke-width="3"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-primary material-symbols-outlined text-3xl">token</span>
+</div>
+</div>
+<div class="flex-1 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary"></div>
+<span class="text-sm font-medium">SOL</span>
+</div>
+<span class="text-sm font-bold text-slate-300">65%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary/60"></div>
+<span class="text-sm font-medium">USDC</span>
+</div>
+<span class="text-sm font-bold text-slate-300">25%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary/30"></div>
+<span class="text-sm font-medium">NFTs</span>
+</div>
+<span class="text-sm font-bold text-slate-300">10%</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Assets List -->
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-sm font-bold uppercase tracking-widest text-slate-400">Holdings</h3>
+<div class="flex gap-4">
+<span class="text-xs font-bold text-primary">All</span>
+<span class="text-xs font-bold text-slate-500">Solana</span>
+<span class="text-xs font-bold text-slate-500">Ethereum</span>
+</div>
+</div>
+<!-- Asset Row 1 -->
+<div class="glass rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="size-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center border border-primary/20">
+<img class="size-8" data-alt="Solana token logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuApKnxX5qv_rsu7Sf_66pQ2r8jCa68uctMScJ5pBF2NirqZDasY3yp49_2LAzJl7GEG0NzMxwaXm9JKeVhjgCwipsFpQXlFC4K-43a7x9HNieH-kxnIC6G6PYpiyd-9X0OIJeR2uPF3YK02JHlj_w7HJEc04Rxl5VojwuO2el9X2rS99qCSW93IJnphKYQukJ4tJFlDf-rAEZxlVqm4_10ZV2x1rHpLiDF_pkPZ2ji49TbIJ0VM1S30Sl51IuJsESyUpDmI28Kluog"/>
+</div>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full bg-black border border-white/10 flex items-center justify-center">
+<img class="size-3" data-alt="Solana chain icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWcmXKjOE7E-WgHKz2eS63B3ow42wF2lY-3dzuKe6Y-I1-dWsgJEoORwJoVB7GlaKak7NMVlkgdXd5mEmyjUXP484wDyna-9XDyu48Q-5g_QbYbohxEMBAFmfQr23Kh0CpKH3xoRJ3UcYp8xKLELBdfKt5n4jB5bMJ-E2TUMXsgTitacgEL36g1tM9TFdfEqDpDGdmOM_Ij3nTOGtLjmeAG6HLjbFHvWgLuHFJTTBU47bVX1tpFj_BGBaz7UYoV2ImS9qKrD6Kwjo"/>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h4 class="font-bold">SOL</h4>
+<span class="text-[10px] bg-white/5 px-1.5 py-0.5 rounded text-slate-400">Native</span>
+</div>
+<p class="text-xs text-slate-500 font-medium mt-0.5">10.5 SOL</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold">$1,578.75</p>
+<p class="text-[10px] text-primary font-bold">+2.4%</p>
+</div>
+</div>
+<!-- Asset Row 2 -->
+<div class="glass rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="size-12 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/5 flex items-center justify-center border border-blue-500/20">
+<img class="size-8" data-alt="USDC stablecoin logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCviINFXao8iezgePMOZgWpIHxFQtHD-JjErm25DOn1yGqLsUn0CLyneKQFqp4O3LIw6kmvlaqm9L1oOX2j99-PTyg0TYVbPg_EvoEYO3Lfc7Pum_0Nsl8pxTiwyUrWOVXM4rdI79mKTAjUpTc6OYTGUdUE1fqSi_wtsAteD-FE1wuGZS-wLaVc5sezNEpKavjOrNhFtfEaJdUdvWS69V2OyI0yDuNr7SWPFx2d6JbKduQIIqjQ4DTxVn5r28TKHWQr7ZmQ88_Yvaw"/>
+</div>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full bg-black border border-white/10 flex items-center justify-center">
+<img class="size-3" data-alt="Solana chain icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUl6Mk-XFFjyXkrhl2mWlKDfN74AgV1tNAkb2ScsTyEft8DmEzpVZXAWarQfvbDu6K2ZTW8XvPWUZ7Az7j9we_i5c7m5bLwRocDuquNxi09BdLhlb7DHlbT_yocT4mhR7dRcjKoyggwXXD4GpME60Zk7lKKZSQKYinEoGTLVgn2eI1CcpwHJC6PDvnrxpZna1ow-ijXNwp7bIHfq2ogwI4MEmXUcvSBVJcsOhhAFBr5QaN6sQYPCZPIGOjPiWMh4nFTyjW-Zl6X6o"/>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h4 class="font-bold">USDC</h4>
+</div>
+<p class="text-xs text-slate-500 font-medium mt-0.5">5,000.00 USDC</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold">$5,000.00</p>
+<p class="text-[10px] text-slate-500 font-bold">0.00%</p>
+</div>
+</div>
+<!-- Asset Row 3 -->
+<div class="glass rounded-lg p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="relative">
+<div class="size-12 rounded-full bg-gradient-to-br from-purple-500/20 to-purple-500/5 flex items-center justify-center border border-purple-500/20 overflow-hidden">
+<img class="size-full object-cover" data-alt="NFT floor collection abstract image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5KpgA0VbsmsswGPfRYPXoAuim-6cbVlr6ToaPkSRmKfGzE1jg8BdQfiaY4wWiDfm3hH4Wq4Go44TF8VEX_ksoNG15oEkE_4CRDC9HmmlTV9BEXY5Eq6mwoOiactSJ-H4zA5_sZDJPqobVY_FvQMge6uZVXeK80cpKXJx0IQRTzgxEWEiN0PXQwKvLCEH8DuhCFb12RH0b4lLN11BlLJ7PBKjHwt1vuJphhxHUNuuT8DyIaVbJN-QP6nyDY2R66FL76MRiss8hEyo"/>
+</div>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full bg-black border border-white/10 flex items-center justify-center">
+<img class="size-3" data-alt="Ethereum chain icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMcJX6NHS3T1-4I-dzPKkH3_FT5zrtbUPoQothWwSU0wDyWbBxofUhQ8aLhayp5K_j4yj9_t-MmfJrGQi97n23I2rfF2hvv68OdYEKwZUphpCatoaQBWoaemBP2QZtSBIRdGIB7KHtOjPhUqBrWcmbv1qHsG5V-EeqdT2S7wehjfg396tWnE-rbwd1waJq_mzPtda3dTh4y7vinDasVf1wzxKHjn7TRKD78i0h1TvNj33su2s0rIoMzT5KMCvrEvAxE0o61EIOEak"/>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<h4 class="font-bold">NFT Collection</h4>
+</div>
+<p class="text-xs text-slate-500 font-medium mt-0.5">3 Assets • Ether</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold">$8,655.81</p>
+<p class="text-[10px] text-primary font-bold">+12.8%</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Floating Command Bar -->
+<div class="fixed bottom-0 left-0 right-0 p-6 pointer-events-none">
+<div class="max-w-md mx-auto w-full glass rounded-full h-14 flex items-center px-4 gap-3 pointer-events-auto shadow-2xl shadow-primary/20 border-primary/20">
+<span class="material-symbols-outlined text-primary">terminal</span>
+<span class="text-slate-500 text-sm font-medium">Type <span class="text-slate-300">/swap</span> or <span class="text-slate-300">/send</span>...</span>
+<div class="ml-auto size-8 rounded-full bg-primary flex items-center justify-center shadow-lg shadow-primary/40">
+<span class="material-symbols-outlined text-black font-bold text-sm">north_east</span>
+</div>
+</div>
+</div>
+</body></html>

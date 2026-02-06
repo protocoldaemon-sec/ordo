@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Thinking State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4b2bee",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0A0A0F",
+                        "surface-dark": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .terminal-text {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+        /* Custom animation-like styles without actual JS/CSS animations as per instructions, 
+           using static representations of the requested bouncing line */
+        .loading-bar-gradient {
+            background: linear-gradient(90deg, transparent 0%, #4b2bee 50%, transparent 100%);
+            background-size: 200% 100%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+<!-- Mobile Container (iPhone Form Factor) -->
+<div class="relative w-full max-w-[390px] h-[844px] bg-[#0A0A0F] rounded-[3rem] border-[8px] border-slate-800 shadow-2xl overflow-hidden flex flex-col">
+<!-- Status Bar (iOS) -->
+<div class="h-12 w-full flex justify-between items-center px-8 pt-4">
+<span class="text-xs font-bold text-white">9:41</span>
+<div class="flex gap-1.5">
+<span class="material-symbols-outlined text-[16px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[16px]">wifi</span>
+<span class="material-symbols-outlined text-[16px]">battery_full</span>
+</div>
+</div>
+<!-- App Header / Status Strip -->
+<header class="flex items-center justify-between px-6 py-4 mt-2">
+<div class="flex items-center gap-2">
+<div class="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-[20px]">memory</span>
+</div>
+<h1 class="text-sm font-bold tracking-widest uppercase text-primary">
+                    [cpu] Thinking
+                </h1>
+</div>
+<button class="text-slate-500">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</header>
+<!-- Dynamic Context Area (Main Content) -->
+<main class="flex-1 px-6 pt-4 flex flex-col gap-6">
+<!-- Abstract Visualization Pattern -->
+<div class="w-full h-40 rounded-xl bg-gradient-to-br from-primary/10 to-transparent flex items-center justify-center border border-white/5" data-alt="Abstract dark purple gradient pattern">
+<div class="relative w-24 h-24">
+<div class="absolute inset-0 border-2 border-primary/30 rounded-full animate-pulse"></div>
+<div class="absolute inset-4 border border-primary/50 rounded-full"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-4xl">psychology</span>
+</div>
+</div>
+</div>
+<!-- Planning Panel -->
+<div class="bg-surface-dark border border-white/5 rounded-xl p-5 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary text-[20px]">insights</span>
+<h2 class="text-white text-base font-semibold">Planning</h2>
+</div>
+<div class="terminal-text text-sm space-y-3">
+<div class="flex items-start gap-2">
+<span class="text-primary font-bold">├─</span>
+<p class="text-slate-300">Getting quote from <span class="text-white font-medium">Jupiter</span></p>
+<span class="material-symbols-outlined text-[14px] text-green-500 mt-0.5">check_circle</span>
+</div>
+<div class="flex items-start gap-2">
+<span class="text-primary font-bold">├─</span>
+<p class="text-slate-300">Calculating <span class="text-white font-medium">best route</span></p>
+</div>
+<div class="flex items-start gap-2">
+<span class="text-primary font-bold">└─</span>
+<p class="text-slate-400">Checking slippage impact</p>
+</div>
+</div>
+</div>
+<!-- Thinking Pulse Text -->
+<div class="flex items-center justify-center gap-2 mt-2">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+<p class="text-xs text-slate-500 uppercase tracking-[0.2em] font-medium">Synthesizing liquidity</p>
+</div>
+</main>
+<!-- Command Interface (Sticky Bottom) -->
+<footer class="mt-auto pb-10">
+<!-- Activity Indicator (Bouncing Loading Line Style) -->
+<div class="w-full h-[2px] bg-white/5 relative mb-6">
+<div class="absolute top-0 left-1/4 right-1/4 h-full bg-primary shadow-[0_0_10px_rgba(75,43,238,0.8)]"></div>
+</div>
+<div class="px-6">
+<div class="relative group">
+<!-- Command Bar Surface -->
+<div class="flex items-center gap-3 bg-surface-dark/80 backdrop-blur-md border border-white/10 h-14 px-5 rounded-2xl shadow-2xl">
+<span class="material-symbols-outlined text-primary">keyboard_command_key</span>
+<input class="bg-transparent border-none focus:ring-0 text-white font-medium text-base flex-1 p-0 placeholder:text-slate-600" readonly="" type="text" value="swap 1 sol to usdc"/>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-slate-400">close</span>
+</div>
+</div>
+</div>
+<!-- Input Glow -->
+<div class="absolute -inset-1 bg-primary/10 rounded-2xl blur-lg -z-10"></div>
+</div>
+<!-- Footer Suggestions/Meta -->
+<div class="flex justify-between items-center mt-4 px-2">
+<p class="text-[10px] text-slate-600 uppercase tracking-widest font-bold">Ordo AI v1.2</p>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-slate-600 text-[18px]">history</span>
+<span class="material-symbols-outlined text-slate-600 text-[18px]">settings</span>
+</div>
+</div>
+</div>
+</footer>
+<!-- iOS Home Indicator -->
+<div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full"></div>
+</div>
+</body></html>

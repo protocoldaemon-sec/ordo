@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Portfolio Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b77f",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0A0A0F",
+                        "card-glass": "rgba(255, 255, 255, 0.03)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .donut-gradient {
+            background: conic-gradient(
+                #10b77f 0% 65%, 
+                #3b82f6 65% 85%, 
+                #f59e0b 85% 100%
+            );
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col max-w-[430px] mx-auto overflow-x-hidden border-x border-white/5 shadow-2xl">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-50 flex items-center bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 pb-2 justify-between">
+<div class="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">account_circle</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-sm font-bold leading-tight tracking-wider uppercase opacity-60">Portfolio</h2>
+<div class="flex items-center gap-1">
+<span class="size-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] font-bold text-primary tracking-tighter">SOLANA MAINNET</span>
+</div>
+</div>
+<div class="flex w-10 items-center justify-end">
+<button class="flex cursor-pointer items-center justify-center rounded-full h-10 w-10 bg-white/5 hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-white text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<!-- Main Balance Section -->
+<div class="px-6 pt-8 pb-4 text-center">
+<p class="text-white/50 text-xs font-medium uppercase tracking-[0.2em] mb-2">Total Net Worth</p>
+<h1 class="text-white font-tomorrow text-[42px] font-bold leading-none tracking-tight">$15,234.56</h1>
+<div class="mt-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+<p class="text-primary text-xs font-bold">+$365.20 (2.45%)</p>
+<span class="text-white/30 text-[10px] font-medium uppercase ml-1">Today</span>
+</div>
+</div>
+<!-- Allocation Card (Glass-morphism) -->
+<div class="px-4 py-6">
+<div class="glass-card rounded-xl p-5 relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<div>
+<h3 class="text-white font-bold text-base">Asset Allocation</h3>
+<p class="text-white/40 text-xs mt-1">Diversification across 8 protocols</p>
+</div>
+<span class="material-symbols-outlined text-white/20">info</span>
+</div>
+<div class="flex items-center gap-8">
+<!-- Custom CSS Donut -->
+<div class="relative size-24 shrink-0 rounded-full donut-gradient flex items-center justify-center">
+<div class="size-[70%] rounded-full bg-[#0A0A0F] flex flex-col items-center justify-center">
+<span class="text-[10px] text-white/40 font-bold uppercase">Health</span>
+<span class="text-xs text-primary font-bold">98%</span>
+</div>
+</div>
+<div class="flex-1 space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary"></div>
+<span class="text-xs text-white/70">Solana Ecosystem</span>
+</div>
+<span class="text-xs font-bold text-white">65%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-blue-500"></div>
+<span class="text-xs text-white/70">Stablecoins</span>
+</div>
+<span class="text-xs font-bold text-white">20%</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-amber-500"></div>
+<span class="text-xs text-white/70">Memecoins</span>
+</div>
+<span class="text-xs font-bold text-white">15%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Search & Filter -->
+<div class="px-4 pb-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-white/30 text-lg">search</span>
+<input class="w-full bg-white/5 border-none rounded-lg py-2.5 pl-10 pr-4 text-sm text-white focus:ring-1 focus:ring-primary/50 placeholder:text-white/20" placeholder="Search tokens..." type="text"/>
+</div>
+<button class="size-10 glass-card rounded-lg flex items-center justify-center text-white/60">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+</div>
+<!-- Asset List Header -->
+<div class="px-6 py-2 flex justify-between items-center">
+<h3 class="text-white/40 text-[10px] font-bold uppercase tracking-widest">Your Assets</h3>
+<button class="text-primary text-[10px] font-bold uppercase tracking-widest flex items-center gap-1">
+                Manage <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+<!-- Scrollable Asset List -->
+<div class="flex-1 px-4 space-y-3 pb-24">
+<!-- Token Row: SOL -->
+<div class="glass-card flex items-center p-3 rounded-lg hover:bg-white/5 transition-all cursor-pointer">
+<div class="relative mr-4">
+<img alt="Solana token logo" class="size-11 rounded-full bg-black/20 p-1" data-alt="Solana token circular logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpi3R7FmRKz2dhdgWKS8FUPG3fifgtRTOnyjCb62HN-0bFGiwrst628iU8oyw4wtsFlHn-TW6ml_67uiCBKENvCr86qZXtYKs1IeyRd-E2Vnodq_lIB1SHLUQk4tx9djiU-g0425igYLcPSUlhZtgNN_rCmpsykJgxJOqA4KiTfLarxSLPT47DP5kUCE91YWQ1IT4lz1xruMTVyp1wS_osAN2Hk1qYK4nf8dsEdEFaPnxeLo4TNxmbzNeMIHuuAXVNMV2tg6rmuDk"/>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full bg-[#14F195] border-2 border-[#0A0A0F] flex items-center justify-center">
+<img alt="Solana chain" class="size-3" data-alt="Small Solana chain icon badge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYLAdtwawaA-4ZeiD4bdGbWZOjFfyTFqvOjzt5yGyZ3AWIh7Dpuzbqb-SaCJ96HgeH8sGKAqlMJ9w3GNgmNWljoVXTt3i2b-eZYqN53IMt-3H0ZznxmMlsFJea34Kf1Zk2AGJPbfpZ8ZiP29kspm7snjox4RCThysKlxOLP92yHTWrvLXcayyENwIrDPtmgoEHkITZPu_EwbBODhXDsMaufJ8r9q_oMtjezntSXEHeKeUtvkNvcswHrd-T-RowgqXVVr9Qu56jjxU"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-white font-bold text-sm">SOL</h4>
+<p class="text-white/40 text-[11px]">120.50 SOL</p>
+</div>
+<div class="text-right">
+<p class="text-white font-tomorrow text-sm font-bold">$12,050.00</p>
+<p class="text-primary text-[10px] font-bold">+5.2%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Token Row: USDC -->
+<div class="glass-card flex items-center p-3 rounded-lg hover:bg-white/5 transition-all cursor-pointer">
+<div class="relative mr-4">
+<img alt="USDC token logo" class="size-11 rounded-full bg-black/20 p-1" data-alt="USDC stablecoin circular logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyf4XhKsZPGb2CmkAjYkttdPRoYLWvdMLgIcvL3OIPU4viWuJVD3g6KyBCEI7Fp-B_OaPOGCLf65JIgm1_hQqAc4tCDL3jk6ZJQfkd1KtuQkwX9U3Q_8si7DPBO10qO649uKn0CUIH1ZyffUdUTzDh2taO8TKkkhzit2XwavUBFQ8hlq-JhvpGUEhqQzmMPAEYWCVblwGn_eh1LVjNBfw43cosDajrWlguUvkN-32aejPv3BtSIYU6bpke3R_POqgKC_XkckW2pas"/>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full bg-[#627EEA] border-2 border-[#0A0A0F] flex items-center justify-center">
+<img alt="Ethereum chain" class="size-3 invert" data-alt="Small Ethereum chain icon badge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDABwLeVy056qmOCoTC6Z_eNeoQorcOpf52VeO-N4oze_N90UP8lR09P15CwX3U8FE0aCiEsJFjsZSd5Fs0wZWxHwzd3S7q7E9-dqnRjRiMJMB-blX1VsWVA6U-roebxN0R_I0BaMX-zLMRGAVskkj4z2pbIaBlWnHBayMG1vYd4vlePGufPYTMSCrtf-tVYLX9qw4ut4SJqISkejLHPH6c5IXfRFZA_A_6sJvcNKJ5oO9wFyEeaTqSK9afy7awyI4lyvmChX5N_EI"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-white font-bold text-sm">USDC</h4>
+<p class="text-white/40 text-[11px]">2,500.00 USDC</p>
+</div>
+<div class="text-right">
+<p class="text-white font-tomorrow text-sm font-bold">$2,500.00</p>
+<p class="text-white/40 text-[10px] font-bold">0.0%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Token Row: BONK -->
+<div class="glass-card flex items-center p-3 rounded-lg hover:bg-white/5 transition-all cursor-pointer">
+<div class="relative mr-4">
+<img alt="BONK token logo" class="size-11 rounded-full bg-black/20 p-1" data-alt="BONK memecoin circular logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGBc8q5UyOYaEg_5tibvIvz7f9RRa5XXRrCJGo7sxA2rqOGBcEofwuM0eEEoabbVYmdJBH70DW3LMc6FVjHtdejil5kK5YFRyYzfI7W-4DeA2vVZDmcIJd2cNZVaVey7lONdu89id6O9OtSLk-t9SkEZkjlxCr5WtA1izsPQIzCqzGDbIOES4EDGqTyTBrX7J8WjG_LtxX1scxtzwqUHn_pqrITcdZm_sZ9esi-ufrdSFXk-qR7WYKNwlSO8SqExY8ODkdOh56VBc"/>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full bg-[#14F195] border-2 border-[#0A0A0F] flex items-center justify-center">
+<img alt="Solana chain" class="size-3" data-alt="Small Solana chain icon badge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7Wrril1wY46yXDShkIjObTYm3JX31bfTkNTAcb9BEscfO12MD8MECosx9b503JLhouQVbGH1n2mxI4AjoLRsdG9TXfavjxwmmxFQyEEo8IzSmlvsdyMbCIgsm8TXXI28-Zrn1ntLPnCNd7CcpF7g_R8Bqp7Adf4myP1D1vpDf7TZLQCR9tmewGh_IwZNRyZXrQORfIxLTGCRf_eZXb7QTuJdGbmwxLuEMB3nfhcAy0qdoP7xFwpk5Lys8JHNcGVTGFU-ILqxxqQQ"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-white font-bold text-sm">BONK</h4>
+<p class="text-white/40 text-[11px]">50,000,000.00 BONK</p>
+</div>
+<div class="text-right">
+<p class="text-white font-tomorrow text-sm font-bold">$684.56</p>
+<p class="text-red-500 text-[10px] font-bold">-12.4%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Token Row: JUP -->
+<div class="glass-card flex items-center p-3 rounded-lg hover:bg-white/5 transition-all cursor-pointer">
+<div class="relative mr-4">
+<div class="size-11 rounded-full bg-gradient-to-tr from-cyan-500 to-primary flex items-center justify-center text-xs font-bold text-white">JUP</div>
+<div class="absolute -bottom-1 -right-1 size-5 rounded-full bg-[#14F195] border-2 border-[#0A0A0F] flex items-center justify-center">
+<img alt="Solana chain" class="size-3" data-alt="Small Solana chain icon badge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-_v2t_eMPE9g53BjF_SRyODwG7mgfylXeMX3UawR86_iP486SLH2itswWovqGv4L2QrLWo_f9iVS3HA1-ZW2X0-S1aTBGFJxvJiehrwXSTntto1EhkU73wMkkqmCHcO4Mwg5ZfI04ZnS3FWDYI1RcZ8veCTNUaop5t4VOfPFrbOoanOL0Sy_dzpmuihuNlgWAaGkgYJJ6bIguOtz9NHKN7gUvtTYfAZCJNsHWnuo0bUsgvye79ksjB-F1AqoTHCBqstGtskGO86Y"/>
+</div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-white font-bold text-sm">JUP</h4>
+<p class="text-white/40 text-[11px]">0.00 JUP</p>
+</div>
+<div class="text-right">
+<p class="text-white font-tomorrow text-sm font-bold">$0.00</p>
+<p class="text-white/40 text-[10px] font-bold">--</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- iOS Bottom Tab Bar -->
+<div class="fixed bottom-0 w-full max-w-[430px] h-20 bg-background-dark/80 backdrop-blur-xl border-t border-white/10 flex items-center justify-around px-6 pb-4">
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[24px]">grid_view</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Dashboard</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined text-[24px]">swap_horiz</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Swap</span>
+</div>
+<div class="flex flex-col items-center -mt-8">
+<div class="size-14 rounded-full bg-primary shadow-lg shadow-primary/40 flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined text-[28px] font-bold">add</span>
+</div>
+</div>
+<div class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Yield</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-white/40">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-[10px] font-bold uppercase tracking-tighter">Settings</span>
+</div>
+</div>
+</div>
+</body></html>

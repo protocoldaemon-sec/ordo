@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Input State Suggestions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --background-dark: #0A0A0F;
+            --ordo-card: #1A1A24;
+            --indigo-accent: #6366F1;
+            --success-green: #10B981;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-dark);
+        }
+        .font-tomorrow {
+            font-family: 'Tomorrow', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }.scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .loading-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--indigo-accent), transparent);
+            background-size: 200% 100%;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background-dark": "#0A0A0F",
+                        "ordo-card": "#1A1A24",
+                        "indigo-accent": "#6366F1",
+                        "success-green": "#10B981"
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-slate-100 flex justify-center">
+<div class="relative w-full max-w-[430px] h-screen bg-background-dark overflow-hidden flex flex-col border-x border-white/5">
+<div class="flex items-center justify-between px-6 py-3 border-b border-white/5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-indigo-accent text-sm" style="font-variation-settings: 'FILL' 1">bolt</span>
+<span class="text-[10px] font-bold tracking-[0.2em] text-indigo-accent uppercase font-tomorrow">Idle</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-success-green"></div>
+<span class="text-[10px] font-medium text-slate-500 font-tomorrow">Mainnet-Beta</span>
+</div>
+</div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-center relative">
+<div class="opacity-20 pointer-events-none space-y-4">
+<div class="h-32 w-full glass-panel rounded-2xl"></div>
+<div class="h-20 w-full glass-panel rounded-2xl"></div>
+</div>
+<div class="absolute inset-x-0 px-4 flex flex-col items-center">
+<div class="w-full glass-panel rounded-2xl shadow-2xl shadow-black/50 overflow-hidden">
+<div class="relative flex items-center px-5 py-4">
+<span class="material-symbols-outlined text-indigo-accent mr-3">terminal</span>
+<div class="flex-1 flex items-baseline">
+<span class="text-white text-lg font-tomorrow">sw</span>
+<div class="w-0.5 h-6 bg-indigo-accent ml-0.5 animate-pulse"></div>
+</div>
+<span class="material-symbols-outlined text-slate-600">close</span>
+</div>
+<div class="w-full relative h-[1px] bg-white/5 overflow-hidden">
+<div class="loading-line absolute inset-0 w-full"></div>
+</div>
+<div class="p-2 space-y-1">
+<div class="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 cursor-pointer">
+<div class="w-8 h-8 rounded-lg bg-indigo-accent/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-indigo-accent text-lg">repeat</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center gap-2">
+<span class="text-white font-tomorrow text-sm font-medium">Swap tokens</span>
+</div>
+<p class="text-[11px] text-slate-500 font-normal">swap <span class="text-indigo-accent/70">[amount]</span> <span class="text-indigo-accent/70">[from]</span> to <span class="text-indigo-accent/70">[to]</span></p>
+</div>
+<span class="material-symbols-outlined text-slate-600 text-sm">subdirectory_arrow_left</span>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-indigo-accent/10">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-indigo-accent text-lg">repeat</span>
+</div>
+<div class="flex-1">
+<span class="text-slate-300 font-tomorrow text-sm font-medium group-hover:text-white">Switch wallet</span>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
+<div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-indigo-accent/10">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-indigo-accent text-lg">send</span>
+</div>
+<div class="flex-1">
+<span class="text-slate-300 font-tomorrow text-sm font-medium group-hover:text-white">Send SOL</span>
+</div>
+</div>
+</div>
+<div class="px-4 py-2 bg-black/20 border-t border-white/5 flex justify-between items-center">
+<p class="text-[10px] text-slate-500 uppercase tracking-widest font-tomorrow">3 Matches Found</p>
+<div class="flex items-center gap-2">
+<span class="px-1.5 py-0.5 rounded bg-white/5 text-[9px] text-slate-400 border border-white/10">TAB</span>
+<span class="text-[9px] text-slate-600">to navigate</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="h-1/3 bg-[#121217] border-t border-white/5 p-2 grid grid-cols-10 gap-1.5 content-start pt-4">
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">Q</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">W</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">E</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">R</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">T</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">Y</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">U</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">I</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">O</div>
+<div class="h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">P</div>
+<div class="col-span-1"></div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">A</div>
+<div class="col-span-1 h-10 rounded bg-[#4346ef]/20 border border-indigo-accent/30 text-indigo-accent flex items-center justify-center text-sm font-bold">S</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">D</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">F</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">G</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">H</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">J</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">K</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">L</div>
+<div class="col-span-1.5 h-10 rounded bg-[#3D3D45] flex items-center justify-center"><span class="material-symbols-outlined text-lg">shift</span></div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">Z</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">X</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">C</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">V</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">B</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">N</div>
+<div class="col-span-1 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-sm font-medium">M</div>
+<div class="col-span-1.5 h-10 rounded bg-[#3D3D45] flex items-center justify-center"><span class="material-symbols-outlined text-lg">backspace</span></div>
+<div class="col-span-2 h-10 rounded bg-[#3D3D45] flex items-center justify-center text-xs font-bold">123</div>
+<div class="col-span-5 h-10 rounded bg-[#2D2D35] flex items-center justify-center text-xs text-slate-500">space</div>
+<div class="col-span-3 h-10 rounded bg-indigo-accent flex items-center justify-center text-xs font-bold">Done</div>
+</div>
+<div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-white/20 rounded-full"></div>
+</div>
+
+</body></html>

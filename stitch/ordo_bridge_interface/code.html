@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Bridge Interface</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6467f2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#101122",
+                        "ordo-card": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tech": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .tech-font {
+            font-family: 'Tomorrow', monospace;
+        }
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen flex flex-col">
+<!-- Top Status Strip -->
+<header class="flex items-center justify-between px-6 py-4 bg-background-light dark:bg-background-dark border-b border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">terminal</span>
+<h1 class="tech-font text-sm font-bold tracking-wider text-white/90">[bridge] Bridge Assets</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+<span class="tech-font text-[10px] text-white/50 uppercase tracking-widest">Live Route</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col p-4 gap-4 max-w-md mx-auto w-full">
+<!-- Command Input Section -->
+<div class="w-full">
+<label class="flex flex-col w-full h-14">
+<div class="flex w-full flex-1 items-stretch rounded-xl overflow-hidden glass-panel">
+<div class="text-primary flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">prompt_suggestion</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent text-white focus:outline-0 focus:ring-0 placeholder:text-white/30 px-4 tech-font text-base" readonly="" value="bridge 1 eth to solana"/>
+<div class="flex items-center pr-4">
+<span class="material-symbols-outlined text-white/20 text-sm">close</span>
+</div>
+</div>
+</label>
+</div>
+<!-- Bridge Visualizer Card -->
+<div class="glass-panel rounded-xl p-6 flex flex-col gap-8 relative overflow-hidden">
+<!-- Background Decorative Element -->
+<div class="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-[80px]"></div>
+<!-- Protocol Header -->
+<div class="flex items-center justify-between z-10">
+<div class="flex flex-col">
+<span class="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">Protocol</span>
+<span class="tech-font text-lg font-bold text-white">Cross-chain Route</span>
+</div>
+<div class="bg-primary/20 border border-primary/30 px-3 py-1 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">hub</span>
+<span class="text-xs font-bold text-primary uppercase tracking-tight">Via Wormhole</span>
+</div>
+</div>
+<!-- Bridge Flow Visual -->
+<div class="flex items-center justify-between relative z-10 px-2">
+<!-- Source -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-16 h-16 rounded-2xl bg-[#627EEA]/10 border border-[#627EEA]/30 flex items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-[#627EEA]/20 to-transparent"></div>
+<img alt="Ethereum Logo" class="w-8 h-8 relative z-10" data-alt="Ethereum ETH cryptocurrency logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwZqXReK8RRPYMxtFXNErC0lXhs63aJ4RZWUfe0oE5pjsErpbVOEh_GFtziDmwAEQsdZOc3HUZSy6ub5wlRuhbRupaYaA8ipGQ4JwEMHpTKwHTKqMVJVo-2fM_5Vetbh-y599u0pEX7VLbl5NOcaBWeUQzlYfOqtktRAIu211HF3vKT1VxfjgnLQIpHjEjL5yxdwvRSqWngWjGM5rivKhT2mreUEQGkzZsbVQfeRfiZTJnBwvuRORSPrUTFbItC7j7zPN6EIxqM-Q"/>
+</div>
+<div class="text-center">
+<p class="text-xs text-white/40 uppercase font-bold tracking-tighter">Source</p>
+<p class="tech-font text-sm font-bold">Ethereum</p>
+<p class="text-xs text-primary font-medium">1.00 ETH</p>
+</div>
+</div>
+<!-- Animated Connector -->
+<div class="flex-1 flex flex-col items-center justify-center px-4 mb-8">
+<div class="w-full flex items-center gap-1 opacity-40">
+<div class="h-[1px] flex-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+<span class="material-symbols-outlined text-primary text-lg">chevron_right</span>
+<div class="h-[1px] flex-1 bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+</div>
+</div>
+<!-- Destination -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-16 h-16 rounded-2xl bg-[#14F195]/10 border border-[#14F195]/30 flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-[#14F195]/20 to-transparent"></div>
+<img alt="Solana Logo" class="w-8 h-8 relative z-10" data-alt="Solana SOL cryptocurrency logo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfl5z-Q_4beAoniqoOBvPFi56VUtA_IO5XyXYgKaikVk52XFxKVXIf35WEPZQgUR4AmJPS7o9FVmeeDHeyuhd3BctM4MTHriKTTIxGTFBe_QzcCBX1zc6eJT-lWP161hIvJBt0boucb28URotQlaq3UDtAYt5fB5F8azLdrY_wQD2lo2QH2cM_hoJdzNYMW5LZ202TDCvGWdvbsKkVhb206dNV2q_m79QwITOh72MTq-FOM0zL7gAgm9W1RbRHb2Wa_I1DqpD_8HA"/>
+</div>
+<div class="text-center">
+<p class="text-xs text-white/40 uppercase font-bold tracking-tighter">Destination</p>
+<p class="tech-font text-sm font-bold">Solana</p>
+<p class="text-[10px] text-white/30 uppercase tracking-widest">Phantom Wallet</p>
+</div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 gap-4 border-t border-white/5 pt-6 z-10">
+<div class="bg-white/5 rounded-lg p-3">
+<p class="text-[10px] text-white/40 uppercase font-bold mb-1">Est. Arrival</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">schedule</span>
+<span class="tech-font text-sm font-medium">~15 mins</span>
+</div>
+</div>
+<div class="bg-white/5 rounded-lg p-3">
+<p class="text-[10px] text-white/40 uppercase font-bold mb-1">Bridge Fee</p>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-primary">receipt_long</span>
+<span class="tech-font text-sm font-medium">0.002 ETH</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Summary Section -->
+<div class="px-2 py-2">
+<h3 class="tech-font text-xs font-bold text-white/40 uppercase tracking-[0.2em] mb-4">Transaction Details</h3>
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<span class="text-sm text-white/60">Gas Estimate</span>
+<span class="text-sm tech-font">$4.25</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-white/60">Minimum Received</span>
+<span class="text-sm tech-font">0.998 ETH</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm text-white/60">Slippage Tolerance</span>
+<span class="text-sm tech-font">0.5%</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Action Footer -->
+<footer class="p-6 bg-background-light dark:bg-background-dark border-t border-white/5">
+<button class="w-full h-14 bg-primary hover:bg-primary/90 transition-colors rounded-xl flex items-center justify-center gap-3 shadow-[0_8px_30px_rgb(100,103,242,0.3)]">
+<span class="tech-font text-base font-bold uppercase tracking-widest">Execute Bridge</span>
+<span class="material-symbols-outlined">rocket_launch</span>
+</button>
+<p class="text-center text-[10px] text-white/30 mt-4 tech-font uppercase tracking-tight">
+            Transactions are finalized on-chain. Powered by Ordo Protocol.
+        </p>
+</footer>
+</body></html>

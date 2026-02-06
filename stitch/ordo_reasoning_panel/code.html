@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Reasoning Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6467f2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0A0A0F",
+                        "panel-dark": "rgba(23, 23, 35, 0.7)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(100, 103, 242, 0.1);
+        }
+        .bouncing-loader {
+            height: 2px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent 0%, #6467f2 50%, transparent 100%);
+            background-size: 200% 100%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex items-center justify-center p-4">
+<!-- Mobile Container (iPhone Aspect Ratio) -->
+<div class="relative w-full max-w-[390px] h-[844px] bg-[#0A0A0F] rounded-[3rem] overflow-hidden border-[8px] border-slate-800 shadow-2xl flex flex-col">
+<!-- Status Bar Area (iOS Style) -->
+<div class="h-12 w-full flex justify-between items-center px-8 pt-4">
+<span class="text-xs font-bold">9:41</span>
+<div class="flex gap-1.5">
+<span class="material-symbols-outlined text-[16px]">signal_cellular_4_bar</span>
+<span class="material-symbols-outlined text-[16px]">wifi</span>
+<span class="material-symbols-outlined text-[16px]">battery_full</span>
+</div>
+</div>
+<!-- Ordo Status Strip -->
+<div class="px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20">
+<span class="material-symbols-outlined text-primary text-[20px]">memory</span>
+</div>
+<div class="flex flex-col">
+<span class="text-primary text-xs font-bold tracking-widest uppercase">[cpu] Thinking</span>
+<span class="text-[10px] text-slate-500">Ordo LMM-1 Engine Active</span>
+</div>
+</div>
+<button class="text-slate-500">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<!-- Background Glow Effects -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-primary/10 rounded-full blur-[100px] pointer-events-none"></div>
+<!-- Main Content Area -->
+<div class="flex-1 px-6 flex flex-col pt-4">
+<!-- Command Bar -->
+<div class="relative group">
+<div class="w-full h-14 bg-panel-dark glass-panel rounded-xl flex items-center px-4 gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-white font-medium w-full p-0 placeholder:text-slate-600" readonly="" type="text" value="swap 1 sol to usdc"/>
+<span class="material-symbols-outlined text-primary text-[20px]">auto_awesome</span>
+</div>
+<!-- Bouncing Line Loader -->
+<div class="mt-2 h-[2px] w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="bouncing-loader"></div>
+</div>
+</div>
+<!-- Reasoning Panel Section -->
+<div class="mt-10 flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<h2 class="text-lg font-bold tracking-tight">Reasoning Panel</h2>
+</div>
+<!-- Step Card -->
+<div class="bg-panel-dark glass-panel rounded-2xl p-6 flex flex-col gap-6">
+<!-- Steps Container -->
+<div class="flex flex-col font-mono text-sm tracking-tight space-y-4">
+<!-- Step 1 -->
+<div class="flex items-start gap-3">
+<span class="text-primary font-bold">├─</span>
+<div class="flex flex-col gap-1">
+<span class="text-slate-100">Mendapatkan kuotasi dari Jupiter</span>
+<div class="flex items-center gap-2">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
+<span class="text-[10px] text-slate-500 uppercase tracking-tighter">Completed</span>
+</div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-3">
+<span class="text-primary font-bold">├─</span>
+<div class="flex flex-col gap-1">
+<span class="text-slate-100">Menghitung rute terbaik</span>
+<div class="flex items-center gap-2">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]"></span>
+<span class="text-[10px] text-slate-500 uppercase tracking-tighter">Completed</span>
+</div>
+</div>
+</div>
+<!-- Step 3 (Active) -->
+<div class="flex items-start gap-3">
+<span class="text-primary font-bold">└─</span>
+<div class="flex flex-col gap-1">
+<span class="text-slate-100 font-medium">Memvalidasi dampak harga</span>
+<div class="flex items-center gap-2">
+<div class="flex gap-0.5">
+<div class="w-1 h-1 bg-primary rounded-full"></div>
+<div class="w-1 h-1 bg-primary/40 rounded-full"></div>
+<div class="w-1 h-1 bg-primary/20 rounded-full"></div>
+</div>
+<span class="text-[10px] text-primary uppercase tracking-tighter font-bold">Processing...</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Data (Simulated) -->
+<div class="mt-4 pt-6 border-t border-slate-800/50">
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-primary/5 rounded-lg p-3 border border-primary/10">
+<span class="text-[10px] text-slate-500 block mb-1 uppercase tracking-widest">Slippage</span>
+<span class="text-primary font-bold">0.1%</span>
+</div>
+<div class="bg-primary/5 rounded-lg p-3 border border-primary/10">
+<span class="text-[10px] text-slate-500 block mb-1 uppercase tracking-widest">Routes Found</span>
+<span class="text-primary font-bold">128</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Hint -->
+<p class="text-center text-slate-600 text-xs mt-4">
+                    Ordo is cross-referencing multiple liquidity pools to ensure minimal price impact.
+                </p>
+</div>
+</div>
+<!-- Navigation Bar Area (iOS Style) -->
+<div class="h-20 w-full glass-panel border-t border-slate-800/50 flex justify-around items-center px-6 pb-4">
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px]">Portal</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<div class="relative">
+<span class="material-symbols-outlined">terminal</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full border-2 border-[#0A0A0F]"></span>
+</div>
+<span class="text-[10px] font-bold">Execute</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined">history</span>
+<span class="text-[10px]">History</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-500">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px]">Settings</span>
+</div>
+</div>
+<!-- Bottom Notch Indicator -->
+<div class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-slate-800 rounded-full"></div>
+</div>
+</body></html>

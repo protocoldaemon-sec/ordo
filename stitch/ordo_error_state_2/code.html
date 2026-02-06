@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Error State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef4343",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#0A0A0F",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "mono-data": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .data-font {
+            font-family: 'Tomorrow', monospace;
+        }
+        .glass-panel {
+            background: rgba(34, 16, 16, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(239, 67, 67, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen flex flex-col overflow-hidden">
+<!-- Top Status Strip -->
+<div class="w-full flex items-center px-6 py-4 bg-primary/10 border-b border-primary/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px] fill-1">error</span>
+<span class="text-primary font-bold tracking-widest text-xs uppercase">Error</span>
+</div>
+</div>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center p-6 @container">
+<!-- Error Message Panel -->
+<div class="glass-panel w-full max-w-md rounded-xl p-6 flex flex-col gap-6 shadow-[0_0_40px_rgba(239,67,67,0.1)]">
+<div class="flex flex-col items-center text-center gap-3">
+<div class="size-14 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary text-[32px]">warning</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Insufficient balance</h1>
+<div class="flex flex-col gap-1">
+<p class="text-white/60 text-sm">You need <span class="data-font text-white font-medium">1.000005 SOL</span></p>
+<p class="text-primary/80 text-sm font-medium">Current: <span class="data-font">0.5 SOL</span></p>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3">
+<button class="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[20px]">add_card</span>
+<span>Add Funds</span>
+</button>
+<button class="w-full h-14 bg-white/5 hover:bg-white/10 text-white/70 rounded-lg font-semibold flex items-center justify-center transition-colors">
+<span>Dismiss</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Bottom Command Bar Area -->
+<div class="p-6 pb-10 w-full max-w-2xl mx-auto">
+<div class="relative group">
+<div class="absolute -inset-0.5 bg-gradient-to-r from-primary/50 to-transparent rounded-xl blur opacity-20 group-focus-within:opacity-40 transition duration-500"></div>
+<div class="relative flex items-center bg-[#15151e] border border-white/10 rounded-xl h-14 px-4 gap-3 focus-within:border-primary/50 transition-all">
+<div class="text-white/40">
+<span class="material-symbols-outlined text-[22px]">terminal</span>
+</div>
+<input class="bg-transparent border-none focus:ring-0 text-white font-mono-data text-base flex-1 placeholder:text-white/20" readonly="" type="text" value="swap 1 sol to usdc"/>
+<button class="size-8 flex items-center justify-center rounded-lg bg-white/5 text-white/40">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Subtle App Hint -->
+<p class="text-center text-[10px] text-white/20 mt-4 uppercase tracking-[0.2em] font-medium">Ordo Command Engine v1.0.4</p>
+</div>
+<!-- Background Decoration -->
+<div class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
+</body></html>

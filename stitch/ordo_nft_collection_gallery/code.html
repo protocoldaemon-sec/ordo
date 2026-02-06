@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo NFT Collection Gallery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b77f",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "panel-dark": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "numeric": ["Tomorrow", "monospace"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .nft-card-gradient {
+            background: linear-gradient(180deg, rgba(26, 26, 36, 0) 0%, rgba(26, 26, 36, 0.9) 100%);
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .font-numeric {
+            font-family: 'Tomorrow', monospace;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<div class="sticky top-0 z-50 glass-panel">
+<div class="flex items-center p-4 justify-between">
+<div class="flex size-10 shrink-0 items-center justify-center rounded-full bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined text-white">arrow_back_ios_new</span>
+</div>
+<div class="flex flex-col items-center">
+<h1 class="text-white text-lg font-bold leading-tight font-display tracking-tight">Ordo Gallery</h1>
+<div class="flex items-center gap-1">
+<div class="size-1.5 rounded-full bg-primary animate-pulse"></div>
+<span class="text-[10px] text-primary font-bold uppercase tracking-widest">Solana Mainnet</span>
+</div>
+</div>
+<div class="flex size-10 items-center justify-end rounded-full bg-white/5 cursor-pointer">
+<span class="material-symbols-outlined text-white">search</span>
+</div>
+</div>
+<!-- Summary Panel -->
+<div class="px-4 pb-4">
+<div class="flex items-center justify-center gap-2 py-3 bg-white/5 rounded-xl border border-white/10">
+<span class="text-slate-400 text-sm font-medium">5 NFTs</span>
+<span class="text-white/20">•</span>
+<span class="text-white text-sm font-numeric font-semibold">$375.00 <span class="text-slate-400 font-normal">est</span></span>
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-2 px-4 pb-4 overflow-x-auto no-scrollbar">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-primary px-4">
+<span class="text-background-dark text-xs font-bold">All Collections</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white/5 border border-white/10 px-4">
+<span class="text-white text-xs font-medium">Recent</span>
+<span class="material-symbols-outlined text-white text-sm">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-full bg-white/5 border border-white/10 px-4">
+<span class="text-white text-xs font-medium">Floor Price</span>
+<span class="material-symbols-outlined text-white text-sm">expand_more</span>
+</button>
+</div>
+</div>
+<!-- NFT Grid -->
+<main class="p-4">
+<div class="grid grid-cols-2 gap-4">
+<!-- NFT Card 1 -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-panel-dark border border-white/5">
+<div class="relative w-full aspect-square overflow-hidden bg-slate-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Abstract colorful cyber ape portrait artwork" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCmWEE3XavFiGK4wV1lspgtJlsUezFM6vP3E67MUhOc6LW0TraHgF6tKaWWeiXamKEXbP9jQj4sDEzSZQd28nAjNJzRsJp0LcPqh-KMYIXaV_W_DqdAYp5cKImrwOQLX7Qhm08vs_CQdNLA_gwxr1wmZMLzmT7D0DhWFWCkizPwREIGzKWi5oT9F_KD62O7mYK9jimlcb0mJ4-xBMnhRfxabT4XSfEo1P5ehsn4I7k1-3M1q0TKdv0MvJbLtEOL5ROMrHtEyD3aWYI');"></div>
+<div class="absolute inset-0 nft-card-gradient"></div>
+<div class="absolute top-2 right-2 flex size-7 items-center justify-center rounded-full glass-panel">
+<span class="material-symbols-outlined text-white text-xs">favorite</span>
+</div>
+</div>
+<div class="p-3">
+<p class="text-white text-sm font-bold truncate mb-1">Degenerate Ape #123</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">Floor Price</span>
+<span class="text-primary text-xs font-numeric font-bold">45.20 SOL</span>
+</div>
+</div>
+</div>
+<!-- NFT Card 2 -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-panel-dark border border-white/5">
+<div class="relative w-full aspect-square overflow-hidden bg-slate-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Pixelated high-tech robot avatar blue" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD0Hxq8iEpkbWjGPVSttYpSSPrHyLZGk1YlEaNTC8T_iOmSjkpPMOTxlT5dXZRFzlzueBz9KYj_NeK-wkqzeFc0OEC9s7MYSYifXtFYKq1JfsM7WpnywoCo4bJ--YrIZRLa6JiNZTqdZWIWGBJVrpnuy8aRxEu-tkmK4kdMlEVo02yODUpJ_TJy6EhMaduIeGCfNbvBiFcZI-M9i5UipDHE4eLbWUzYRV9LFqGdmlwiSxf3AI1AAd9ylxSmKBj3fRFeHSq3pgMKBv4');"></div>
+<div class="absolute inset-0 nft-card-gradient"></div>
+</div>
+<div class="p-3">
+<p class="text-white text-sm font-bold truncate mb-1">SMB #4412</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">Floor Price</span>
+<span class="text-primary text-xs font-numeric font-bold">12.50 SOL</span>
+</div>
+</div>
+</div>
+<!-- NFT Card 3 -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-panel-dark border border-white/5">
+<div class="relative w-full aspect-square overflow-hidden bg-slate-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Abstract 3D neon shapes and fluid art" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAc62Fm8JlBFpJB9zf3NoFSlri-HPCQMldLedmaZsmKmMFolgCnZrsNb_lnepdP0laP_FTqXvz0pt36Q1K2kXJ-WNTGYE8JHZUeoqdAqaJjyItN1qHJfoeBwtKPDfuBG1LPHNPxxZ_YYtV6PcntC-JbINgDGFKS2BhccCyS_alQkSldfvV3TOKqHD93l46NZBc4W1Wcub_0uJl0i1JnbVvbkMVxAVyoZ36nxIZVhBTAYMdmT0OcYVFdQPcDCPMTxaylwIf3xm0cl5Y');"></div>
+<div class="absolute inset-0 nft-card-gradient"></div>
+</div>
+<div class="p-3">
+<p class="text-white text-sm font-bold truncate mb-1">Mad Lads #881</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">Floor Price</span>
+<span class="text-primary text-xs font-numeric font-bold">110.0 SOL</span>
+</div>
+</div>
+</div>
+<!-- NFT Card 4 -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-panel-dark border border-white/5">
+<div class="relative w-full aspect-square overflow-hidden bg-slate-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Glowing digital dinosaur sculpture green neon" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDxBWahcwAogaPwhqdDufjHWLKksaVOXB_F9hgejcEfnkt5Bu3k3J1ZoiD6tkTUsSl_c3J8TdBCI0eFTszxarqbNkM5p2-AeIHmtkgahl0hzdE_ycqueSsy8RQqmSAP64xTLrMjw_H8avFP5xYSMpPE4y2Rf0XqSCmgzfYFoMpW-YLtGyssCKxFMwmwr5VXUppWivo2HO5uBH9BEQg9rL2CdEHbHET4eOl43aUrTeITbSXjt1cB398Bpjyk1C9yyGcXhF-mw7gpHEs');"></div>
+<div class="absolute inset-0 nft-card-gradient"></div>
+</div>
+<div class="p-3">
+<p class="text-white text-sm font-bold truncate mb-1">Claynosaurz #21</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">Floor Price</span>
+<span class="text-primary text-xs font-numeric font-bold">35.15 SOL</span>
+</div>
+</div>
+</div>
+<!-- NFT Card 5 -->
+<div class="group relative flex flex-col overflow-hidden rounded-xl bg-panel-dark border border-white/5">
+<div class="relative w-full aspect-square overflow-hidden bg-slate-800">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" data-alt="Futuristic digital art portrait with visor" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCXP8g4luMe5PJYL1OMYz4RTZdbNO7CpF2-e1IEHjB62CEKeoo-1ofeJAOt6A47dQ0R9hyYNoDwCJTEoobmXEAHndNX_tXWerzfVljNa1X3mO-lBGwXCzd_sfrodQugoIDjF-4Ho1P2xXIGS00S0ENeIAeI0wxPB2rbpiw11lwSDZrVIIRJRcpEcwPUDgjZR4Z-pn2lMMoOyhPg1LsuyF588aWGxlPewneCpZxK-HkC4_S10_wdq_DFO8c0oAIyO4Lg8mle6pXNvAk');"></div>
+<div class="absolute inset-0 nft-card-gradient"></div>
+</div>
+<div class="p-3">
+<p class="text-white text-sm font-bold truncate mb-1">Solana Monkey #9</p>
+<div class="flex items-center justify-between">
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">Floor Price</span>
+<span class="text-primary text-xs font-numeric font-bold">8.40 SOL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Padding for Floating Action Button -->
+<div class="h-24"></div>
+</main>
+<!-- Floating Action Button -->
+<div class="fixed bottom-6 right-6">
+<button class="flex size-14 items-center justify-center rounded-full bg-primary text-background-dark shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-transform">
+<span class="material-symbols-outlined font-bold">add</span>
+</button>
+</div>
+<!-- Tab Bar -->
+<div class="fixed bottom-0 left-0 right-0 glass-panel border-t border-white/5 px-6 pt-2 pb-6">
+<div class="flex items-center justify-between max-w-md mx-auto">
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-medium">Assets</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-primary">
+<span class="material-symbols-outlined fill-[1]">grid_view</span>
+<span class="text-[10px] font-bold">Gallery</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="text-[10px] font-medium">Swap</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-slate-400">
+<span class="material-symbols-outlined">smart_toy</span>
+<span class="text-[10px] font-medium">Assistant</span>
+</div>
+</div>
+</div>
+<style>
+        /* Hide scrollbar for horizontal scroll */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

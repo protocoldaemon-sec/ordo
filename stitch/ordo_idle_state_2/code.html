@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Idle State</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Tomorrow:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6467f2",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0A0A0F",
+                        "ordo-indigo": "#6366F1",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "technical": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0A0A0F;
+            overflow: hidden;
+        }
+        .scanline-effect {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            ), linear-gradient(
+                90deg,
+                rgba(255, 0, 0, 0.02),
+                rgba(0, 255, 0, 0.01),
+                rgba(0, 0, 255, 0.02)
+            );
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        .glow-subtle {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+        }
+        .cursor-blink {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: #6366F1;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white antialiased">
+<!-- Main UI Surface -->
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- Background Overlay for System Feel -->
+<div class="scanline-effect absolute inset-0 z-0 opacity-30"></div>
+<!-- Status Strip (Top) -->
+<header class="relative z-10 flex w-full items-center justify-between px-6 py-8">
+<!-- Left: Status Indicator -->
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-ordo-indigo text-lg">bolt</span>
+<span class="font-technical text-xs tracking-widest uppercase text-ordo-indigo/80">Idle</span>
+</div>
+<!-- Right: User Profile -->
+<div class="flex items-center gap-2">
+<span class="font-technical text-xs tracking-widest uppercase text-white/60">Guest</span>
+<span class="material-symbols-outlined text-white/60 text-lg">account_circle</span>
+</div>
+</header>
+<!-- Command Input Section (Center) -->
+<main class="relative z-10 flex flex-1 flex-col items-center justify-center px-6">
+<div class="w-full max-w-md">
+<!-- Large Central Command Bar -->
+<div class="group relative">
+<!-- Glow effect container -->
+<div class="absolute -inset-1 rounded-xl bg-ordo-indigo/10 opacity-75 blur-md group-hover:opacity-100"></div>
+<div class="relative flex h-20 w-full items-center rounded-xl border border-white/10 bg-white/5 px-6 backdrop-blur-xl transition-all duration-300 focus-within:border-ordo-indigo/50 focus-within:bg-white/10">
+<input autofocus="" class="w-full border-none bg-transparent p-0 text-xl font-medium text-white placeholder:text-white/20 focus:ring-0" placeholder="What do you want to do?" type="text"/>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-ordo-indigo/40">keyboard_command_key</span>
+</div>
+</div>
+</div>
+<!-- Suggestions / Hint Text -->
+<div class="mt-6 flex justify-center space-x-4 opacity-40">
+<span class="font-technical text-[10px] tracking-tighter uppercase border border-white/20 px-2 py-1 rounded">Swap</span>
+<span class="font-technical text-[10px] tracking-tighter uppercase border border-white/20 px-2 py-1 rounded">Stake</span>
+<span class="font-technical text-[10px] tracking-tighter uppercase border border-white/20 px-2 py-1 rounded">Transfer</span>
+</div>
+</div>
+</main>
+<!-- Gesture Hint (Bottom) -->
+<footer class="relative z-10 flex w-full flex-col items-center pb-12">
+<div class="flex flex-col items-center gap-1 opacity-40">
+<span class="material-symbols-outlined text-sm">keyboard_arrow_up</span>
+<p class="font-technical text-[10px] tracking-[0.2em] uppercase">swipe up for history</p>
+</div>
+<!-- iOS Home Indicator Space -->
+<div class="mt-6 h-1 w-32 rounded-full bg-white/10"></div>
+</footer>
+<!-- Decorative System Elements -->
+<div class="absolute bottom-[-10%] left-[-10%] h-[400px] w-[400px] rounded-full bg-ordo-indigo/5 blur-[120px]"></div>
+<div class="absolute top-[-5%] right-[-5%] h-[300px] w-[300px] rounded-full bg-primary/5 blur-[100px]"></div>
+</div>
+<!-- Background Grid Texture -->
+<svg class="fixed inset-0 z-[-1] h-full w-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"></path>
+</pattern>
+</defs>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+</svg>
+</body></html>

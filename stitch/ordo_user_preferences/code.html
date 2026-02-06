@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo User Preferences</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6565f1",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0A0A0F",
+                        "glass-dark": "#1A1A24",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-effect {
+            background-color: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        input[type='range']::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 20px;
+            width: 20px;
+            border-radius: 50%;
+            background: #6565f1;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(101, 101, 241, 0.5);
+            margin-top: -8px;
+        }
+        input[type='range']::-webkit-slider-runnable-track {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display text-white min-h-screen">
+<div class="relative flex h-screen w-full flex-col overflow-hidden max-w-[430px] mx-auto shadow-2xl border-x border-white/5">
+<!-- Background Elements for Visual Depth -->
+<div class="absolute top-[-10%] left-[-10%] w-[60%] h-[40%] bg-primary/20 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[10%] right-[-10%] w-[50%] h-[30%] bg-primary/10 rounded-full blur-[100px]"></div>
+<!-- Top App Bar -->
+<header class="relative z-10 flex items-center p-6 pt-12 justify-between">
+<button class="text-white flex size-10 items-center justify-center rounded-full bg-white/5 border border-white/10">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h2 class="text-white text-lg font-bold leading-tight tracking-tight flex-1 text-center">User Preferences</h2>
+<div class="flex w-10 items-center justify-end">
+<button class="flex items-center justify-center rounded-full bg-white/5 border border-white/10 size-10">
+<span class="material-symbols-outlined text-white">help_outline</span>
+</button>
+</div>
+</header>
+<!-- Main Preferences Container -->
+<main class="relative z-10 flex-1 px-4 overflow-y-auto pb-32">
+<div class="glass-effect rounded-xl p-5 space-y-8">
+<!-- Section 1: Assistant Autonomy -->
+<section>
+<h3 class="font-tomorrow text-xs font-bold leading-tight tracking-[0.15em] text-primary mb-4">ASSISTANT AUTONOMY</h3>
+<div class="flex bg-background-dark/50 border border-white/5 p-1 rounded-xl">
+<label class="flex cursor-pointer h-10 grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-medium transition-all duration-200">
+<span class="truncate">Low</span>
+<input class="invisible w-0" name="autonomy" type="radio" value="Low"/>
+</label>
+<label class="flex cursor-pointer h-10 grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-medium transition-all duration-200">
+<span class="truncate">Medium</span>
+<input checked="" class="invisible w-0" name="autonomy" type="radio" value="Medium"/>
+</label>
+<label class="flex cursor-pointer h-10 grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-primary has-[:checked]:text-white text-white/40 text-sm font-medium transition-all duration-200">
+<span class="truncate">High</span>
+<input class="invisible w-0" name="autonomy" type="radio" value="High"/>
+</label>
+</div>
+</section>
+<div class="h-px bg-white/10 w-full"></div>
+<!-- Section 2: Risk Management -->
+<section class="space-y-6">
+<h3 class="font-tomorrow text-xs font-bold leading-tight tracking-[0.15em] text-primary mb-4">RISK MANAGEMENT</h3>
+<div class="flex items-center justify-between">
+<div>
+<p class="text-white text-base font-medium leading-normal">Block High-Risk Tokens</p>
+<p class="text-white/40 text-xs">Automatically filter dangerous contracts</p>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-[28px] w-[50px] cursor-pointer items-center rounded-full border border-white/10 bg-white/5 p-0.5 has-[:checked]:justify-end has-[:checked]:bg-primary transition-all duration-300">
+<div class="h-5 w-5 rounded-full bg-white shadow-lg"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<p class="text-white text-base font-medium leading-normal">Min Token Risk Score</p>
+<span class="bg-primary/20 text-primary text-xs font-bold px-2 py-1 rounded border border-primary/30">50</span>
+</div>
+<div class="relative pt-2">
+<input class="w-full h-1 bg-transparent appearance-none cursor-pointer" max="100" min="0" type="range" value="50"/>
+<div class="flex justify-between mt-2 text-[10px] text-white/30 uppercase tracking-widest font-bold">
+<span>Conservative</span>
+<span>Aggressive</span>
+</div>
+</div>
+</div>
+</section>
+<div class="h-px bg-white/10 w-full"></div>
+<!-- Section 3: Transaction Defaults -->
+<section class="space-y-6">
+<h3 class="font-tomorrow text-xs font-bold leading-tight tracking-[0.15em] text-primary mb-4">TRANSACTION DEFAULTS</h3>
+<div class="space-y-2">
+<label class="text-white/40 text-sm font-medium">Default Slippage Tolerance</label>
+<div class="flex items-center gap-2 bg-background-dark/50 border border-white/5 rounded-xl px-4 py-3 focus-within:border-primary/50 transition-colors">
+<input class="bg-transparent border-none p-0 focus:ring-0 text-white font-medium w-full text-base" type="text" value="1.0"/>
+<span class="text-primary font-bold">%</span>
+</div>
+<p class="text-[11px] text-white/30">Setting high slippage can result in unfavorable trades.</p>
+</div>
+</section>
+</div>
+<!-- Footer Buttons Area -->
+<div class="mt-8 flex flex-col items-center gap-6 pb-8">
+<button class="text-white/40 text-sm font-medium hover:text-white transition-colors">
+                    Reset to Defaults
+                </button>
+<button class="w-full h-14 bg-primary hover:bg-primary/90 rounded-xl font-bold text-base shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all active:scale-[0.98]">
+                    Save Changes
+                    <span class="material-symbols-outlined text-xl">bolt</span>
+</button>
+</div>
+</main>
+<!-- Dynamic Visual Detail - Scanline -->
+<div class="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%]"></div>
+</div>
+</body></html>

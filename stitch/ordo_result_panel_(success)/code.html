@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ordo Result Panel (Success)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Tomorrow:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b77f",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#0a0a0f",
+                        "success-green": "#10B981",
+                        "glass-bg": "rgba(35, 72, 60, 0.15)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "tomorrow": ["Tomorrow", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(16, 183, 127, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(16, 183, 127, 0.1);
+        }
+        .glow-success {
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.2);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white min-h-screen flex items-center justify-center p-0 sm:p-4">
+<div class="relative w-full max-w-[430px] h-[932px] bg-background-light dark:bg-background-dark overflow-hidden flex flex-col shadow-2xl sm:rounded-xl">
+<!-- Status Strip -->
+<div class="flex items-center bg-success-green/10 px-4 py-2 border-b border-success-green/20">
+<span class="material-symbols-outlined text-success-green text-lg mr-2" style="font-variation-settings: 'FILL' 1">check_circle</span>
+<span class="text-success-green text-sm font-bold uppercase tracking-widest">Complete</span>
+</div>
+<!-- Top Header & Menu -->
+<div class="flex items-center justify-between px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-background-dark text-xl font-bold">token</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight">Ordo</h1>
+</div>
+<button class="p-2 hover:bg-white/5 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-400">more_vert</span>
+</button>
+</div>
+<!-- Command Bar (Persistent) -->
+<div class="px-6 py-2">
+<div class="flex items-center bg-white/5 dark:bg-[#1a1a24] rounded-xl border border-white/10 px-4 py-3 gap-3">
+<span class="material-symbols-outlined text-primary/60">terminal</span>
+<input class="bg-transparent border-none p-0 focus:ring-0 text-white/90 text-sm font-medium w-full" readonly="" type="text" value="swap 1 sol to usdc"/>
+<span class="material-symbols-outlined text-white/20 text-sm">history</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-6 py-8 flex flex-col">
+<!-- Result Panel Heading -->
+<h4 class="text-white/40 text-xs font-bold uppercase tracking-[0.2em] mb-6 text-center">Result Panel</h4>
+<!-- Main Result Container (Glass Panel) -->
+<div class="glass-panel rounded-xl p-8 flex flex-col items-center text-center relative overflow-hidden">
+<!-- Background decorative glow -->
+<div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[60px]"></div>
+<!-- Success Icon -->
+<div class="w-20 h-20 rounded-full bg-success-green/20 flex items-center justify-center mb-6 glow-success border border-success-green/30">
+<span class="material-symbols-outlined text-success-green text-4xl" style="font-variation-settings: 'FILL' 1, 'wght' 600">check</span>
+</div>
+<p class="text-white/60 text-sm font-medium mb-2">Transaction Executed</p>
+<div class="flex items-center justify-center gap-3 mb-8">
+<span class="text-2xl font-tomorrow text-white">1 SOL</span>
+<span class="material-symbols-outlined text-primary/60">east</span>
+<span class="text-3xl font-tomorrow text-primary">150.25 USDC</span>
+</div>
+<!-- Divider -->
+<div class="w-full h-px bg-white/5 mb-8"></div>
+<!-- Detailed Breakdown -->
+<div class="w-full space-y-4">
+<div class="flex justify-between items-center text-sm">
+<span class="text-white/40 font-medium">Network Fee</span>
+<div class="flex items-center gap-1.5">
+<span class="text-white/90">0.000005 SOL</span>
+<span class="material-symbols-outlined text-white/20 text-xs">info</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-white/40 font-medium">Signature</span>
+<div class="flex items-center gap-2 px-2 py-1 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+<span class="text-primary font-mono text-xs">5wHu1q...</span>
+<span class="material-symbols-outlined text-[16px] text-white/40">content_copy</span>
+</div>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-white/40 font-medium">Slippage</span>
+<span class="text-white/90">0.5%</span>
+</div>
+</div>
+</div>
+<!-- Transaction Status Badge (Floating style) -->
+<div class="mt-8 flex justify-center">
+<div class="inline-flex items-center gap-2 px-3 py-1.5 bg-success-green/10 rounded-full border border-success-green/20">
+<div class="w-2 h-2 rounded-full bg-success-green animate-pulse"></div>
+<span class="text-xs font-bold text-success-green tracking-wide">CONFIRMED ON MAINNET</span>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="p-6 pb-12 space-y-3 bg-gradient-to-t from-background-dark via-background-dark to-transparent">
+<button class="w-full py-4 px-6 rounded-xl border border-white/10 text-white font-bold hover:bg-white/5 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">open_in_new</span>
+                View Details
+            </button>
+<button class="w-full py-4 px-6 rounded-xl bg-primary text-background-dark font-bold hover:opacity-90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
+                Done
+            </button>
+</div>
+<!-- Bottom Home Indicator (iOS Style) -->
+<div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1.5 bg-white/10 rounded-full"></div>
+</div>
+</body></html>
