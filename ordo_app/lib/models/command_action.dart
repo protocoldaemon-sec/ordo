@@ -43,6 +43,8 @@ enum ActionType {
   setLimit,
   setSlippage,
   showSecuritySettings, // NEW: Security & limits panel
+  networkSettings,      // NEW: Network switching (devnet/mainnet)
+  faucet,               // NEW: Faucet/airdrop panel
   
   // History
   showTransactions,
@@ -143,6 +145,10 @@ ActionType _mapBackendActionType(String? actionType) {
       return ActionType.setSlippage;
     case 'show_security_settings':
       return ActionType.showSecuritySettings;
+    case 'network_settings':
+      return ActionType.networkSettings;
+    case 'faucet':
+      return ActionType.faucet;
     
     // History
     case 'show_transactions':

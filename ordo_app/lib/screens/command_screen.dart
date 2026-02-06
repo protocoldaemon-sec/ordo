@@ -26,6 +26,8 @@ import '../widgets/send_panel.dart';
 import '../widgets/wallet_management_panel.dart';
 import '../widgets/approval_history_panel.dart';
 import '../widgets/ai_response_panel.dart';
+import '../widgets/network_settings_panel.dart';
+import '../widgets/faucet_panel.dart';
 import '../services/command_index.dart';
 import '../models/command_action.dart';
 import '../theme/app_theme.dart';
@@ -638,6 +640,20 @@ class _CommandScreenState extends State<CommandScreen> {
       // Deposit - show deposit panel
       case ActionType.deposit:
         return DepositPanel(
+          data: action.data,
+          onDismiss: () => controller.dismissPanel(),
+        );
+      
+      // Network settings panel
+      case ActionType.networkSettings:
+        return NetworkSettingsPanel(
+          data: action.data,
+          onDismiss: () => controller.dismissPanel(),
+        );
+      
+      // Faucet panel
+      case ActionType.faucet:
+        return FaucetPanel(
           data: action.data,
           onDismiss: () => controller.dismissPanel(),
         );
