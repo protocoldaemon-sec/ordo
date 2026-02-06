@@ -5,6 +5,7 @@ import '../services/voice_service.dart';
 import '../services/command_router.dart';
 import '../services/context_service.dart';
 import '../models/command_action.dart';
+import '../models/ai_process_step.dart';
 
 enum AssistantState {
   idle,
@@ -24,8 +25,10 @@ class AssistantController extends ChangeNotifier {
   String _currentCommand = '';
   CommandAction? _currentAction;
   String? _error;
-  List<String> _reasoningSteps = [];
+  List<AIProcessStep> _processSteps = [];
   String _partialVoiceInput = '';
+  double _progress = 0.0;
+  String _currentPhase = '';
   
   AssistantController({
     required this.apiClient,
@@ -38,13 +41,44 @@ class AssistantController extends ChangeNotifier {
   String get currentCommand => _currentCommand;
   CommandAction? get currentAction => _currentAction;
   String? get error => _error;
-  List<String> get reasoningSteps => _reasoningSteps;
+  List<AIProcessStep> get processSteps => _processSteps;
   String get partialVoiceInput => _partialVoiceInput;
+  double get progress => _progress;
+  String get currentPhase => _currentPhase;
+  
+  // Legacy getter for compatibility
+  List<String> get reasoningSteps => 
+      _processSteps.map((s) => s.title).toList();
   
   bool get isLoading => 
       _state == AssistantState.listening ||
       _state == AssistantState.thinking ||
       _state == AssistantState.executing;
+  
+  // Add process step
+  void _addStep(AIProcessStep step) {
+    _processSteps.add(step);
+    notifyListeners();
+  }
+  
+  // Update step status
+  void _updateStep(String id, StepStatus status, {Map<String, dynamic>? result}) {
+    final index = _processSteps.indexWhere((s) => s.id == id);
+    if (index >= 0) {
+      _processSteps[index] = _processSteps[index].copyWith(
+        status: status,
+        result: result,
+      );
+      notifyListeners();
+    }
+  }
+  
+  // Set progress and phase
+  void _setProgress(double value, String phase) {
+    _progress = value.clamp(0.0, 1.0);
+    _currentPhase = phase;
+    notifyListeners();
+  }
   
   // Process command with smart routing
   Future<void> processCommand(String command) async {
@@ -53,7 +87,9 @@ class AssistantController extends ChangeNotifier {
     _currentCommand = command;
     _currentAction = null;
     _error = null;
-    _reasoningSteps = [];
+    _processSteps = [];
+    _progress = 0.0;
+    _currentPhase = '';
     
     try {
       // Route command
@@ -97,11 +133,20 @@ class AssistantController extends ChangeNotifier {
   // Handle direct API call (no AI)
   Future<void> _handleDirectApi(CommandRoute route) async {
     _setState(AssistantState.thinking);
-    _reasoningSteps = ['Fetching data...'];
-    notifyListeners();
+    
+    _addStep(AIProcessStep(
+      id: 'fetch',
+      type: StepType.tool,
+      title: 'Fetching data...',
+      status: StepStatus.running,
+    ));
+    _setProgress(0.3, 'Fetching');
     
     // Call API directly
     final response = await apiClient.get(route.apiEndpoint!);
+    
+    _updateStep('fetch', StepStatus.completed);
+    _setProgress(1.0, 'Complete');
     
     print('🔵 Direct API response: $response');
     
@@ -135,17 +180,24 @@ class AssistantController extends ChangeNotifier {
     _setState(AssistantState.showingPanel);
   }
   
-  // Handle AI agent (complex reasoning) - WITH STREAMING
+  // Handle AI agent (complex reasoning) - WITH STREAMING & REAL-TIME STEPS
   Future<void> _handleAiAgent(String command) async {
     _setState(AssistantState.thinking);
-    _reasoningSteps = [
-      'Analyzing command...',
-    ];
-    notifyListeners();
+    _setProgress(0.1, 'Analyzing');
+    
+    // Initial thinking step
+    _addStep(AIProcessStep(
+      id: 'analyze',
+      type: StepType.thinking,
+      title: 'Analyzing your request...',
+      description: _getCommandContext(command),
+      status: StepStatus.running,
+    ));
     
     String accumulatedText = '';
     List<String> toolsUsed = [];
     Map<String, dynamic>? structuredDoneEvent;
+    int toolIndex = 0;
     
     try {
       // Try streaming first
@@ -156,31 +208,67 @@ class AssistantController extends ChangeNotifier {
             // Tool call started
             final toolName = chunk.replaceAll('[Using ', '').replaceAll('...]', '').trim();
             toolsUsed.add(toolName);
+            toolIndex++;
             
-            _reasoningSteps = [
-              'Analyzing command...',
-              'Using tools: ${toolsUsed.join(", ")}',
-              'Processing...',
-            ];
-            notifyListeners();
+            // Mark analyze as complete
+            _updateStep('analyze', StepStatus.completed);
+            
+            // Add tool step
+            final stepId = 'tool_$toolIndex';
+            _addStep(AIProcessStep(
+              id: stepId,
+              type: StepType.tool,
+              title: toolName,
+              description: 'Executing...',
+              status: StepStatus.running,
+            ));
+            
+            _setProgress(0.2 + (toolIndex * 0.15), 'Calling $toolName');
+            
           } else if (chunk.startsWith('[✓ ')) {
             // Tool completed
-            _reasoningSteps = [
-              'Analyzing command...',
-              'Tools used: ${toolsUsed.join(", ")}',
-              'Receiving response...',
-            ];
-            notifyListeners();
+            final toolName = chunk.replaceAll('[✓ ', '').replaceAll(']', '').trim();
+            final stepId = 'tool_$toolIndex';
+            
+            _updateStep(stepId, StepStatus.completed);
+            _setProgress(0.3 + (toolIndex * 0.15), '$toolName completed');
+            
+          } else if (chunk.startsWith('[Tool Error:')) {
+            // Tool failed
+            final stepId = 'tool_$toolIndex';
+            _updateStep(stepId, StepStatus.failed);
+            
+          } else if (chunk.startsWith('___REASONING___')) {
+            // Reasoning step from AI
+            final reasoningText = chunk.substring(15).trim();
+            _addStep(AIProcessStep(
+              id: 'reasoning_${DateTime.now().millisecondsSinceEpoch}',
+              type: StepType.reasoning,
+              title: reasoningText,
+              status: StepStatus.completed,
+            ));
+            
           } else if (chunk.startsWith('___DONE___')) {
             // Structured done event from backend
             final doneJson = chunk.substring(10); // Remove '___DONE___' prefix
             try {
               structuredDoneEvent = jsonDecode(doneJson);
               print('🔵 Received structured done event');
+              
+              // Add final result step
+              _addStep(AIProcessStep(
+                id: 'result',
+                type: StepType.result,
+                title: 'Processing complete',
+                description: structuredDoneEvent?['summary'] as String?,
+                status: StepStatus.completed,
+              ));
+              _setProgress(1.0, 'Complete');
+              
             } catch (e) {
               print('🔴 Failed to parse done event: $e');
             }
-          } else {
+          } else if (chunk.isNotEmpty && !chunk.startsWith('[')) {
             // Regular text chunk - accumulate for fallback
             accumulatedText += chunk;
           }
@@ -192,13 +280,20 @@ class AssistantController extends ChangeNotifier {
         print('🔵 Falling back to non-streaming API...');
         
         // Fallback to non-streaming
-        _reasoningSteps = [
-          'Analyzing command...',
-          'Processing request...',
-        ];
-        notifyListeners();
+        _updateStep('analyze', StepStatus.completed);
+        
+        _addStep(AIProcessStep(
+          id: 'fallback',
+          type: StepType.tool,
+          title: 'Processing request...',
+          status: StepStatus.running,
+        ));
+        _setProgress(0.5, 'Processing');
         
         final response = await apiClient.sendMessage(command);
+        
+        _updateStep('fallback', StepStatus.completed);
+        _setProgress(1.0, 'Complete');
         
         // Non-streaming response is already structured
         _currentAction = CommandAction.fromApiResponse(response);
@@ -222,6 +317,16 @@ class AssistantController extends ChangeNotifier {
       } else if (accumulatedText.isNotEmpty) {
         // Fallback: try to parse accumulated text
         print('🔵 Using accumulated text fallback');
+        
+        // Mark processing complete
+        _addStep(AIProcessStep(
+          id: 'result',
+          type: StepType.result,
+          title: 'Processing complete',
+          status: StepStatus.completed,
+        ));
+        _setProgress(1.0, 'Complete');
+        
         Map<String, dynamic> response;
         try {
           response = jsonDecode(accumulatedText);
@@ -265,6 +370,15 @@ class AssistantController extends ChangeNotifier {
     } catch (e) {
       print('🔴 AI Agent error: $e');
       
+      // Add error step
+      _addStep(AIProcessStep(
+        id: 'error',
+        type: StepType.error,
+        title: 'Error occurred',
+        description: e.toString(),
+        status: StepStatus.failed,
+      ));
+      
       // Extract clean error message
       String errorMessage = e.toString().replaceAll('Exception: ', '');
       
@@ -293,6 +407,35 @@ class AssistantController extends ChangeNotifier {
     }
   }
   
+  // Get context description for the command
+  String _getCommandContext(String command) {
+    final lower = command.toLowerCase();
+    
+    if (lower.contains('balance') || lower.contains('saldo')) {
+      return 'Checking wallet balance...';
+    }
+    if (lower.contains('swap') || lower.contains('tukar')) {
+      return 'Preparing token swap...';
+    }
+    if (lower.contains('send') || lower.contains('kirim') || lower.contains('transfer')) {
+      return 'Preparing transfer...';
+    }
+    if (lower.contains('stake') || lower.contains('staking')) {
+      return 'Checking staking options...';
+    }
+    if (lower.contains('wallet') || lower.contains('dompet')) {
+      return 'Managing wallets...';
+    }
+    if (lower.contains('nft')) {
+      return 'Looking up NFTs...';
+    }
+    if (lower.contains('price') || lower.contains('harga')) {
+      return 'Fetching price data...';
+    }
+    
+    return 'Understanding your intent...';
+  }
+  
   // Extract short summary from text
   String _extractSummary(String text) {
     final sentences = text.split('. ');
@@ -313,7 +456,9 @@ class AssistantController extends ChangeNotifier {
     _currentCommand = '';
     _currentAction = null;
     _error = null;
-    _reasoningSteps = [];
+    _processSteps = [];
+    _progress = 0.0;
+    _currentPhase = '';
     notifyListeners();
   }
   

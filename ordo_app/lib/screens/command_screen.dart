@@ -429,17 +429,18 @@ class _CommandScreenState extends State<CommandScreen> {
       
       case AssistantState.thinking:
         return ThinkingPanel(
-          steps: controller.reasoningSteps,
+          processSteps: controller.processSteps,
+          progress: controller.progress,
+          currentPhase: controller.currentPhase,
+          command: controller.currentCommand,
         );
       
       case AssistantState.executing:
-        return ExecutingPanel(
-          action: controller.currentCommand,
-          tools: controller.reasoningSteps
-              .where((s) => s.toLowerCase().contains('tool'))
-              .toList(),
-          progress: 0.6,
-          status: 'Broadcasting transaction...',
+        return ThinkingPanel(
+          processSteps: controller.processSteps,
+          progress: controller.progress,
+          currentPhase: controller.currentPhase,
+          command: controller.currentCommand,
         );
       
       case AssistantState.showingPanel:
