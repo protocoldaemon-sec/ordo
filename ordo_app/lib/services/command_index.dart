@@ -255,10 +255,10 @@ class CommandIndexService {
         .toList();
   }
 
-  /// Get default suggestions when no query
+  /// Get default suggestions when no query (context-aware)
   static List<SuggestionItem> _getDefaultSuggestions(int limit) {
-    // Show diverse commands from different categories
-    // Instead of filtering by priority, show variety
+    // TODO: Integrate with ContextService for smart suggestions
+    // For now, show diverse commands from different categories
     final categories = <String, List<IndexedCommand>>{};
     
     // Group by category (based on icon/tag)
@@ -289,6 +289,95 @@ class CommandIndexService {
     }
 
     return suggestions
+        .take(limit)
+        .map((cmd) => SuggestionItem(
+              icon: cmd.icon,
+              label: cmd.label,
+              template: cmd.template,
+              tag: cmd.tag,
+            ))
+        .toList();
+  }
+  
+  /// Get context-aware suggestions based on user state
+  static List<SuggestionItem> getContextualSuggestions({
+    required bool isAuthenticated,
+    required double balance,
+    String? lastCommand,
+    bool hasError = false,
+    int limit = 5,
+  }) {
+    final contextCommands = <IndexedCommand>[];
+    
+    // Determine context and get relevant commands
+    if (hasError && lastCommand != null) {
+      // After error: suggest retry + safe commands
+      contextCommands.addAll(_commands.where((cmd) => 
+        cmd.template == lastCommand ||
+        cmd.keywords.contains('balance') ||
+        cmd.keywords.contains('price')
+      ));
+    } else if (lastCommand != null) {
+      // After successful command: suggest related actions
+      if (lastCommand.contains('balance') || lastCommand.contains('portfolio')) {
+        // After balance check: suggest trading actions
+        contextCommands.addAll(_commands.where((cmd) =>
+          cmd.keywords.contains('swap') ||
+          cmd.keywords.contains('send') ||
+          cmd.keywords.contains('stake') ||
+          cmd.keywords.contains('nft')
+        ));
+      } else if (lastCommand.contains('swap')) {
+        // After swap: suggest balance check, another swap, or history
+        contextCommands.addAll(_commands.where((cmd) =>
+          cmd.keywords.contains('balance') ||
+          cmd.keywords.contains('swap') ||
+          cmd.keywords.contains('history')
+        ));
+      } else if (lastCommand.contains('send')) {
+        // After send: suggest balance check or history
+        contextCommands.addAll(_commands.where((cmd) =>
+          cmd.keywords.contains('balance') ||
+          cmd.keywords.contains('history')
+        ));
+      }
+    } else if (!isAuthenticated) {
+      // Not logged in: suggest wallet creation and info commands
+      contextCommands.addAll(_commands.where((cmd) =>
+        cmd.keywords.contains('create') ||
+        cmd.keywords.contains('price') ||
+        cmd.keywords.contains('chart') ||
+        !cmd.requiresAuth
+      ));
+    } else if (balance <= 0) {
+      // Has wallet but no balance: suggest balance check and info
+      contextCommands.addAll(_commands.where((cmd) =>
+        cmd.keywords.contains('balance') ||
+        cmd.keywords.contains('price') ||
+        cmd.keywords.contains('portfolio')
+      ));
+    } else {
+      // Has balance: suggest all trading actions
+      contextCommands.addAll(_commands.where((cmd) =>
+        cmd.requiresAuth &&
+        (cmd.keywords.contains('swap') ||
+         cmd.keywords.contains('send') ||
+         cmd.keywords.contains('stake') ||
+         cmd.keywords.contains('nft') ||
+         cmd.keywords.contains('balance'))
+      ));
+    }
+    
+    // If no contextual commands found, fall back to default
+    if (contextCommands.isEmpty) {
+      return _getDefaultSuggestions(limit);
+    }
+    
+    // Remove duplicates and take limit
+    final uniqueCommands = contextCommands.toSet().toList();
+    uniqueCommands.shuffle();
+    
+    return uniqueCommands
         .take(limit)
         .map((cmd) => SuggestionItem(
               icon: cmd.icon,

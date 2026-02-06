@@ -9,6 +9,7 @@ import 'controllers/assistant_controller.dart';
 import 'services/api_client.dart';
 import 'services/auth_service.dart';
 import 'services/voice_service.dart';
+import 'services/context_service.dart';
 import 'theme/app_theme.dart';
 
 void main() {
@@ -49,16 +50,21 @@ class OrdoApp extends StatelessWidget {
         Provider<VoiceService>(
           create: (_) => VoiceService(),
         ),
-        ChangeNotifierProxyProvider<ApiClient, AssistantController>(
+        ChangeNotifierProvider<ContextService>(
+          create: (_) => ContextService(),
+        ),
+        ChangeNotifierProxyProvider3<ApiClient, VoiceService, ContextService, AssistantController>(
           create: (context) => AssistantController(
             apiClient: context.read<ApiClient>(),
             voiceService: context.read<VoiceService>(),
+            contextService: context.read<ContextService>(),
           ),
-          update: (_, apiClient, controller) {
+          update: (_, apiClient, voiceService, contextService, controller) {
             if (controller == null) {
               return AssistantController(
                 apiClient: apiClient,
-                voiceService: VoiceService(),
+                voiceService: voiceService,
+                contextService: contextService,
               );
             }
             return controller;

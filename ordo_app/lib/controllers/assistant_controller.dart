@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../services/api_client.dart';
 import '../services/voice_service.dart';
 import '../services/command_router.dart';
+import '../services/context_service.dart';
 import '../models/command_action.dart';
 
 enum AssistantState {
@@ -17,6 +18,7 @@ enum AssistantState {
 class AssistantController extends ChangeNotifier {
   final ApiClient apiClient;
   final VoiceService voiceService;
+  final ContextService contextService;
   
   AssistantState _state = AssistantState.idle;
   String _currentCommand = '';
@@ -25,7 +27,11 @@ class AssistantController extends ChangeNotifier {
   List<String> _reasoningSteps = [];
   String _partialVoiceInput = '';
   
-  AssistantController({required this.apiClient, required this.voiceService});
+  AssistantController({
+    required this.apiClient,
+    required this.voiceService,
+    required this.contextService,
+  });
   
   // Getters
   AssistantState get state => _state;
@@ -76,6 +82,9 @@ class AssistantController extends ChangeNotifier {
       _error = e.toString().replaceAll('Exception: ', '');
       _setState(AssistantState.error);
       
+      // Record error in context
+      contextService.recordError(_error!);
+      
       // Auto-reset to idle after 5 seconds
       Future.delayed(const Duration(seconds: 5), () {
         if (_state == AssistantState.error) {
@@ -104,6 +113,9 @@ class AssistantController extends ChangeNotifier {
       toolCalls: null,
     );
     
+    // Record successful command
+    contextService.recordCommand(_currentCommand);
+    
     _setState(AssistantState.showingPanel);
   }
   
@@ -116,6 +128,9 @@ class AssistantController extends ChangeNotifier {
       message: null,
       toolCalls: null,
     );
+    
+    // Record successful command
+    contextService.recordCommand(_currentCommand);
     
     _setState(AssistantState.showingPanel);
   }
@@ -228,6 +243,9 @@ class AssistantController extends ChangeNotifier {
       
       print('🔵 Action Type: ${_currentAction!.type}');
       print('🔵 Action Data: ${_currentAction!.data}');
+      
+      // Record successful command
+      contextService.recordCommand(command);
       
       // Show panel
       _setState(AssistantState.showingPanel);
