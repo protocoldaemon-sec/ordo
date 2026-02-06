@@ -30,7 +30,7 @@ class CommandIndexService {
       template: 'check balance',
       tag: '[wallet]',
       requiresAuth: true,
-      priority: 10,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['create', 'wallet', 'new wallet'],
@@ -49,7 +49,7 @@ class CommandIndexService {
       template: 'swap [amount] [from] to [to]',
       tag: '[repeat]',
       requiresAuth: true,
-      priority: 10,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['swap sol', 'swap 1 sol'],
@@ -58,7 +58,7 @@ class CommandIndexService {
       template: 'swap 1 sol to usdc',
       tag: '[repeat]',
       requiresAuth: true,
-      priority: 8,
+      priority: 5,
     ),
     
     // Transfer Commands
@@ -69,7 +69,7 @@ class CommandIndexService {
       template: 'send [amount] sol to [address]',
       tag: '[send]',
       requiresAuth: true,
-      priority: 10,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['send sol', 'transfer sol'],
@@ -78,7 +78,7 @@ class CommandIndexService {
       template: 'send 0.5 sol to [address]',
       tag: '[send]',
       requiresAuth: true,
-      priority: 8,
+      priority: 5,
     ),
     
     // Price Commands
@@ -88,7 +88,7 @@ class CommandIndexService {
       label: 'SOL price',
       template: 'what\'s the price of SOL?',
       tag: '[chart]',
-      priority: 7,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['chart', 'show chart', 'price chart'],
@@ -96,7 +96,7 @@ class CommandIndexService {
       label: 'Show price chart',
       template: 'show SOL chart',
       tag: '[chart]',
-      priority: 6,
+      priority: 5,
     ),
     
     // DeFi Commands
@@ -107,7 +107,7 @@ class CommandIndexService {
       template: 'stake [amount] sol',
       tag: '[coins]',
       requiresAuth: true,
-      priority: 7,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['lend', 'lending'],
@@ -116,7 +116,7 @@ class CommandIndexService {
       template: 'lend [amount] [token]',
       tag: '[lend]',
       requiresAuth: true,
-      priority: 6,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['borrow', 'borrowing'],
@@ -125,7 +125,7 @@ class CommandIndexService {
       template: 'borrow [amount] [token]',
       tag: '[borrow]',
       requiresAuth: true,
-      priority: 6,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['liquidity', 'add liquidity', 'pool'],
@@ -154,7 +154,7 @@ class CommandIndexService {
       template: 'show my nfts',
       tag: '[nft]',
       requiresAuth: true,
-      priority: 7,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['mint', 'mint nft', 'create nft'],
@@ -174,7 +174,7 @@ class CommandIndexService {
       template: 'show my portfolio',
       tag: '[portfolio]',
       requiresAuth: true,
-      priority: 8,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['history', 'transactions', 'tx history'],
@@ -183,7 +183,7 @@ class CommandIndexService {
       template: 'show transaction history',
       tag: '[history]',
       requiresAuth: true,
-      priority: 8,
+      priority: 5,
     ),
     
     // Token Risk Commands
@@ -193,7 +193,7 @@ class CommandIndexService {
       label: 'Analyze token risk',
       template: 'analyze risk of [token]',
       tag: '[risk]',
-      priority: 7,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['risk bonk', 'bonk safe', 'analyze bonk'],
@@ -201,7 +201,7 @@ class CommandIndexService {
       label: 'Analyze BONK risk',
       template: 'analyze risk of BONK',
       tag: '[risk]',
-      priority: 6,
+      priority: 5,
     ),
     
     // Settings Commands
@@ -211,7 +211,7 @@ class CommandIndexService {
       label: 'Settings',
       template: 'open settings',
       tag: '[settings]',
-      priority: 7,
+      priority: 5,
     ),
     IndexedCommand(
       keywords: ['limit', 'set limit', 'transfer limit'],
@@ -220,7 +220,7 @@ class CommandIndexService {
       template: 'set transfer limit to [amount]',
       tag: '[settings]',
       requiresAuth: true,
-      priority: 4,
+      priority: 5,
     ),
   ];
 
@@ -257,12 +257,38 @@ class CommandIndexService {
 
   /// Get default suggestions when no query
   static List<SuggestionItem> _getDefaultSuggestions(int limit) {
-    final topCommands = _commands
-        .where((cmd) => cmd.priority >= 7)
-        .toList()
-      ..sort((a, b) => b.priority.compareTo(a.priority));
+    // Show diverse commands from different categories
+    // Instead of filtering by priority, show variety
+    final categories = <String, List<IndexedCommand>>{};
+    
+    // Group by category (based on icon/tag)
+    for (final cmd in _commands) {
+      final category = cmd.tag;
+      categories.putIfAbsent(category, () => []);
+      categories[category]!.add(cmd);
+    }
+    
+    // Pick one command from each category (round-robin)
+    final suggestions = <IndexedCommand>[];
+    final categoryKeys = categories.keys.toList()..shuffle();
+    
+    for (final category in categoryKeys) {
+      if (suggestions.length >= limit) break;
+      final cmds = categories[category]!;
+      if (cmds.isNotEmpty) {
+        suggestions.add(cmds.first);
+      }
+    }
+    
+    // If still need more, add remaining commands
+    if (suggestions.length < limit) {
+      final remaining = _commands
+          .where((cmd) => !suggestions.contains(cmd))
+          .take(limit - suggestions.length);
+      suggestions.addAll(remaining);
+    }
 
-    return topCommands
+    return suggestions
         .take(limit)
         .map((cmd) => SuggestionItem(
               icon: cmd.icon,

@@ -16,42 +16,93 @@ class CommandRouter {
       );
     }
     
-    // Portfolio view
+    // Portfolio view - show panel immediately
     if (_isPortfolioCommand(lowerCommand)) {
       return CommandRoute(
-        type: RouteType.directApi,
+        type: RouteType.localPanel,
         action: ActionType.showPortfolio,
-        apiEndpoint: '/wallet/portfolio',
-        reason: 'Portfolio view - no AI needed',
+        params: {},
+        reason: 'Portfolio - instant UI',
       );
     }
     
-    // Transaction history
+    // Transaction history - show panel immediately
     if (_isHistoryCommand(lowerCommand)) {
       return CommandRoute(
-        type: RouteType.directApi,
+        type: RouteType.localPanel,
         action: ActionType.showTransactions,
-        apiEndpoint: '/transactions',
-        reason: 'Transaction history - no AI needed',
+        params: {},
+        reason: 'Transaction history - instant UI',
       );
     }
     
-    // NFT view - needs wallet address, use AI for now
+    // NFT view - show panel immediately (will fetch data in panel)
     if (_isNftCommand(lowerCommand)) {
       return CommandRoute(
-        type: RouteType.aiAgent, // Need to get wallet address first
+        type: RouteType.localPanel,
         action: ActionType.showNfts,
-        reason: 'NFT list needs wallet address',
+        params: {},
+        reason: 'NFT gallery - instant UI',
       );
     }
     
-    // Settings/Preferences
+    // Settings/Preferences - show panel immediately
     if (_isSettingsCommand(lowerCommand)) {
       return CommandRoute(
-        type: RouteType.directApi,
+        type: RouteType.localPanel,
         action: ActionType.showPreferences,
-        apiEndpoint: '/preferences',
-        reason: 'Settings view - no AI needed',
+        params: {},
+        reason: 'Settings - instant UI',
+      );
+    }
+    
+    // Staking interface - show panel immediately
+    if (_isStakingCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.stake,
+        params: {},
+        reason: 'Staking interface - instant UI',
+      );
+    }
+    
+    // Lending interface - show panel immediately
+    if (_isLendingCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.lend,
+        params: {},
+        reason: 'Lending interface - instant UI',
+      );
+    }
+    
+    // Borrowing interface - show panel immediately
+    if (_isBorrowingCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.borrow,
+        params: {},
+        reason: 'Borrowing interface - instant UI',
+      );
+    }
+    
+    // Liquidity interface - show panel immediately
+    if (_isLiquidityCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.addLiquidity,
+        params: {},
+        reason: 'Liquidity interface - instant UI',
+      );
+    }
+    
+    // Bridge interface - show panel immediately
+    if (_isBridgeCommand(lowerCommand)) {
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.bridge,
+        params: {},
+        reason: 'Bridge interface - instant UI',
       );
     }
     
@@ -149,6 +200,34 @@ class CommandRouter {
     return cmd.contains('settings') ||
            cmd.contains('preferences') ||
            cmd.contains('config');
+  }
+  
+  // Staking patterns
+  static bool _isStakingCommand(String cmd) {
+    return (cmd.contains('stake') || cmd.contains('staking')) &&
+           !cmd.contains('unstake');
+  }
+  
+  // Lending patterns
+  static bool _isLendingCommand(String cmd) {
+    return cmd.contains('lend') || cmd.contains('lending');
+  }
+  
+  // Borrowing patterns
+  static bool _isBorrowingCommand(String cmd) {
+    return cmd.contains('borrow') || cmd.contains('borrowing');
+  }
+  
+  // Liquidity patterns
+  static bool _isLiquidityCommand(String cmd) {
+    return cmd.contains('liquidity') || 
+           cmd.contains('add liquidity') ||
+           cmd.contains('pool');
+  }
+  
+  // Bridge patterns
+  static bool _isBridgeCommand(String cmd) {
+    return cmd.contains('bridge') || cmd.contains('cross-chain');
   }
   
   // Token risk patterns

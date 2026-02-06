@@ -500,24 +500,83 @@ class _CommandScreenState extends State<CommandScreen> {
           controller,
         );
       
-      // TODO: Add more panel types
+      // NFT Gallery - show placeholder for now
+      case ActionType.showNfts:
+        return _buildPlaceholderPanel(
+          'NFT Gallery',
+          'Your NFT collection will appear here',
+          'gallery',
+          controller,
+        );
+      
+      // Staking interface - show placeholder
+      case ActionType.stake:
+        return _buildPlaceholderPanel(
+          'Staking',
+          'Stake your SOL to earn rewards',
+          'coins',
+          controller,
+        );
+      
+      // Lending interface - show placeholder
+      case ActionType.lend:
+        return _buildPlaceholderPanel(
+          'Lending',
+          'Lend your assets to earn interest',
+          'hand_coins',
+          controller,
+        );
+      
+      // Borrowing interface - show placeholder
+      case ActionType.borrow:
+        return _buildPlaceholderPanel(
+          'Borrowing',
+          'Borrow assets against your collateral',
+          'hand_coins',
+          controller,
+        );
+      
+      // Liquidity interface - show placeholder
+      case ActionType.addLiquidity:
+        return _buildPlaceholderPanel(
+          'Liquidity Pool',
+          'Add liquidity to earn trading fees',
+          'droplet',
+          controller,
+        );
+      
+      // Bridge interface - show placeholder
+      case ActionType.bridge:
+        return _buildPlaceholderPanel(
+          'Bridge',
+          'Transfer assets across chains',
+          'bridge',
+          controller,
+        );
+      
+      // Token price/info - show in info panel
       case ActionType.tokenPrice:
       case ActionType.tokenInfo:
+        return _buildInfoPanel(
+          action.message ?? 'Token information',
+          controller,
+        );
+      
+      // Send/Transfer - show in info panel for now
       case ActionType.sendSol:
       case ActionType.sendToken:
-      case ActionType.stake:
-      case ActionType.showNfts:
-      case ActionType.showTransactions:
-      case ActionType.showPreferences:
-        // Fallback to compact info panel
         return _buildInfoPanel(
-          'Feature coming soon',
+          action.message ?? 'Transfer initiated',
           controller,
         );
       
       default:
         return _buildInfoPanel(
           'Command processed',
+          controller,
+        );
+    }
+  }
           controller,
         );
     }
@@ -557,6 +616,113 @@ class _CommandScreenState extends State<CommandScreen> {
           TextButton(
             onPressed: () => controller.dismissPanel(),
             child: const Text('Dismiss'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlaceholderPanel(
+    String title,
+    String description,
+    String iconName,
+    AssistantController controller,
+  ) {
+    // Map icon names to IconData
+    final iconMap = {
+      'gallery': Icons.photo_library,
+      'coins': Icons.account_balance_wallet,
+      'hand_coins': Icons.monetization_on,
+      'droplet': Icons.water_drop,
+      'bridge': Icons.swap_horiz,
+    };
+    
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppTheme.surface.withOpacity(0.95),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: Colors.white.withOpacity(0.1),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Header
+          Row(
+            children: [
+              Icon(
+                iconMap[iconName] ?? Icons.info_outline,
+                color: AppTheme.primary,
+                size: 24,
+              ),
+              const SizedBox(width: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.close, color: Colors.white70),
+                onPressed: () => controller.dismissPanel(),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          
+          // Placeholder content
+          Icon(
+            iconMap[iconName] ?? Icons.info_outline,
+            color: AppTheme.primary.withOpacity(0.3),
+            size: 80,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            description,
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.7),
+              fontSize: 16,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Coming soon',
+            style: TextStyle(
+              color: AppTheme.primary,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 24),
+          
+          // Action button
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () => controller.dismissPanel(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primary,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text(
+                'Got it',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
           ),
         ],
       ),
