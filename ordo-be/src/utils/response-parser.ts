@@ -415,11 +415,7 @@ function getStatus(toolResults: ToolResult[]): ResponseStatus {
     return 'success';
   }
   
-  const hasError = toolResults.some(t => t.error);
-  if (hasError) {
-    return 'error';
-  }
-  
+  // Check for approval requirements first
   const requiresApproval = toolResults.some(t => 
     t.result?.requiresApproval || 
     t.result?.needsConfirmation
@@ -428,15 +424,24 @@ function getStatus(toolResults: ToolResult[]): ResponseStatus {
     return 'requires_approval';
   }
   
-  const isPending = toolResults.some(t => 
-    t.result?.status === 'pending' ||
-    t.result?.pending
-  );
-  if (isPending) {
-    return 'pending';
+  // Check if any important tool succeeded
+  const hasSuccess = toolResults.some(t => !t.error && t.result);
+  if (hasSuccess) {
+    // Check for pending status in successful results
+    const isPending = toolResults.some(t => 
+      !t.error && (
+        t.result?.status === 'pending' ||
+        t.result?.pending
+      )
+    );
+    if (isPending) {
+      return 'pending';
+    }
+    return 'success';
   }
   
-  return 'success';
+  // All tools failed
+  return 'error';
 }
 
 /**
@@ -454,20 +459,39 @@ export function parseResponse(
     tools: toolResults.map(t => t.name),
   });
   
-  // Determine action type from tools or default to info
+  // Determine action type - prioritize successful tools and user intent
   let actionType: ActionType = 'info';
   if (toolResults.length > 0) {
-    // Use the first tool's action type (primary action)
-    actionType = getActionTypeFromTool(toolResults[0].name);
+    // Find successful tools first
+    const successfulTools = toolResults.filter(t => !t.error && t.result);
+    
+    if (successfulTools.length > 0) {
+      // Prioritize wallet creation, then other actions
+      const walletCreateTool = successfulTools.find(t => 
+        t.name.includes('create_wallet') || 
+        t.name.includes('create_evm_wallet') ||
+        t.name.includes('create_solana_wallet')
+      );
+      
+      if (walletCreateTool) {
+        actionType = getActionTypeFromTool(walletCreateTool.name);
+      } else {
+        // Use first successful tool's action type
+        actionType = getActionTypeFromTool(successfulTools[0].name);
+      }
+    } else {
+      // All tools failed, use first tool's type
+      actionType = getActionTypeFromTool(toolResults[0].name);
+    }
   }
   
-  // Extract structured details
+  // Extract structured details (from successful tools primarily)
   const details = extractDetails(toolResults);
   
-  // Generate summary
+  // Generate summary based on successful results
   const summary = generateSummary(actionType, toolResults, aiMessage);
   
-  // Get status
+  // Get status - success if any tool succeeded
   const status = getStatus(toolResults);
   
   // Get tool names
