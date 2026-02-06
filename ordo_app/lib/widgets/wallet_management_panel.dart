@@ -487,8 +487,10 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
                        wallet['fullAddress']?.toString() ?? 
                        wallet['public_key']?.toString() ?? 
                        wallet['address']?.toString() ?? '';
+        final uniqueKey = walletId.isNotEmpty ? walletId : 'sol_$index';
 
         return _FlipWalletCard(
+          key: ValueKey(uniqueKey),
           wallet: wallet,
           isPrimary: isPrimary,
           chainSymbol: 'SOL',
@@ -566,8 +568,10 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
         );
         final walletId = wallet['id']?.toString() ?? wallet['_id']?.toString() ?? '';
         final address = wallet['address']?.toString() ?? '';
+        final uniqueKey = walletId.isNotEmpty ? walletId : 'evm_$index';
 
         return _FlipWalletCard(
+          key: ValueKey(uniqueKey),
           wallet: wallet,
           isPrimary: wallet['isPrimary'] == true,
           chainSymbol: chainInfo['symbol'],
@@ -1206,6 +1210,7 @@ class _FlipWalletCard extends StatefulWidget {
   final VoidCallback? onHidePrivateKey;
 
   const _FlipWalletCard({
+    super.key,
     required this.wallet,
     required this.isPrimary,
     required this.chainSymbol,
