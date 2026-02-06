@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -53,34 +54,25 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
   }
 
   void _loadWalletsFromData() {
-    // Debug: print incoming data
-    print('🔵 WalletManagementPanel data: ${widget.data}');
+    print('WalletManagementPanel data: ${widget.data}');
     
-    // Load from data
     final wallets = widget.data['wallets'] as List?;
     if (wallets != null) {
       _solanaWallets = wallets
           .where((w) => w['type'] == 'solana' || w['type'] == null)
           .map((w) => Map<String, dynamic>.from(w))
           .toList();
-      print('🔵 Loaded ${_solanaWallets.length} Solana wallets');
     }
 
     final evmWallets = widget.data['evmWallets'] as List?;
     if (evmWallets != null) {
       _evmWallets = evmWallets.map((w) => Map<String, dynamic>.from(w)).toList();
-      print('🔵 Loaded ${_evmWallets.length} EVM wallets');
     }
 
-    // Handle case where a single wallet was just created (from API response)
-    // Check if we have a direct address but no wallet list
     final directAddress = widget.data['address'] as String?;
     final chainId = widget.data['chainId'] ?? widget.data['chain'];
     
-    print('🔵 Direct address: $directAddress, chainId: $chainId');
-    
     if (directAddress != null && directAddress.isNotEmpty) {
-      // Determine if it's EVM or Solana based on address format or chainId
       final isEvm = chainId != null || directAddress.startsWith('0x');
       
       if (isEvm && _evmWallets.isEmpty) {
@@ -93,7 +85,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
           'isPrimary': true,
           'isNew': true,
         }];
-        print('🔵 Created EVM wallet from direct address');
       } else if (!isEvm && _solanaWallets.isEmpty) {
         _solanaWallets = [{
           'publicKey': _shortenAddress(directAddress),
@@ -104,11 +95,8 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
           'isPrimary': true,
           'isNew': true,
         }];
-        print('🔵 Created Solana wallet from direct address');
       }
     }
-    
-    print('🔵 Final: ${_solanaWallets.length} Solana, ${_evmWallets.length} EVM wallets');
   }
 
   Future<void> _fetchWalletsFromApi() async {
@@ -116,23 +104,16 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
       final authService = Provider.of<AuthService>(context, listen: false);
       final apiClient = ApiClient(authService: authService);
       
-      print('🔵 Fetching wallets from API...');
-      
       final response = await apiClient.getWallets();
       
-      print('🔵 API Response: $response');
-      
       if (response['success'] == true && mounted) {
-        // Backend returns wallets under 'data' key
         final wallets = response['data'] as List? ?? [];
         
         setState(() {
-          // Clear existing and load from API
           _solanaWallets = wallets
               .map((w) => Map<String, dynamic>.from(w))
               .toList();
           
-          // Mark the first wallet as primary if none is set
           if (_solanaWallets.isNotEmpty) {
             final hasPrimary = _solanaWallets.any((w) => w['isPrimary'] == true);
             if (!hasPrimary) {
@@ -143,8 +124,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
           _isFetchingWallets = false;
           _errorMessage = null;
         });
-        
-        print('🔵 Loaded ${_solanaWallets.length} wallets from API');
       } else {
         setState(() {
           _isFetchingWallets = false;
@@ -152,7 +131,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
         });
       }
     } catch (e) {
-      print('🔴 Error fetching wallets: $e');
       if (mounted) {
         setState(() {
           _isFetchingWallets = false;
@@ -228,13 +206,8 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Header
           _buildHeader(),
-
-          // Tab Bar
           _buildTabBar(),
-
-          // Content
           Flexible(
             child: TabBarView(
               controller: _tabController,
@@ -244,8 +217,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
               ],
             ),
           ),
-
-          // Bottom Actions
           _buildBottomActions(),
         ],
       ),
@@ -345,7 +316,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
               ],
             ),
           ),
-          // Refresh button
           IconButton(
             onPressed: _isFetchingWallets ? null : _refreshWallets,
             icon: _isFetchingWallets
@@ -427,7 +397,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
   }
 
   Widget _buildSolanaWallets() {
-    // Show loading state
     if (_isFetchingWallets) {
       return Center(
         child: Padding(
@@ -452,7 +421,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
       );
     }
 
-    // Show error state
     if (_errorMessage != null && _solanaWallets.isEmpty) {
       return Center(
         child: Padding(
@@ -466,7 +434,7 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
                 size: 48,
               ),
               const SizedBox(height: 16),
-              Text(
+              const Text(
                 'Failed to load wallets',
                 style: TextStyle(
                   color: Colors.white,
@@ -510,13 +478,21 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
       itemBuilder: (context, index) {
         final wallet = _solanaWallets[index];
         final isPrimary = wallet['isPrimary'] == true || wallet['is_primary'] == true;
+        final walletId = wallet['id']?.toString() ?? wallet['_id']?.toString();
+        final address = wallet['publicKey']?.toString() ?? 
+                       wallet['fullAddress']?.toString() ?? 
+                       wallet['public_key']?.toString() ?? 
+                       wallet['address']?.toString() ?? '';
 
-        return _buildWalletCard(
+        return _FlipWalletCard(
           wallet: wallet,
           isPrimary: isPrimary,
           chainSymbol: 'SOL',
-          onCopy: () => _copyAddress(wallet['publicKey'] ?? wallet['fullAddress'] ?? wallet['public_key']),
-          onSetPrimary: isPrimary ? null : () => _setAsPrimary(wallet['id'], 'solana'),
+          address: address,
+          onCopy: () => _copyAddress(address),
+          onSetPrimary: isPrimary ? null : () => _setAsPrimary(walletId, index),
+          onViewPrivateKey: () => _showPasswordDialog(walletId, address),
+          shortenAddress: _shortenAddress,
         );
       },
     );
@@ -581,17 +557,22 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
           (c) => c['id'] == wallet['chainId'],
           orElse: () => {'name': 'Unknown', 'symbol': '?', 'icon': '?'},
         );
+        final walletId = wallet['id']?.toString() ?? wallet['_id']?.toString();
+        final address = wallet['address']?.toString() ?? '';
 
-        return _buildWalletCard(
+        return _FlipWalletCard(
           wallet: wallet,
           isPrimary: wallet['isPrimary'] == true,
           chainSymbol: chainInfo['symbol'],
           chainIcon: chainInfo['icon'],
           chainName: chainInfo['name'],
-          onCopy: () => _copyAddress(wallet['address']),
+          address: address,
+          onCopy: () => _copyAddress(address),
           onSetPrimary: wallet['isPrimary'] == true
               ? null
-              : () => _setAsPrimary(wallet['id'], wallet['chainId']),
+              : () => _setAsPrimary(walletId, index),
+          onViewPrivateKey: () => _showPasswordDialog(walletId, address),
+          shortenAddress: _shortenAddress,
         );
       },
     );
@@ -694,216 +675,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
     );
   }
 
-  Widget _buildWalletCard({
-    required Map<String, dynamic> wallet,
-    required bool isPrimary,
-    required String chainSymbol,
-    String? chainIcon,
-    String? chainName,
-    required VoidCallback onCopy,
-    VoidCallback? onSetPrimary,
-  }) {
-    final balance = wallet['balance'] ?? wallet['native'] ?? 0.0;
-    final usdValue = wallet['usdValue'] ?? 0.0;
-
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: AppTheme.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isPrimary
-              ? AppTheme.primary.withOpacity(0.5)
-              : Colors.white.withOpacity(0.05),
-          width: isPrimary ? 2 : 1,
-        ),
-        boxShadow: isPrimary
-            ? [
-                BoxShadow(
-                  color: AppTheme.primary.withOpacity(0.2),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : null,
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header Row
-            Row(
-              children: [
-                if (isPrimary)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppTheme.primary.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(
-                        color: AppTheme.primary.withOpacity(0.3),
-                        width: 1,
-                      ),
-                    ),
-                    child: const Text(
-                      'PRIMARY',
-                      style: TextStyle(
-                        color: AppTheme.primary,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  )
-                else
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 4,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(6),
-                    ),
-                    child: Text(
-                      'SECONDARY',
-                      style: TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                  ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    _shortenAddress(wallet['publicKey'] ?? wallet['address'] ?? ''),
-                    style: TextStyle(
-                      color: AppTheme.textSecondary,
-                      fontSize: 11,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                if (chainIcon != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6,
-                      vertical: 2,
-                    ),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.05),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      chainIcon,
-                      style: const TextStyle(fontSize: 12),
-                    ),
-                  ),
-                if (isPrimary)
-                  const Padding(
-                    padding: EdgeInsets.only(left: 8),
-                    child: Icon(
-                      Icons.check_circle,
-                      color: AppTheme.primary,
-                      size: 20,
-                    ),
-                  ),
-              ],
-            ),
-
-            const SizedBox(height: 8),
-
-            // Wallet Name
-            Text(
-              wallet['name'] ?? 'Wallet',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-
-            if (chainName != null) ...[
-              const SizedBox(height: 2),
-              Text(
-                chainName,
-                style: TextStyle(
-                  color: AppTheme.textSecondary,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-
-            const SizedBox(height: 12),
-
-            // Balance Row
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        '${balance.toStringAsFixed(2)} $chainSymbol',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        '\$${usdValue.toStringAsFixed(2)} USD',
-                        style: TextStyle(
-                          color: AppTheme.textSecondary,
-                          fontSize: 13,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  children: [
-                    if (onSetPrimary != null)
-                      IconButton(
-                        onPressed: onSetPrimary,
-                        icon: Icon(
-                          Icons.star_border,
-                          color: AppTheme.textSecondary,
-                          size: 20,
-                        ),
-                        tooltip: 'Set as Primary',
-                      ),
-                    IconButton(
-                      onPressed: onCopy,
-                      style: IconButton.styleFrom(
-                        backgroundColor: Colors.white.withOpacity(0.05),
-                      ),
-                      icon: Icon(
-                        Icons.copy,
-                        color: AppTheme.textSecondary,
-                        size: 18,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildBottomActions() {
     return Container(
       padding: const EdgeInsets.all(20),
@@ -922,7 +693,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
       ),
       child: Column(
         children: [
-          // Create Wallet Button
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
@@ -964,10 +734,7 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
                     ),
             ),
           ),
-
           const SizedBox(height: 12),
-
-          // Import Wallet Button
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
@@ -1005,7 +772,7 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
   }
 
   void _copyAddress(String? address) {
-    if (address == null) return;
+    if (address == null || address.isEmpty) return;
     Clipboard.setData(ClipboardData(text: address));
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -1019,8 +786,23 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
     );
   }
 
-  void _setAsPrimary(String? walletId, String type) async {
-    if (walletId == null) return;
+  void _setAsPrimary(String? walletId, int index) async {
+    // If no walletId, try to set primary by index in local state
+    if (walletId == null || walletId.isEmpty) {
+      setState(() {
+        for (int i = 0; i < _solanaWallets.length; i++) {
+          _solanaWallets[i]['isPrimary'] = (i == index);
+        }
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Primary wallet updated (local)'),
+          backgroundColor: AppTheme.success,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
+    }
     
     setState(() {
       _isLoading = true;
@@ -1030,14 +812,13 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
       final authService = Provider.of<AuthService>(context, listen: false);
       final apiClient = ApiClient(authService: authService);
       
-      // Call API to set primary wallet
       final response = await apiClient.setPrimaryWallet(walletId);
       
       if (response['success'] == true && mounted) {
-        // Update local state
         setState(() {
           for (var wallet in _solanaWallets) {
-            wallet['isPrimary'] = wallet['id'] == walletId;
+            wallet['isPrimary'] = (wallet['id']?.toString() == walletId || 
+                                   wallet['_id']?.toString() == walletId);
           }
         });
         
@@ -1049,7 +830,6 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
           ),
         );
         
-        // Refresh to get latest data
         _refreshWallets();
       } else {
         throw Exception(response['error'] ?? 'Failed to set primary wallet');
@@ -1073,6 +853,220 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
     }
   }
 
+  void _showPasswordDialog(String? walletId, String address) {
+    final passwordController = TextEditingController();
+    bool isLoading = false;
+    String? errorText;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          backgroundColor: AppTheme.surface,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.security, color: AppTheme.warning, size: 24),
+              const SizedBox(width: 12),
+              const Expanded(
+                child: Text(
+                  'Security Verification',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Enter your password to view the private key for this wallet.',
+                style: TextStyle(
+                  color: AppTheme.textSecondary,
+                  fontSize: 13,
+                ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: passwordController,
+                obscureText: true,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: AppTheme.textSecondary),
+                  errorText: errorText,
+                  filled: true,
+                  fillColor: Colors.black.withOpacity(0.3),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                  prefixIcon: Icon(Icons.lock_outline, color: AppTheme.textSecondary),
+                ),
+                onSubmitted: (_) async {
+                  if (passwordController.text.isEmpty) {
+                    setDialogState(() => errorText = 'Password is required');
+                    return;
+                  }
+                  await _verifyAndShowPrivateKey(
+                    dialogContext,
+                    walletId,
+                    address,
+                    passwordController.text,
+                    setDialogState,
+                    (loading) => setDialogState(() => isLoading = loading),
+                    (error) => setDialogState(() => errorText = error),
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.warning.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppTheme.warning.withOpacity(0.3)),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.warning_amber, color: AppTheme.warning, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'Never share your private key with anyone!',
+                        style: TextStyle(
+                          color: AppTheme.warning,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: isLoading ? null : () => Navigator.pop(dialogContext),
+              child: Text(
+                'Cancel',
+                style: TextStyle(color: AppTheme.textSecondary),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: isLoading
+                  ? null
+                  : () async {
+                      if (passwordController.text.isEmpty) {
+                        setDialogState(() => errorText = 'Password is required');
+                        return;
+                      }
+                      await _verifyAndShowPrivateKey(
+                        dialogContext,
+                        walletId,
+                        address,
+                        passwordController.text,
+                        setDialogState,
+                        (loading) => setDialogState(() => isLoading = loading),
+                        (error) => setDialogState(() => errorText = error),
+                      );
+                    },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.primary,
+              ),
+              child: isLoading
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    )
+                  : const Text('Verify'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _verifyAndShowPrivateKey(
+    BuildContext dialogContext,
+    String? walletId,
+    String address,
+    String password,
+    StateSetter setDialogState,
+    Function(bool) setLoading,
+    Function(String?) setError,
+  ) async {
+    setLoading(true);
+    setError(null);
+
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final apiClient = ApiClient(authService: authService);
+      
+      final response = await apiClient.getWalletPrivateKey(walletId ?? '', password);
+      
+      if (response['success'] == true && mounted) {
+        Navigator.pop(dialogContext);
+        
+        // Find the wallet card and trigger flip
+        final privateKey = response['data']?['privateKey']?.toString() ?? 
+                          response['privateKey']?.toString() ?? '';
+        
+        // Show the private key in a new dialog or update wallet state
+        _showPrivateKeyResult(address, privateKey);
+      } else {
+        setError(response['error']?.toString() ?? 'Invalid password');
+      }
+    } catch (e) {
+      setError(e.toString().replaceAll('Exception: ', ''));
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  void _showPrivateKeyResult(String address, String privateKey) {
+    // Find wallet index and trigger flip animation
+    for (int i = 0; i < _solanaWallets.length; i++) {
+      final wallet = _solanaWallets[i];
+      final walletAddress = wallet['publicKey']?.toString() ?? 
+                           wallet['fullAddress']?.toString() ?? 
+                           wallet['address']?.toString() ?? '';
+      if (walletAddress == address) {
+        setState(() {
+          _solanaWallets[i]['_showPrivateKey'] = true;
+          _solanaWallets[i]['_privateKey'] = privateKey;
+        });
+        return;
+      }
+    }
+    
+    // If not found in solana wallets, check EVM wallets
+    for (int i = 0; i < _evmWallets.length; i++) {
+      final wallet = _evmWallets[i];
+      if (wallet['address']?.toString() == address) {
+        setState(() {
+          _evmWallets[i]['_showPrivateKey'] = true;
+          _evmWallets[i]['_privateKey'] = privateKey;
+        });
+        return;
+      }
+    }
+  }
+
   void _createWallet() async {
     setState(() {
       _isLoading = true;
@@ -1080,10 +1074,8 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
 
     try {
       if (_tabController.index == 0) {
-        // Create Solana wallet
         widget.onAction?.call('createWallet', {'type': 'solana'});
       } else {
-        // Create EVM wallet
         final chainId = _selectedChain ?? 'ethereum';
         widget.onAction?.call('createEvmWallet', {'chainId': chainId});
       }
@@ -1198,5 +1190,435 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
         'privateKey': privateKey,
       });
     }
+  }
+}
+
+// Flip card widget for wallet with animation
+class _FlipWalletCard extends StatefulWidget {
+  final Map<String, dynamic> wallet;
+  final bool isPrimary;
+  final String chainSymbol;
+  final String? chainIcon;
+  final String? chainName;
+  final String address;
+  final VoidCallback onCopy;
+  final VoidCallback? onSetPrimary;
+  final VoidCallback onViewPrivateKey;
+  final String Function(String) shortenAddress;
+
+  const _FlipWalletCard({
+    required this.wallet,
+    required this.isPrimary,
+    required this.chainSymbol,
+    this.chainIcon,
+    this.chainName,
+    required this.address,
+    required this.onCopy,
+    this.onSetPrimary,
+    required this.onViewPrivateKey,
+    required this.shortenAddress,
+  });
+
+  @override
+  State<_FlipWalletCard> createState() => _FlipWalletCardState();
+}
+
+class _FlipWalletCardState extends State<_FlipWalletCard>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+  bool _showBack = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _animation = Tween<double>(begin: 0, end: 1).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void didUpdateWidget(_FlipWalletCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Check if we should flip to show private key
+    if (widget.wallet['_showPrivateKey'] == true && !_showBack) {
+      _flipCard();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _flipCard() {
+    if (_showBack) {
+      _controller.reverse();
+    } else {
+      _controller.forward();
+    }
+    setState(() {
+      _showBack = !_showBack;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final balance = widget.wallet['balance'] ?? widget.wallet['native'] ?? 0.0;
+    final usdValue = widget.wallet['usdValue'] ?? 0.0;
+
+    return AnimatedBuilder(
+      animation: _animation,
+      builder: (context, child) {
+        final angle = _animation.value * pi;
+        final isFront = angle < pi / 2;
+
+        return Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, 0.001)
+            ..rotateY(angle),
+          child: isFront
+              ? _buildFrontCard(balance, usdValue)
+              : Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.identity()..rotateY(pi),
+                  child: _buildBackCard(),
+                ),
+        );
+      },
+    );
+  }
+
+  Widget _buildFrontCard(dynamic balance, dynamic usdValue) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        color: AppTheme.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: widget.isPrimary
+              ? AppTheme.primary.withOpacity(0.5)
+              : Colors.white.withOpacity(0.05),
+          width: widget.isPrimary ? 2 : 1,
+        ),
+        boxShadow: widget.isPrimary
+            ? [
+                BoxShadow(
+                  color: AppTheme.primary.withOpacity(0.2),
+                  blurRadius: 12,
+                  offset: const Offset(0, 4),
+                ),
+              ]
+            : null,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header Row
+            Row(
+              children: [
+                if (widget.isPrimary)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primary.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(
+                        color: AppTheme.primary.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    child: const Text(
+                      'PRIMARY',
+                      style: TextStyle(
+                        color: AppTheme.primary,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  )
+                else
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'SECONDARY',
+                      style: TextStyle(
+                        color: AppTheme.textSecondary,
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    widget.shortenAddress(widget.address),
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 11,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (widget.chainIcon != null)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.05),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Text(
+                      widget.chainIcon!,
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                  ),
+                if (widget.isPrimary)
+                  const Padding(
+                    padding: EdgeInsets.only(left: 8),
+                    child: Icon(
+                      Icons.check_circle,
+                      color: AppTheme.primary,
+                      size: 20,
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Text(
+              widget.wallet['name'] ?? 'Wallet',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            if (widget.chainName != null) ...[
+              const SizedBox(height: 2),
+              Text(
+                widget.chainName!,
+                style: TextStyle(
+                  color: AppTheme.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${(balance is num ? balance : 0.0).toStringAsFixed(4)} ${widget.chainSymbol}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      Text(
+                        '\$${(usdValue is num ? usdValue : 0.0).toStringAsFixed(2)} USD',
+                        style: TextStyle(
+                          color: AppTheme.textSecondary,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    if (widget.onSetPrimary != null)
+                      IconButton(
+                        onPressed: widget.onSetPrimary,
+                        icon: Icon(
+                          Icons.star_border,
+                          color: AppTheme.textSecondary,
+                          size: 20,
+                        ),
+                        tooltip: 'Set as Primary',
+                      ),
+                    IconButton(
+                      onPressed: widget.onViewPrivateKey,
+                      icon: Icon(
+                        Icons.key,
+                        color: AppTheme.warning,
+                        size: 20,
+                      ),
+                      tooltip: 'View Private Key',
+                    ),
+                    IconButton(
+                      onPressed: widget.onCopy,
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.05),
+                      ),
+                      icon: Icon(
+                        Icons.copy,
+                        color: AppTheme.textSecondary,
+                        size: 18,
+                      ),
+                      tooltip: 'Copy Address',
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackCard() {
+    final privateKey = widget.wallet['_privateKey']?.toString() ?? '';
+    
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppTheme.warning.withOpacity(0.2),
+            AppTheme.error.withOpacity(0.2),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppTheme.warning.withOpacity(0.5),
+          width: 2,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.key, color: AppTheme.warning, size: 20),
+                const SizedBox(width: 8),
+                const Text(
+                  'PRIVATE KEY',
+                  style: TextStyle(
+                    color: AppTheme.warning,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1,
+                  ),
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: _flipCard,
+                  icon: Icon(
+                    Icons.close,
+                    color: AppTheme.textSecondary,
+                    size: 20,
+                  ),
+                  tooltip: 'Hide',
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.3),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: SelectableText(
+                privateKey.isNotEmpty ? privateKey : 'Unable to retrieve private key',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontFamily: 'monospace',
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      if (privateKey.isNotEmpty) {
+                        Clipboard.setData(ClipboardData(text: privateKey));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: const Text('Private key copied to clipboard'),
+                            backgroundColor: AppTheme.warning,
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.copy, size: 16),
+                    label: const Text('Copy'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.warning,
+                      foregroundColor: Colors.black,
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _flipCard,
+                    icon: const Icon(Icons.visibility_off, size: 16),
+                    label: const Text('Hide'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      side: BorderSide(color: Colors.white.withOpacity(0.3)),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: AppTheme.error.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(6),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.warning_amber, color: AppTheme.error, size: 16),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Keep this key secret. Anyone with access can control your funds.',
+                      style: TextStyle(
+                        color: AppTheme.error,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

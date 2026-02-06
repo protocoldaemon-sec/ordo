@@ -352,6 +352,13 @@ class ApiClient {
   Future<Map<String, dynamic>> setPrimaryWallet(String walletId) async {
     return await put('/wallets/$walletId/primary', {});
   }
+
+  // Get wallet private key (requires password validation)
+  Future<Map<String, dynamic>> getWalletPrivateKey(String walletId, String password) async {
+    return await post('/wallets/$walletId/private-key', {
+      'password': password,
+    });
+  }
   
   // ============================================
   // TOKEN TRANSFERS
