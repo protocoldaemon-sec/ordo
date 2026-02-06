@@ -134,21 +134,22 @@ const getSolanaBalanceAction: Action = {
 
       // If no wallet ID, get primary wallet
       if (!walletId) {
-        const wallets = await walletService.getWallets(context.userId);
-        const primaryWallet = wallets.find((w) => w.is_primary);
+        const wallets = await walletService.getUserWallets(context.userId);
+        const primaryWallet = wallets.find((w: any) => w.is_primary);
         if (!primaryWallet) {
           throw new Error('No primary wallet found');
         }
         walletId = primaryWallet.id;
       }
 
-      const balance = await walletService.getBalance(walletId);
-      const wallets = await walletService.getWallets(context.userId);
-      const wallet = wallets.find((w) => w.id === walletId);
+      const balance = await walletService.getWalletBalance(walletId);
+      const wallets = await walletService.getUserWallets(context.userId);
+      const wallet = wallets.find((w: any) => w.id === walletId);
 
       return {
         success: true,
-        balance,
+        balance: balance.sol,
+        tokens: balance.tokens,
         publicKey: wallet?.public_key,
         chain: 'solana',
       };
@@ -187,9 +188,9 @@ const listSolanaWalletsAction: Action = {
   ],
   handler: async (_params, context) => {
     try {
-      const wallets = await walletService.getWallets(context.userId);
+      const wallets = await walletService.getUserWallets(context.userId);
 
-      const safeWallets = wallets.map((w) => ({
+      const safeWallets = wallets.map((w: any) => ({
         id: w.id,
         publicKey: w.public_key,
         isPrimary: w.is_primary,

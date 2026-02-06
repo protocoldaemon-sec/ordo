@@ -340,6 +340,52 @@ export class WalletService {
       throw error;
     }
   }
+
+  /**
+   * Set a wallet as the primary wallet for the user
+   */
+  async setPrimaryWallet(userId: string, walletId: string): Promise<void> {
+    try {
+      // Verify wallet belongs to user
+      const { data: wallet, error: walletError } = await supabase
+        .from('wallets')
+        .select('id')
+        .eq('id', walletId)
+        .eq('user_id', userId)
+        .single();
+
+      if (walletError || !wallet) {
+        throw new Error('Wallet not found or does not belong to user');
+      }
+
+      // First, set all user's wallets to non-primary
+      const { error: updateError } = await supabase
+        .from('wallets')
+        .update({ is_primary: false })
+        .eq('user_id', userId);
+
+      if (updateError) {
+        logger.error('Failed to reset primary wallets:', updateError);
+        throw new Error('Failed to update wallet');
+      }
+
+      // Then set the specified wallet as primary
+      const { error: setPrimaryError } = await supabase
+        .from('wallets')
+        .update({ is_primary: true })
+        .eq('id', walletId);
+
+      if (setPrimaryError) {
+        logger.error('Failed to set primary wallet:', setPrimaryError);
+        throw new Error('Failed to set primary wallet');
+      }
+
+      logger.info(`Primary wallet set for user ${userId}: ${walletId}`);
+    } catch (error) {
+      logger.error('Set primary wallet error:', error);
+      throw error;
+    }
+  }
 }
 
 export default new WalletService();
