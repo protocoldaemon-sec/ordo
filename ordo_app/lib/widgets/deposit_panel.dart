@@ -248,6 +248,8 @@ class _DepositPanelState extends State<DepositPanel>
       ),
       child: TabBar(
         controller: _tabController,
+        indicatorSize: TabBarIndicatorSize.tab,
+        dividerColor: Colors.transparent,
         indicator: BoxDecoration(
           color: AppTheme.primary,
           borderRadius: BorderRadius.circular(8),
