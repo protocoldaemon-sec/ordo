@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
+import '../services/api_client.dart';
+import '../services/auth_service.dart';
 
 class WalletManagementPanel extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -24,7 +27,9 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _isLoading = false;
+  bool _isFetchingWallets = true;
   String? _selectedChain;
+  String? _errorMessage;
 
   // Supported EVM chains
   final List<Map<String, dynamic>> _evmChains = [
@@ -43,10 +48,11 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this, initialIndex: widget.initialTab);
-    _loadWallets();
+    _loadWalletsFromData();
+    _fetchWalletsFromApi();
   }
 
-  void _loadWallets() {
+  void _loadWalletsFromData() {
     // Debug: print incoming data
     print('🔵 WalletManagementPanel data: ${widget.data}');
     
@@ -103,6 +109,64 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
     }
     
     print('🔵 Final: ${_solanaWallets.length} Solana, ${_evmWallets.length} EVM wallets');
+  }
+
+  Future<void> _fetchWalletsFromApi() async {
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final apiClient = ApiClient(authService: authService);
+      
+      print('🔵 Fetching wallets from API...');
+      
+      final response = await apiClient.getWallets();
+      
+      print('🔵 API Response: $response');
+      
+      if (response['success'] == true && mounted) {
+        // Backend returns wallets under 'data' key
+        final wallets = response['data'] as List? ?? [];
+        
+        setState(() {
+          // Clear existing and load from API
+          _solanaWallets = wallets
+              .map((w) => Map<String, dynamic>.from(w))
+              .toList();
+          
+          // Mark the first wallet as primary if none is set
+          if (_solanaWallets.isNotEmpty) {
+            final hasPrimary = _solanaWallets.any((w) => w['isPrimary'] == true);
+            if (!hasPrimary) {
+              _solanaWallets[0]['isPrimary'] = true;
+            }
+          }
+          
+          _isFetchingWallets = false;
+          _errorMessage = null;
+        });
+        
+        print('🔵 Loaded ${_solanaWallets.length} wallets from API');
+      } else {
+        setState(() {
+          _isFetchingWallets = false;
+          _errorMessage = response['error']?.toString();
+        });
+      }
+    } catch (e) {
+      print('🔴 Error fetching wallets: $e');
+      if (mounted) {
+        setState(() {
+          _isFetchingWallets = false;
+          _errorMessage = e.toString();
+        });
+      }
+    }
+  }
+
+  Future<void> _refreshWallets() async {
+    setState(() {
+      _isFetchingWallets = true;
+    });
+    await _fetchWalletsFromApi();
   }
 
   String _shortenAddress(String address) {
@@ -251,6 +315,25 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
               ],
             ),
           ),
+          // Refresh button
+          IconButton(
+            onPressed: _isFetchingWallets ? null : _refreshWallets,
+            icon: _isFetchingWallets
+                ? SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+                    ),
+                  )
+                : Icon(
+                    Icons.refresh,
+                    color: AppTheme.textSecondary,
+                    size: 20,
+                  ),
+            tooltip: 'Refresh wallets',
+          ),
         ],
       ),
     );
@@ -314,6 +397,78 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
   }
 
   Widget _buildSolanaWallets() {
+    // Show loading state
+    if (_isFetchingWallets) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.primary),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Loading wallets...',
+                style: TextStyle(
+                  color: AppTheme.textSecondary,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // Show error state
+    if (_errorMessage != null && _solanaWallets.isEmpty) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.error_outline,
+                color: Colors.red.shade300,
+                size: 48,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Failed to load wallets',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _errorMessage!,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: AppTheme.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: _refreshWallets,
+                icon: const Icon(Icons.refresh, size: 18),
+                label: const Text('Retry'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primary,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     if (_solanaWallets.isEmpty) {
       return _buildEmptySolanaState();
     }
@@ -324,13 +479,13 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
       itemCount: _solanaWallets.length,
       itemBuilder: (context, index) {
         final wallet = _solanaWallets[index];
-        final isPrimary = wallet['isPrimary'] == true;
+        final isPrimary = wallet['isPrimary'] == true || wallet['is_primary'] == true;
 
         return _buildWalletCard(
           wallet: wallet,
           isPrimary: isPrimary,
           chainSymbol: 'SOL',
-          onCopy: () => _copyAddress(wallet['fullAddress'] ?? wallet['publicKey']),
+          onCopy: () => _copyAddress(wallet['publicKey'] ?? wallet['fullAddress'] ?? wallet['public_key']),
           onSetPrimary: isPrimary ? null : () => _setAsPrimary(wallet['id'], 'solana'),
         );
       },
@@ -597,7 +752,7 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    wallet['publicKey'] ?? wallet['address']?.toString().substring(0, 10) ?? '',
+                    _shortenAddress(wallet['publicKey'] ?? wallet['address'] ?? ''),
                     style: TextStyle(
                       color: AppTheme.textSecondary,
                       fontSize: 11,
