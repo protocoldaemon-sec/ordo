@@ -272,6 +272,7 @@ export class AIAgentService {
       analytics: ['analyze', 'analysis', 'stats', 'statistics', 'report'],
       risk: ['risk', 'safe', 'dangerous', 'security', 'audit'],
       evm: ['ethereum', 'eth', 'polygon', 'matic', 'bsc', 'binance', 'arbitrum', 'optimism'],
+      wallet: ['create wallet', 'new wallet', 'import wallet', 'list wallet', 'solana', 'primary wallet'],
     };
 
     // Detect relevant categories

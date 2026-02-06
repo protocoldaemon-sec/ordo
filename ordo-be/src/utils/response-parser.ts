@@ -160,6 +160,10 @@ const TOOL_ACTION_MAP: Record<string, ActionType> = {
   // Wallet Management
   'create_wallet': 'create_wallet',
   'create_solana_wallet': 'create_wallet',
+  'import_solana_wallet': 'import_wallet',
+  'get_solana_balance': 'check_balance',
+  'list_solana_wallets': 'manage_wallets',
+  'set_primary_solana_wallet': 'manage_wallets',
   'create_evm_wallet': 'manage_evm_wallets',
   'get_evm_balance': 'check_balance',
   'list_evm_wallets': 'manage_evm_wallets',
@@ -267,14 +271,15 @@ function extractDetails(toolResults: ToolResult[]): Record<string, any> {
     
     // Wallet results
     if (toolName.includes('wallet')) {
-      if (result.address) {
-        details.address = result.address;
+      if (result.address || result.publicKey) {
+        const address = result.address || result.publicKey;
+        details.address = address;
         
         // If it's an EVM wallet creation, add to evmWallets array
-        if (toolName.includes('evm') || result.chainId || result.chain) {
+        if (toolName.includes('evm') || (result.chainId && result.chainId !== 'solana') || (result.chain && result.chain !== 'solana')) {
           const chainId = result.chainId || result.chain || 'ethereum';
           details.evmWallets = [{
-            address: result.address,
+            address: address,
             chainId: chainId,
             name: result.name || 'New Wallet',
             balance: result.balance || 0,
@@ -285,8 +290,8 @@ function extractDetails(toolResults: ToolResult[]): Record<string, any> {
         } else {
           // Solana wallet
           details.wallets = [{
-            publicKey: result.address,
-            fullAddress: result.address,
+            publicKey: address,
+            fullAddress: address,
             name: result.name || 'New Wallet',
             balance: result.balance || 0,
             usdValue: result.usdValue || 0,
@@ -299,19 +304,22 @@ function extractDetails(toolResults: ToolResult[]): Record<string, any> {
         details.wallet = result.wallet;
         
         // Also structure it for the panel
-        if (result.wallet.address) {
-          if (result.wallet.chainId || result.wallet.chain) {
+        const walletAddress = result.wallet.address || result.wallet.publicKey;
+        if (walletAddress) {
+          if ((result.wallet.chainId && result.wallet.chainId !== 'solana') || 
+              (result.wallet.chain && result.wallet.chain !== 'solana')) {
             details.evmWallets = details.evmWallets || [];
             details.evmWallets.push({
               ...result.wallet,
+              address: walletAddress,
               isNew: true,
             });
           } else {
             details.wallets = details.wallets || [];
             details.wallets.push({
               ...result.wallet,
-              publicKey: result.wallet.address,
-              fullAddress: result.wallet.address,
+              publicKey: walletAddress,
+              fullAddress: walletAddress,
               isNew: true,
             });
           }

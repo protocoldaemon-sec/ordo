@@ -4,6 +4,7 @@ import { Plugin, Action, ActionContext } from '../types/plugin';
 import pluginManager from './plugin-manager.service';
 import userFeaturesPlugin from './user-features.plugin';
 import evmWalletPlugin from './evm-wallet.plugin';
+import solanaWalletPlugin from './solana-wallet.plugin';
 import tokenRiskPlugin from './token-risk.plugin';
 import lendingPlugin from './lending.plugin';
 import { bridgePlugin } from './bridge.plugin';
@@ -77,6 +78,7 @@ class SolanaAgentService {
     pluginManager.registerPlugin(nftPlugin);
     pluginManager.registerPlugin(userFeaturesPlugin);
     pluginManager.registerPlugin(evmWalletPlugin);
+    pluginManager.registerPlugin(solanaWalletPlugin);
     pluginManager.registerPlugin(tokenRiskPlugin);
     pluginManager.registerPlugin(lendingPlugin);
 
