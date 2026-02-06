@@ -463,7 +463,13 @@ class _SendPanelState extends State<SendPanel> {
         setState(() {
           _isLoading = false;
         });
-        widget.onDismiss();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Transfer sent successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        // Don't auto-dismiss - let user see the result and close manually
       }
     });
   }

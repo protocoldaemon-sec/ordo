@@ -347,6 +347,11 @@ class ApiClient {
   Future<Map<String, dynamic>> getWallets() async {
     return await get('/wallets');
   }
+
+  // Set primary wallet
+  Future<Map<String, dynamic>> setPrimaryWallet(String walletId) async {
+    return await put('/wallets/$walletId/primary', {});
+  }
   
   // ============================================
   // TOKEN TRANSFERS

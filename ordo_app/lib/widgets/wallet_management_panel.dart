@@ -174,6 +174,36 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
     return '${address.substring(0, 6)}...${address.substring(address.length - 4)}';
   }
 
+  String _getNetworkName() {
+    final network = widget.data['network']?.toString() ?? 
+                    widget.data['mode']?.toString() ?? 
+                    'devnet';
+    switch (network.toLowerCase()) {
+      case 'mainnet':
+        return 'Mainnet';
+      case 'testnet':
+        return 'Testnet';
+      case 'devnet':
+      default:
+        return 'Devnet';
+    }
+  }
+
+  Color _getNetworkColor() {
+    final network = widget.data['network']?.toString() ?? 
+                    widget.data['mode']?.toString() ?? 
+                    'devnet';
+    switch (network.toLowerCase()) {
+      case 'mainnet':
+        return Colors.green;
+      case 'testnet':
+        return Colors.purple;
+      case 'devnet':
+      default:
+        return Colors.orange;
+    }
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -284,7 +314,7 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
             decoration: BoxDecoration(
-              color: Colors.green.withOpacity(0.1),
+              color: _getNetworkColor().withOpacity(0.1),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Row(
@@ -293,11 +323,11 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
                   width: 6,
                   height: 6,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: _getNetworkColor(),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.green.withOpacity(0.5),
+                        color: _getNetworkColor().withOpacity(0.5),
                         blurRadius: 4,
                       ),
                     ],
@@ -305,9 +335,9 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
                 ),
                 const SizedBox(width: 6),
                 Text(
-                  'Mainnet',
+                  _getNetworkName(),
                   style: TextStyle(
-                    color: Colors.green.shade300,
+                    color: _getNetworkColor(),
                     fontSize: 10,
                     fontWeight: FontWeight.w600,
                   ),
@@ -989,11 +1019,58 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
     );
   }
 
-  void _setAsPrimary(String walletId, String type) {
-    widget.onAction?.call('setWalletPrimary', {
-      'walletId': walletId,
-      'type': type,
+  void _setAsPrimary(String? walletId, String type) async {
+    if (walletId == null) return;
+    
+    setState(() {
+      _isLoading = true;
     });
+    
+    try {
+      final authService = Provider.of<AuthService>(context, listen: false);
+      final apiClient = ApiClient(authService: authService);
+      
+      // Call API to set primary wallet
+      final response = await apiClient.setPrimaryWallet(walletId);
+      
+      if (response['success'] == true && mounted) {
+        // Update local state
+        setState(() {
+          for (var wallet in _solanaWallets) {
+            wallet['isPrimary'] = wallet['id'] == walletId;
+          }
+        });
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Primary wallet updated'),
+            backgroundColor: AppTheme.success,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+        
+        // Refresh to get latest data
+        _refreshWallets();
+      } else {
+        throw Exception(response['error'] ?? 'Failed to set primary wallet');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error: ${e.toString().replaceAll('Exception: ', '')}'),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   void _createWallet() async {

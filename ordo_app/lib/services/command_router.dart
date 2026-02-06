@@ -247,6 +247,17 @@ class CommandRouter {
       );
     }
     
+    // Price chart - show chart panel
+    if (_isPriceChartCommand(lowerCommand)) {
+      final token = _extractToken(lowerCommand);
+      return CommandRoute(
+        type: RouteType.localPanel,
+        action: ActionType.showPriceChart,
+        params: {'token': token},
+        reason: 'Price chart - instant UI',
+      );
+    }
+    
     // Simple price check
     if (_isPriceCommand(lowerCommand)) {
       final token = _extractToken(lowerCommand);
@@ -500,6 +511,14 @@ class CommandRouter {
   static bool _isTokenRiskCommand(String cmd) {
     return (cmd.contains('risk') || cmd.contains('safe') || cmd.contains('analyze')) &&
            (cmd.contains('token') || cmd.contains('sol') || cmd.contains('usdc') || cmd.contains('bonk'));
+  }
+  
+  // Price chart patterns
+  static bool _isPriceChartCommand(String cmd) {
+    return (cmd.contains('chart') || cmd.contains('grafik')) &&
+           (cmd.contains('price') || cmd.contains('harga') || 
+            cmd.contains('sol') || cmd.contains('btc') || cmd.contains('eth') ||
+            cmd.contains('bonk') || cmd.contains('jup') || cmd.contains('token'));
   }
   
   // Price check patterns

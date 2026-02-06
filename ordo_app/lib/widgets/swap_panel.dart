@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import '../theme/app_theme.dart';
 import '../services/api_client.dart';
@@ -51,14 +53,30 @@ class _SwapPanelState extends State<SwapPanel> {
   
   Future<void> _fetchPrice() async {
     try {
+      // Use Binance API directly for real-time price
+      final symbol = _getBinanceSymbol(_fromToken);
+      if (symbol != null) {
+        final response = await http.get(
+          Uri.parse('https://api.binance.com/api/v3/ticker/price?symbol=$symbol'),
+        );
+        
+        if (response.statusCode == 200) {
+          final data = json.decode(response.body);
+          setState(() {
+            _tokenPrice = double.tryParse(data['price']?.toString() ?? '0');
+            _updateUsdValue();
+          });
+          return;
+        }
+      }
+      
+      // Fallback to internal API if Binance fails
       final authService = context.read<AuthService>();
       final apiClient = ApiClient(authService: authService);
-      
-      // Get SOL price in USD
-      final response = await apiClient.getTokenPrice('So11111111111111111111111111111111111111112');
-      if (response['success'] == true && response['data'] != null) {
+      final apiResponse = await apiClient.getTokenPrice('So11111111111111111111111111111111111111112');
+      if (apiResponse['success'] == true && apiResponse['data'] != null) {
         setState(() {
-          _tokenPrice = (response['data']['price'] as num?)?.toDouble();
+          _tokenPrice = (apiResponse['data']['price'] as num?)?.toDouble();
           _updateUsdValue();
         });
       }
@@ -69,6 +87,23 @@ class _SwapPanelState extends State<SwapPanel> {
         _updateUsdValue();
       });
     }
+  }
+  
+  // Get Binance trading pair symbol
+  String? _getBinanceSymbol(String token) {
+    final symbols = {
+      'SOL': 'SOLUSDT',
+      'BTC': 'BTCUSDT',
+      'ETH': 'ETHUSDT',
+      'BNB': 'BNBUSDT',
+      'AVAX': 'AVAXUSDT',
+      'MATIC': 'MATICUSDT',
+      'DOT': 'DOTUSDT',
+      'LINK': 'LINKUSDT',
+      'UNI': 'UNIUSDT',
+      'ATOM': 'ATOMUSDT',
+    };
+    return symbols[token.toUpperCase()];
   }
   
   void _updateUsdValue() {

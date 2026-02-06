@@ -7,6 +7,7 @@ enum ActionType {
   tokenInfo,
   tokenRisk,
   tokenPrice,
+  showPriceChart,  // NEW: Show price chart panel
   
   // Transfers
   sendSol,
@@ -86,6 +87,8 @@ ActionType _mapBackendActionType(String? actionType) {
       return ActionType.tokenRisk;
     case 'token_price':
       return ActionType.tokenPrice;
+    case 'show_price_chart':
+      return ActionType.showPriceChart;
     
     // Transfers
     case 'send_sol':

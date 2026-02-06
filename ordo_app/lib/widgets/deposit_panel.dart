@@ -61,12 +61,13 @@ class _DepositPanelState extends State<DepositPanel>
         if (wallets.isNotEmpty) {
           // Get primary wallet or first one
           final primaryWallet = wallets.firstWhere(
-            (w) => w['is_primary'] == true,
+            (w) => w['isPrimary'] == true,
             orElse: () => wallets.first,
           );
           if (mounted) {
             setState(() {
-              _walletAddress = primaryWallet['public_key']?.toString() ?? '';
+              _walletAddress = primaryWallet['publicKey']?.toString() ?? 
+                               primaryWallet['address']?.toString() ?? '';
               _isLoading = false;
             });
           }

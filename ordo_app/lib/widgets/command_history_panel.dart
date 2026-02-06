@@ -231,9 +231,9 @@ class _CommandHistoryPanelState extends State<CommandHistoryPanel> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Conversations list (left sidebar)
+          // Conversations list (left sidebar) - compact
           Container(
-            width: 100,
+            width: 70,
             decoration: BoxDecoration(
               border: Border(
                 right: BorderSide(color: Colors.white.withOpacity(0.1)),
@@ -256,7 +256,7 @@ class _CommandHistoryPanelState extends State<CommandHistoryPanel> {
                     _loadMessages(convId);
                   },
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
                     decoration: BoxDecoration(
                       color: isSelected ? Colors.purple.withOpacity(0.2) : Colors.transparent,
                       border: Border(
@@ -273,16 +273,16 @@ class _CommandHistoryPanelState extends State<CommandHistoryPanel> {
                           _formatDate(createdAt),
                           style: TextStyle(
                             color: isSelected ? Colors.white : Colors.white.withOpacity(0.7),
-                            fontSize: 11,
+                            fontSize: 10,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 2),
                         Text(
                           _formatTime(createdAt),
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.5),
-                            fontSize: 10,
+                            fontSize: 9,
                           ),
                         ),
                       ],

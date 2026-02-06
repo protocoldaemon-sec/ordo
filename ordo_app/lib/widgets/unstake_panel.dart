@@ -676,11 +676,9 @@ class _UnstakePanelState extends State<UnstakePanel> {
           _errorMessage = null;
         });
         
-        // Dismiss after showing success
-        await Future.delayed(const Duration(seconds: 2));
-        if (mounted) {
-          widget.onDismiss();
-        }
+        // Refresh staking positions to show updated balances
+        await _loadStakingPositions();
+        // Don't auto-dismiss - let user see the result and close manually
       } else {
         throw Exception(response['error'] ?? 'Unstaking failed');
       }

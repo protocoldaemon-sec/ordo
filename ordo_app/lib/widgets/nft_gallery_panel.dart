@@ -36,8 +36,24 @@ class _NftGalleryPanelState extends State<NftGalleryPanel> {
       _nfts = nftsFromData;
       _totalValue = (widget.data['totalValue'] as num?)?.toDouble() ?? 0.0;
       _isLoading = false;
+      // Handle auto-action after build
+      _checkAutoAction();
     } else {
       _loadNfts();
+    }
+  }
+  
+  void _checkAutoAction() {
+    // Handle auto-action for mint/send routing
+    final autoAction = widget.data['autoAction'] as String?;
+    if (autoAction != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (autoAction == 'mint') {
+          _showMintDialog();
+        } else if (autoAction == 'send' && _nfts.isNotEmpty) {
+          _showSendDialog(_nfts.first);
+        }
+      });
     }
   }
 
@@ -91,6 +107,8 @@ class _NftGalleryPanelState extends State<NftGalleryPanel> {
         setState(() {
           _isLoading = false;
         });
+        // Check for auto-action after loading
+        _checkAutoAction();
       }
     }
   }

@@ -753,11 +753,9 @@ class _RemoveLiquidityPanelState extends State<RemoveLiquidityPanel> {
           _errorMessage = null;
         });
         
-        // Refresh positions and dismiss after showing success
-        await Future.delayed(const Duration(seconds: 2));
-        if (mounted) {
-          widget.onDismiss();
-        }
+        // Refresh positions to show updated list
+        await _loadPositions();
+        // Don't auto-dismiss - let user see the result and close manually
       } else {
         throw Exception(response['error'] ?? 'Remove liquidity failed');
       }

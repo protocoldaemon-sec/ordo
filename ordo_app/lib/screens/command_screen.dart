@@ -33,6 +33,7 @@ import '../widgets/faucet_panel.dart';
 import '../widgets/command_history_panel.dart';
 import '../widgets/analytics_panel.dart';
 import '../widgets/security_settings_panel.dart';
+import '../widgets/price_chart_panel.dart';
 import '../services/command_index.dart';
 import '../models/command_action.dart';
 import '../theme/app_theme.dart';
@@ -541,6 +542,20 @@ class _CommandScreenState extends State<CommandScreen> {
           onDismiss: () => controller.dismissPanel(),
         );
       
+      // Mint NFT - show NFT gallery with mint action
+      case ActionType.mintNft:
+        return NftGalleryPanel(
+          data: {...action.data, 'autoAction': 'mint'},
+          onDismiss: () => controller.dismissPanel(),
+        );
+      
+      // Send NFT - show NFT gallery with send action
+      case ActionType.sendNft:
+        return NftGalleryPanel(
+          data: {...action.data, 'autoAction': 'send'},
+          onDismiss: () => controller.dismissPanel(),
+        );
+      
       // Staking interface - show placeholder
       case ActionType.stake:
         return StakingPanel(
@@ -635,6 +650,13 @@ class _CommandScreenState extends State<CommandScreen> {
       // About panel
       case ActionType.showAbout:
         return _buildAboutPanel(controller);
+      
+      // Price chart panel
+      case ActionType.showPriceChart:
+        return PriceChartPanel(
+          data: action.data,
+          onDismiss: () => controller.dismissPanel(),
+        );
       
       // Token price/info - show AI response panel
       case ActionType.tokenPrice:
