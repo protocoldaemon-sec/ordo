@@ -46,6 +46,8 @@ export type ActionType =
   | 'set_limit'
   | 'set_slippage'
   | 'show_security_settings'
+  | 'network_settings'
+  | 'faucet'
   // History
   | 'show_transactions'
   | 'show_command_history'
@@ -177,6 +179,23 @@ const TOOL_ACTION_MAP: Record<string, ActionType> = {
   'get_pending_approvals': 'requires_approval',
   'get_approval_history': 'show_approval_history',
   
+  // Network Settings
+  'switch_network': 'network_settings',
+  'set_network': 'network_settings',
+  'change_network': 'network_settings',
+  'get_network': 'network_settings',
+  'switch_to_devnet': 'network_settings',
+  'switch_to_mainnet': 'network_settings',
+  'set_devnet': 'network_settings',
+  'set_mainnet': 'network_settings',
+  
+  // Faucet
+  'request_faucet': 'faucet',
+  'get_faucet': 'faucet',
+  'airdrop': 'faucet',
+  'request_airdrop': 'faucet',
+  'solana_faucet': 'faucet',
+  
   // Transactions
   'get_enhanced_transactions': 'show_transactions',
   
@@ -230,6 +249,75 @@ function getActionTypeFromTool(toolName: string): ActionType {
     return 'create_wallet';
   }
   if (lowerName.includes('nft')) {
+    return 'show_nfts';
+  }
+  if (lowerName.includes('devnet') || lowerName.includes('mainnet') || lowerName.includes('network')) {
+    return 'network_settings';
+  }
+  if (lowerName.includes('faucet') || lowerName.includes('airdrop')) {
+    return 'faucet';
+  }
+  
+  return 'info';
+}
+
+/**
+ * Detect action type from AI message content when no tools are called
+ */
+function detectActionTypeFromMessage(message: string): ActionType {
+  if (!message) return 'info';
+  
+  const lowerMessage = message.toLowerCase();
+  
+  // Network settings detection
+  if (lowerMessage.includes('devnet') || lowerMessage.includes('mainnet') || 
+      lowerMessage.includes('testnet') || lowerMessage.includes('network')) {
+    if (lowerMessage.includes('switch') || lowerMessage.includes('change') || 
+        lowerMessage.includes('ubah') || lowerMessage.includes('ganti') ||
+        lowerMessage.includes('mode')) {
+      return 'network_settings';
+    }
+  }
+  
+  // Faucet detection
+  if (lowerMessage.includes('faucet') || lowerMessage.includes('airdrop')) {
+    return 'faucet';
+  }
+  
+  // Wallet operations
+  if (lowerMessage.includes('wallet') && 
+      (lowerMessage.includes('create') || lowerMessage.includes('buat'))) {
+    return 'create_wallet';
+  }
+  
+  // Balance check
+  if (lowerMessage.includes('balance') || lowerMessage.includes('saldo')) {
+    return 'check_balance';
+  }
+  
+  // Swap
+  if (lowerMessage.includes('swap') || lowerMessage.includes('tukar')) {
+    return 'swap_tokens';
+  }
+  
+  // Staking
+  if (lowerMessage.includes('stake') || lowerMessage.includes('staking')) {
+    return 'stake';
+  }
+  
+  // Transfer/Send
+  if (lowerMessage.includes('send') || lowerMessage.includes('kirim') || 
+      lowerMessage.includes('transfer')) {
+    return 'send_sol';
+  }
+  
+  // Price
+  if (lowerMessage.includes('price') || lowerMessage.includes('harga')) {
+    return 'token_price';
+  }
+  
+  // NFT
+  if (lowerMessage.includes('nft')) {
     return 'show_nfts';
   }
   
@@ -724,6 +812,37 @@ function generateSummary(
       return 'Approval history loaded';
     }
     
+    case 'network_settings': {
+      // Try to extract from tool results first
+      const networkResult = toolResults.find(t => t.result?.network || t.result?.mode);
+      if (networkResult?.result) {
+        const network = networkResult.result.network || networkResult.result.mode;
+        return `Network switched to ${network}`;
+      }
+      // Fall back to message detection
+      if (aiMessage) {
+        if (aiMessage.toLowerCase().includes('devnet')) {
+          return 'Switched to Devnet';
+        }
+        if (aiMessage.toLowerCase().includes('mainnet')) {
+          return 'Switched to Mainnet';
+        }
+      }
+      return 'Network settings updated';
+    }
+    
+    case 'faucet': {
+      const faucetResult = toolResults.find(t => t.result?.signature || t.result?.amount || t.result?.success);
+      if (faucetResult?.result?.signature) {
+        const amount = faucetResult.result.amount || '1';
+        return `Received ${amount} SOL from faucet`;
+      }
+      if (faucetResult?.result?.success) {
+        return 'Faucet airdrop successful';
+      }
+      return 'Faucet request processed';
+    }
+    
     default: {
       // Try to extract message from tool result
       const msgResult = toolResults.find(t => t.result?.message);
@@ -819,6 +938,9 @@ export function parseResponse(
       // All tools failed, use first tool's type
       actionType = getActionTypeFromTool(toolResults[0].name);
     }
+  } else {
+    // No tools called - detect from message content
+    actionType = detectActionTypeFromMessage(aiMessage);
   }
   
   // Extract structured details (from successful tools primarily)

@@ -662,25 +662,29 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '${balance.toStringAsFixed(2)} $chainSymbol',
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${balance.toStringAsFixed(2)} $chainSymbol',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                    Text(
-                      '\$${usdValue.toStringAsFixed(2)} USD',
-                      style: TextStyle(
-                        color: AppTheme.textSecondary,
-                        fontSize: 13,
+                      Text(
+                        '\$${usdValue.toStringAsFixed(2)} USD',
+                        style: TextStyle(
+                          color: AppTheme.textSecondary,
+                          fontSize: 13,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 Row(
                   children: [
