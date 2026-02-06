@@ -595,14 +595,17 @@ class _WalletManagementPanelState extends State<WalletManagementPanel>
                     ),
                   ),
                 const SizedBox(width: 8),
-                Text(
-                  wallet['publicKey'] ?? wallet['address']?.toString().substring(0, 10) ?? '',
-                  style: TextStyle(
-                    color: AppTheme.textSecondary,
-                    fontSize: 11,
+                Expanded(
+                  child: Text(
+                    wallet['publicKey'] ?? wallet['address']?.toString().substring(0, 10) ?? '',
+                    style: TextStyle(
+                      color: AppTheme.textSecondary,
+                      fontSize: 11,
+                    ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const Spacer(),
+                const SizedBox(width: 8),
                 if (chainIcon != null)
                   Container(
                     padding: const EdgeInsets.symmetric(
