@@ -270,7 +270,7 @@ export class AIAgentService {
       liquidity: ['liquidity', 'pool', 'lp', 'add liquidity', 'remove liquidity'],
       bridge: ['bridge', 'cross-chain', 'transfer to'],
       analytics: ['analyze', 'analysis', 'stats', 'statistics', 'report'],
-      risk: ['risk', 'safe', 'dangerous', 'security', 'audit'],
+      risk: ['risk', 'safe', 'dangerous', 'security', 'audit', 'scam', 'legitimate', 'verify', 'check token'],
       evm: ['ethereum', 'eth', 'polygon', 'matic', 'bsc', 'binance', 'arbitrum', 'optimism'],
       wallet: ['create wallet', 'new wallet', 'import wallet', 'list wallet', 'solana', 'primary wallet'],
     };
