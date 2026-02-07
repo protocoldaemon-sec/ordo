@@ -275,10 +275,27 @@ function detectActionTypeFromMessage(message: string): ActionType {
   
   const lowerMessage = message.toLowerCase();
   
-  // Risk analysis detection (prioritize this to avoid false positives)
-  if ((lowerMessage.includes('risk') || lowerMessage.includes('safe') || lowerMessage.includes('analyze')) &&
-      (lowerMessage.includes('token') || lowerMessage.includes('mint') || lowerMessage.includes('address'))) {
-    return 'token_risk';
+  // Risk analysis detection (HIGHEST PRIORITY - check first)
+  // Match patterns like "analyze risk", "risk analysis", "token risk", "is X safe", etc.
+  if (lowerMessage.includes('risk') || lowerMessage.includes('safe') || 
+      lowerMessage.includes('dangerous') || lowerMessage.includes('scam') ||
+      lowerMessage.includes('legitimate') || lowerMessage.includes('legit')) {
+    // If it's about a token/mint/address, it's risk analysis
+    if (lowerMessage.includes('token') || lowerMessage.includes('mint') || 
+        lowerMessage.includes('address') || lowerMessage.includes('contract') ||
+        /[a-z0-9]{32,}/.test(lowerMessage)) { // Contains address-like string
+      return 'token_risk';
+    }
+  }
+  
+  // Also check for "analyze" command with token context
+  if (lowerMessage.includes('analyz') || lowerMessage.includes('check') || 
+      lowerMessage.includes('verify') || lowerMessage.includes('inspect')) {
+    if (lowerMessage.includes('token') || lowerMessage.includes('mint') || 
+        lowerMessage.includes('address') || lowerMessage.includes('contract') ||
+        /[a-z0-9]{32,}/.test(lowerMessage)) {
+      return 'token_risk';
+    }
   }
   
   // Network settings detection
@@ -296,19 +313,25 @@ function detectActionTypeFromMessage(message: string): ActionType {
     return 'faucet';
   }
   
-  // Wallet operations - be more specific to avoid false positives
+  // Wallet operations - be VERY specific to avoid false positives
   if (lowerMessage.includes('wallet')) {
-    // Delete wallet - must have explicit delete/remove intent
+    // Delete wallet - must have BOTH delete intent AND success confirmation
     if ((lowerMessage.includes('delete') || lowerMessage.includes('hapus') || 
          lowerMessage.includes('remove')) &&
         (lowerMessage.includes('successfully') || lowerMessage.includes('berhasil') ||
-         lowerMessage.includes('deleted') || lowerMessage.includes('removed'))) {
-      return 'delete_wallet';
+         lowerMessage.includes('deleted') || lowerMessage.includes('removed') ||
+         lowerMessage.includes('success'))) {
+      // But NOT if it's about risk analysis
+      if (!lowerMessage.includes('risk') && !lowerMessage.includes('analyz')) {
+        return 'delete_wallet';
+      }
     }
     
-    // Create wallet
-    if (lowerMessage.includes('create') || lowerMessage.includes('buat') ||
-        lowerMessage.includes('created') || lowerMessage.includes('new wallet')) {
+    // Create wallet - must have creation confirmation
+    if ((lowerMessage.includes('create') || lowerMessage.includes('buat') ||
+         lowerMessage.includes('created') || lowerMessage.includes('new wallet')) &&
+        (lowerMessage.includes('successfully') || lowerMessage.includes('created') ||
+         lowerMessage.includes('new'))) {
       return 'create_wallet';
     }
   }
